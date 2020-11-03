@@ -1,0 +1,8 @@
+*.obj
+*.pdb
+*.ilk
+
+build/*.obj
+build/*.pdb
+build/*.ilk
+build/sample.exe
