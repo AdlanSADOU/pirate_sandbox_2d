@@ -18,7 +18,6 @@ void gameInput(S2D_Event e)
     case S2D_KEY_HELD:
         if (key == SDLK_g)
             enemy->MovePosition(1, 1);
-            printf("shiiiiiiiit\n");
         break;
     
     default:
