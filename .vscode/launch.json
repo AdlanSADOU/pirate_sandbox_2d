@@ -8,13 +8,13 @@
             "name": "cl.exe - Build and debug active file",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/sample.exe",
+            "program": "${workspaceFolder}/build/x64_Debug/sample.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/build/x64_Debug/",
             "environment": [],
-            "externalConsole": false,
-            "preLaunchTask": "C/C++: cl.exe build active file"
+            "externalConsole": true,
+            // "preLaunchTask": "C/C++: x64 Debug Build"
         }
     ]
 }

@@ -1,22 +1,66 @@
+/* 
+ * MSVC++ Compiler options
+ * https://docs.microsoft.com/en-us/cpp/build/reference/compiler-options-listed-by-category?view=msvc-160
+ */
 {
     "tasks": [
         {
             "type": "shell",
-            "label": "C/C++: cl.exe build active file",
+            "label": "C/C++: x64 Debug Build",
             "command": "cl.exe",
             "args": [
                 "/Zi",
                 "/EHsc",
                 "/std:c++latest",
                 "/Fe:",
-                "${workspaceFolder}/build/sample.exe",
+                "${workspaceFolder}/build/x64_Debug/sample.exe",
                 "src/*.cpp",
+                "src/enemy/*.cpp",
+                "src/entity/*.cpp",
+                "src/game/*.cpp",
 
                 "/I", "simple2d/include",
+                "/I", "src/include/",
                 "/I", "simple2d/deps/headers",
 
                 "/link", "/LIBPATH", "simple2d/build/simple2d.lib",
                 "/SUBSYSTEM:CONSOLE",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+
+        {
+            "type": "shell",
+            "label": "C/C++: x64 Release Build",
+            "command": "cl.exe",
+            "args": [
+                "/EHsc",
+                "/std:c++latest",
+                "/O2", // Creates fast code
+                "/GL", // Whole Program Optimization
+
+                "/Fe:", "${workspaceFolder}/build/x64_Release/sample.exe",
+
+                "src/*.cpp",
+                "src/enemy/*.cpp",
+                "src/entity/*.cpp",
+                "src/game/*.cpp",
+
+                "/I", "simple2d/include",
+                "/I", "src/include/",
+                "/I", "simple2d/deps/headers",
+
+                "/link", "/LIBPATH", "simple2d/build/simple2d.lib",
+                "/SUBSYSTEM:WINDOWS", // CONSOLE must be replaced by WINDOWS
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

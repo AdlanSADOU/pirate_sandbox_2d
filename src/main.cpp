@@ -1,9 +1,18 @@
 #include "game.h"
 
 // SDL_main.h is included automatically from SDL.h
-#ifdef main
-#undef main
-#endif
+
+// #ifdef main
+// #undef main
+// #endif
+
+// #ifdef SDL_Main
+// #undef SDL_Main
+// #endif
+
+// #ifndef SDL_Main
+// #define SDL_Main
+// #endif
 
 S2D_Window *gWindow;
 float speed = .01f;
@@ -34,6 +43,7 @@ void move_sprite(SDL_Keycode key)
 void sdOnKeyCallback(S2D_Event e)
 {
     SDL_Keycode key = SDL_GetKeyFromName(e.key);
+    gameInput(e);
     switch (e.type) {
         case S2D_KEY_UP: key == SDLK_ESCAPE ? S2D_Close(gWindow) : 0;
             break;
@@ -61,7 +71,7 @@ void render()
     S2D_DrawText(fps);
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char * argv[])
 {
     update_args u_args;
     gWindow = S2D_CreateWindow("Awesome Sample", 800, 600, update, render, S2D_RESIZABLE);
