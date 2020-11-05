@@ -14,6 +14,7 @@ typedef struct
     S2D_Sprite *sprite;
     S2D_FRect rect;
     S2D_Vec2f position;
+    S2D_Vec2f center;
 } sdEntity;
 
 // class implementation of sdEntity
@@ -22,6 +23,8 @@ class Entity
     S2D_Sprite *sprite;
     S2D_FRect rect;
     S2D_Vec2f position;
+    S2D_Vec2f center;
+    S2D_Vec2f facing;
     /*
     Abstraction over S2D_Sprite
     do not attempt to modify sprite pointer directly. The values will not be reflected in S2D_IRect and S2D_vec2i
@@ -34,6 +37,8 @@ public:
         this->sprite = NULL;
         this->rect = {0};
         this->position = {0};
+        this->center = {0};
+        this->facing = {0};
     }
 
     // Parameterized Constructor
@@ -53,6 +58,10 @@ public:
 
         this->position.x = sprite->x;
         this->position.y = sprite->y;
+        this->center.x = this->position.x + (rect.width / 2.0);
+        this->center.y = this->position.y + (rect.height / 2.0);
+        this->facing.x = this->position.x + (rect.width / 2.0);
+        this->facing.y = this->position.y + (rect.height / 2.0) - 50;
     }
 
     void SetSprite(const char *path)
@@ -78,6 +87,10 @@ public:
 
         this->position.x = sprite->x;
         this->position.y = sprite->y;
+        this->center.x = this->position.x + (rect.width / 2.0);
+        this->center.y = this->position.y + (rect.height / 2.0);
+        this->facing.x = this->position.x + (rect.width / 2.0);
+        this->facing.y = this->position.y + (rect.height / 2.0) - 50;
 
         this->sprite = sprite;
     }
@@ -107,6 +120,27 @@ public:
         this->rect.height = height;
     }
 
+    S2D_Vec2f GetPos()
+    {
+        return this->position;
+    }
+
+    void RotateSprite(float x, float y)
+    {
+        if (y > -0.16 && y < 0.01 && x > -0.16 && x < 0.01)
+            return;
+        float angle_direction = atan2((this->center.y + y) - (this->center.y),
+            (this->center.x - x) - (this->center.x));
+        float angle_sprite = atan2((this->facing.y) - (this->center.y),
+            (this->facing.x) - (this->center.x));
+        angle_direction = angle_direction * 180 / M_PI;
+        angle_sprite = angle_sprite * 180 / M_PI;
+        if (angle_direction < 0) angle_direction = 360 + angle_direction;
+        if (angle_sprite < 0) angle_sprite = 360 + angle_sprite;
+        float dif_angle = angle_sprite - angle_direction;
+        S2D_RotateSprite(this->sprite, dif_angle, S2D_CENTER);
+    }
+
     void Move(float x, float y)
     {
         this->sprite->x += x;
@@ -115,6 +149,10 @@ public:
         this->position.y += y;
         this->rect.x += x;
         this->rect.y += y;
+        this->center.x = this->position.x + (rect.width / 2.0);
+        this->center.y = this->position.y + (rect.height / 2.0);
+        this->facing.x = this->position.x + (rect.width / 2.0);
+        this->facing.y = this->position.y + (rect.height / 2.0) - 50;
     }
 
     void SetPosition(float x, float y)
@@ -125,6 +163,10 @@ public:
         this->position.y = y;
         this->rect.x = x;
         this->rect.y = y;
+        this->center.x = x + (rect.width / 2.0);
+        this->center.y = y + (rect.height / 2.0);
+        this->facing.x = x + (rect.width / 2.0);
+        this->facing.y = y + (rect.height / 2.0) - 50;
     }
 
     S2D_FRect GetRect()

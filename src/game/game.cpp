@@ -42,6 +42,7 @@ void gameUpdate(update_args *args)
 {
     // sdEntityMove(player, xAxis, yAxis);
     playerClass.Move(xAxis, yAxis);
+    playerClass.RotateSprite(xAxis, yAxis);
 }
 
 void gameRender()

@@ -21,7 +21,6 @@ S2D_Text *fps;
 
 void move_sprite(SDL_Keycode key)
 {
-
     switch (key) {
     case SDLK_w: (yAxis) -= gDeltaTime * speed;
         break;
@@ -32,8 +31,10 @@ void move_sprite(SDL_Keycode key)
     case SDLK_d: (xAxis) += gDeltaTime * speed;
         break;
     case SDLK_SPACE:
-        (yAxis > 0)? ((yAxis) -= gDeltaTime * speed) : ((yAxis) += gDeltaTime * speed);
-        (xAxis > 0)? ((xAxis) -= gDeltaTime * speed) : ((xAxis) += gDeltaTime * speed);
+        if (yAxis > -0.16 && yAxis < 0.01) yAxis = 0;
+        else (yAxis > 0) ? ((yAxis) -= gDeltaTime * speed) : ((yAxis) += gDeltaTime * speed);
+        if (xAxis > -0.16 && xAxis < 0.01) xAxis = 0;
+        else (xAxis > 0) ? ((xAxis) -= gDeltaTime * speed) : ((xAxis) += gDeltaTime * speed);
         break;
     default:
         break;
