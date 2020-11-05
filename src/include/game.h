@@ -129,15 +129,13 @@ public:
     {
         if (y > -0.16 && y < 0.01 && x > -0.16 && x < 0.01)
             return;
-        float angle_direction = atan2((this->center.y + y) - (this->center.y),
-            (this->center.x - x) - (this->center.x));
-        float angle_sprite = atan2((this->facing.y) - (this->center.y),
-            (this->facing.x) - (this->center.x));
+
+        float angle_direction = atan2((this->center.y + y) - (this->center.y), (this->center.x - x) - (this->center.x));
+        float angle_sprite = atan2((this->facing.y) - (this->center.y), (this->facing.x) - (this->center.x));
         angle_direction = angle_direction * 180 / M_PI;
         angle_sprite = angle_sprite * 180 / M_PI;
-        if (angle_direction < 0) angle_direction = 360 + angle_direction;
-        if (angle_sprite < 0) angle_sprite = 360 + angle_sprite;
         float dif_angle = angle_sprite - angle_direction;
+
         S2D_RotateSprite(this->sprite, dif_angle, S2D_CENTER);
     }
 
