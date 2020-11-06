@@ -1,14 +1,20 @@
 #pragma once
 
-#include "game.h"
+#include "entity.h"
 #include "vector"
 
 class Enemy
 {
 
-    Entity *enemy = new Entity("assets/PlayerRed_Frame_01_png_processed.png");
 public:
-    Enemy() {};
+    Entity entity;
+
+    Enemy() 
+    {
+        this->entity = Entity("assets/PlayerRed_Frame_01_png_processed.png");
+    }
+
     void DrawEnemy();
     void MovePosition(float x, float y);
+    S2D_FRect GetRect();
 };
