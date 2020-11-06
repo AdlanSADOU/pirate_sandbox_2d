@@ -1,6 +1,11 @@
 @echo off
 
-del /s *.pdb
-del /s *.obj
-del /s *.ilk
+del *.pdb
+del *.ilk
+del *.obj
 del /s *.exe
+
+del build\x64_Debug\*.pdb
+del build\x64_Debug\*.ilk
+
+cls
