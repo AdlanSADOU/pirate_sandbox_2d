@@ -6,6 +6,7 @@
 class Entity
 {
 private:
+
     S2D_Sprite *sprite;
     S2D_FRect rect;
     S2D_Vec2f position;
@@ -19,6 +20,7 @@ public:
     // Parameterized Constructor
     Entity(const char *path);
 
+    void SetClipRectangle(int x, int y, int width, int height);
     void SetSize(float width, float height);
     void RotateSprite(float x, float y);
     void SetPosition(float x, float y);

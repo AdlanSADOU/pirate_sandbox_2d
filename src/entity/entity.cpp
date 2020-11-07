@@ -88,6 +88,7 @@
         S2D_DrawSprite(this->sprite);
     }
 
+    // TODO(Lorentz): the rect needs to be rotated as well
     void Entity::RotateSprite(float x, float y)
     {
         if (y > -0.16f && y < 0.01f && x > -0.16f && x < 0.01f)
@@ -128,6 +129,23 @@
         this->center.y = y + (rect.height / 2.0f);
         this->facing.x = x + (rect.width / 2.0f);
         this->facing.y = y + (rect.height / 2.0f) - 50;
+    }
+
+    /*
+     * Set a region of the Sprite to be visible
+     * if width or height extends the Sprite's width/height
+     * the Sprite will be repeated
+     */
+    void Entity::SetClipRectangle(int x, int y, int width, int height)
+    {
+        S2D_ClipSprite(this->sprite, x, y, width, height);
+        this->rect.height = height;
+        this->rect.width = width;
+        this->rect.x = this->sprite->x;
+        this->rect.y = this->sprite->y;
+
+        this->position.x = this->sprite->x;
+        this->position.y = this->sprite->y;
     }
 
     S2D_Vec2f Entity::GetPos()
