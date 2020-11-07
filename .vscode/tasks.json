@@ -26,6 +26,7 @@
                 "simple2d/deps/headers",
                 "/link",
                 "/LIBPATH",
+                "opengl32.lib", "glu32.lib",
                 "simple2d/build/simple2d.lib",
                 "/SUBSYSTEM:CONSOLE"
             ],
