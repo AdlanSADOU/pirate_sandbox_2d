@@ -1,13 +1,6 @@
 #include "ammunition.h"
 #include "stdlib.h"
 
-typedef struct {
-    Entity *sprite;
-    S2D_FRect rect;
-    S2D_Vec2f position;
-    S2D_Sound sound;
-} Ammunition;
-
 std::vector<Ammunition *> Ammunitions;
 
 Ammunition *create_ammo()
