@@ -4,10 +4,10 @@
 
 void Enemy::DrawEnemy()
 {
-    Enemy::enemy->Draw(false);
+    Enemy::entity.Draw(false);
 }
 
 void Enemy::MovePosition(float x, float y)
 {
-    Enemy::enemy->Move(x, y);
+    Enemy::entity.Move(x, y);
 }

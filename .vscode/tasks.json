@@ -18,13 +18,16 @@
                 "src/enemy/*.cpp",
                 "src/entity/*.cpp",
                 "src/game/*.cpp",
-
-                "/I", "simple2d/include",
-                "/I", "src/include/",
-                "/I", "simple2d/deps/headers",
-
-                "/link", "/LIBPATH", "simple2d/build/simple2d.lib",
-                "/SUBSYSTEM:CONSOLE",
+                "/I",
+                "simple2d/include",
+                "/I",
+                "src/include/",
+                "/I",
+                "simple2d/deps/headers",
+                "/link",
+                "/LIBPATH",
+                "simple2d/build/simple2d.lib",
+                "/SUBSYSTEM:CONSOLE"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -35,6 +38,14 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
             }
         },
 
@@ -45,22 +56,24 @@
             "args": [
                 "/EHsc",
                 "/std:c++latest",
-                "/O2", // Creates fast code
-                "/GL", // Whole Program Optimization
-
-                "/Fe:", "${workspaceFolder}/build/x64_Release/sample.exe",
-
+                "/O2",
+                "/GL",
+                "/Fe:",
+                "${workspaceFolder}/build/x64_Release/sample.exe",
                 "src/*.cpp",
                 "src/enemy/*.cpp",
                 "src/entity/*.cpp",
                 "src/game/*.cpp",
-
-                "/I", "simple2d/include",
-                "/I", "src/include/",
-                "/I", "simple2d/deps/headers",
-
-                "/link", "/LIBPATH", "simple2d/build/simple2d.lib",
-                "/SUBSYSTEM:WINDOWS",
+                "/I",
+                "simple2d/include",
+                "/I",
+                "src/include/",
+                "/I",
+                "simple2d/deps/headers",
+                "/link",
+                "/LIBPATH",
+                "simple2d/build/simple2d.lib",
+                "/SUBSYSTEM:WINDOWS"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -71,7 +84,69 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
             }
+        },
+
+        {
+            "type": "shell",
+            "label": "Lib: simple2d Debug Build",
+            "command": "nmake",
+            "args": [
+                "/f", "NMakefile", "debug",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/simple2d"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+
+        {
+            "type": "shell",
+            "label": "Lib: simple2d Release Build",
+            "command": "nmake",
+            "args": [
+                "/f", "NMakefile", "release",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/simple2d"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
         }
     ],
     "version": "2.0.0"
