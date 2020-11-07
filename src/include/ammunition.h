@@ -1,8 +1,8 @@
+// Ammunition.h
+
 #pragma once
 
-#include "simple2d.h"
-#include "entity.h"
-#include "vector"
+#include "game.h"
 
 typedef struct {
     Entity *sprite;
