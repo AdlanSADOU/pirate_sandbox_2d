@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     gWindow = S2D_CreateWindow("Awesome Sample", 1200, 720, update, render, S2D_RESIZABLE | S2D_HIGHDPI);
     gWindow->background = {.12f, .10f, .10f, 0.1f};
     gWindow->on_UpdateArgs = (&u_args);
-    gWindow->viewport.mode = S2D_STRETCH;
+    gWindow->viewport.mode = S2D_EXPAND;
     gWindow->on_key = onKeyCallback;
     gWindow->fps_cap = 60;
     gWindow->vsync = true;
