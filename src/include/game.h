@@ -1,7 +1,13 @@
+// game.h
+
 #pragma once
 
 #include "simple2d.h"
 #include "entity.h"
+#include "enemy.h"
+#include "ammunition.h"
+
+#include <vector>
 
 extern S2D_Window *gWindow;
 
