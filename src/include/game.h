@@ -6,6 +6,7 @@
 #include "entity.h"
 #include "enemy.h"
 #include "ammunition.h"
+#include "particules.h"
 
 #include <vector>
 

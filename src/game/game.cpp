@@ -50,11 +50,13 @@ void gameUpdate(update_args *args)
 {
     playerClass.Move(xAxis, yAxis);
     playerClass.RotateSprite(xAxis, yAxis);
+    pushPart();
 }
 
 void gameRender()
 {
     S2D_DrawSprite(background);
+    engineParticules();
     playerClass.Draw(false);
     renderShoot();
 }
