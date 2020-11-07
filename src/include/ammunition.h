@@ -3,11 +3,12 @@
 #include "game.h"
 #include "vector"
 
-typedef struct Ammunition {
-    S2D_Sprite *sprite;
+struct Ammunition {
+    Entity *sprite;
     S2D_FRect rect;
     S2D_Vec2f position;
     S2D_Sound sound;
-};
+}fion;
 
-std::vector<Ammunition *> Ammunitions;
+void playerShoot(void);
+void renderShoot(void);
