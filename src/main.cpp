@@ -7,8 +7,7 @@ float speed = 0.1f;
 
 void onKeyHeld(SDL_Keycode key)
 {
-    switch (key)
-    {
+    switch (key) {
     case SDLK_w:
         (yAxis) -= gWindow->deltaTime * speed;
         break;
@@ -34,10 +33,12 @@ void onKeyHeld(SDL_Keycode key)
 
 void onKeyUp(SDL_Keycode key)
 {
+
 }
 
 void onKeyDown(SDL_Keycode key)
 {
+
 }
 
 void onKeyCallback(S2D_Event e)

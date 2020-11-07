@@ -6,3 +6,4 @@ build/*.obj
 build/*.pdb
 build/*.ilk
 build/sample.exe
+build/x64_Debug/sample.exe

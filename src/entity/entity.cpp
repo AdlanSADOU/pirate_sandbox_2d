@@ -63,6 +63,14 @@
         this->sprite = sprite;
     }
 
+    void Entity::SetSize(float width, float height)
+    {
+        this->sprite->width = width;
+        this->sprite->height = height;
+        this->rect.width = width;
+        this->rect.height = height;
+    }
+
     void Entity::Draw(bool debugMode)
     {
         S2D_FRect rect = this->rect;
@@ -78,19 +86,6 @@
             S2D_DrawRect(rect, color, true);
 
         S2D_DrawSprite(this->sprite);
-    }
-
-    void Entity::SetSize(float width, float height)
-    {
-        this->sprite->width = width;
-        this->sprite->height = height;
-        this->rect.width = width;
-        this->rect.height = height;
-    }
-
-    S2D_Vec2f Entity::GetPos()
-    {
-        return this->position;
     }
 
     void Entity::RotateSprite(float x, float y)
@@ -133,6 +128,11 @@
         this->center.y = y + (rect.height / 2.0f);
         this->facing.x = x + (rect.width / 2.0f);
         this->facing.y = y + (rect.height / 2.0f) - 50;
+    }
+
+    S2D_Vec2f Entity::GetPos()
+    {
+        return this->position;
     }
 
     S2D_FRect Entity::GetRect()
