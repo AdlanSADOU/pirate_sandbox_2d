@@ -36,11 +36,11 @@ void gameInit()
     background = S2D_CreateSprite("assets/background.jpg");
     background->width = 3840;
     background->height = 2160;
-    
+
+    enemy = Enemy();
     playerClass = Entity();
     playerClass.SetSprite("assets/PlayerRed_Frame_01_png_processed.png");
-
-    playerClass.SetPosition(S2D_Vec2f{1920/2, 1080/2});
+    playerClass.SetPosition({.x = 1920/2, .y = 1080/2});
 }
 
 Entity *getPlayer()

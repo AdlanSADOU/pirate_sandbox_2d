@@ -1,4 +1,5 @@
 #pragma once
+
 #include "simple2d.h"
 #include "entity.h"
 
@@ -25,5 +26,5 @@ typedef struct args
 void gameInit();
 void gameUpdate(update_args *args);
 void gameRender();
+Entity *getPlayer(void);
 void gameInput(S2D_Event e);
-
