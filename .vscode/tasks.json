@@ -65,6 +65,7 @@
                 "src/enemy/*.cpp",
                 "src/entity/*.cpp",
                 "src/game/*.cpp",
+                "src/ammunition/*.cpp",
                 "/I",
                 "simple2d/include",
                 "/I",
