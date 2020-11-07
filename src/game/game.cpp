@@ -14,6 +14,7 @@ float yAxis;
 void gameInput(S2D_Event e)
 {
     SDL_Keycode key = SDL_GetKeyFromName(e.key);
+    
     switch (e.type)
     {
     case S2D_KEY_HELD:
@@ -34,7 +35,8 @@ void gameInit()
     
     playerClass = Entity();
     playerClass.SetSprite("assets/PlayerRed_Frame_01_png_processed.png");
-    playerClass.SetPosition(1920/2, 1080/2);
+
+    playerClass.SetPosition(S2D_Vec2f{1920/2, 1080/2});
 }
 
 void gameUpdate(update_args *args)
@@ -48,3 +50,4 @@ void gameRender()
     S2D_DrawSprite(background);
     playerClass.Draw(false);
 }
+
