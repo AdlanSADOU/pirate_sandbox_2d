@@ -1,7 +1,7 @@
 #include "entity.h"
 #include "enemy.h"
-#include "ammunition.h"
 #include "game.h"
+#include "ammunition.h"
 #include <vector>
 
 // extern S2D_Window *gWindow;

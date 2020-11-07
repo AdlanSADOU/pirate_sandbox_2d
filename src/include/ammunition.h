@@ -1,14 +1,10 @@
 #pragma once
 
-#include "game.h"
+#include "simple2d.h"
+#include "entity.h"
 #include "vector"
 
-struct Ammunition {
-    Entity *sprite;
-    S2D_FRect rect;
-    S2D_Vec2f position;
-    S2D_Sound sound;
-}fion;
 
+Entity *getPlayer(void);
 void playerShoot(void);
 void renderShoot(void);

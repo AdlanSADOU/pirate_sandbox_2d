@@ -14,10 +14,13 @@
                 "/std:c++latest",
                 "/Fe:",
                 "${workspaceFolder}/build/x64_Debug/sample.exe",
+
                 "src/*.cpp",
                 "src/enemy/*.cpp",
                 "src/entity/*.cpp",
                 "src/game/*.cpp",
+                "src/ammunition/*.cpp",
+
                 "/I",
                 "simple2d/include",
                 "/I",

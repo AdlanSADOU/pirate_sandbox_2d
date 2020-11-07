@@ -1,5 +1,12 @@
 #include "ammunition.h"
 
+struct Ammunition {
+    Entity *sprite;
+    S2D_FRect rect;
+    S2D_Vec2f position;
+    S2D_Sound sound;
+}fion;
+
 std::vector<Ammunition *> Ammunitions;
 
 Ammunition *create_ammo()
@@ -7,8 +14,8 @@ Ammunition *create_ammo()
     Ammunition *ammo = (Ammunition *)malloc(sizeof(Ammunition));
     Entity *playerClass = getPlayer();
 
-    ammo->sprite->SetSprite("assets\256px\Laser_Large_png_processed.png");
-    ammo->sprite->SetPosition(playerClass->GetPos().x, playerClass->GetPos().y);
+    ammo->sprite->SetSprite("assets/256px/Laser_Large_png_processed.png");
+    ammo->sprite->SetPosition(playerClass->GetPos());
     ammo->position = playerClass->GetPos();
 
     return (ammo);
