@@ -36,6 +36,7 @@ void move_sprite(SDL_Keycode key)
         if (xAxis > -0.16 && xAxis < 0.01) xAxis = 0;
         else (xAxis > 0) ? ((xAxis) -= gDeltaTime * speed) : ((xAxis) += gDeltaTime * speed);
         break;
+    case SDLK_x: printf(".\n"); //TODO implémenter les fonction pour tirer.
     default:
         break;
     }
