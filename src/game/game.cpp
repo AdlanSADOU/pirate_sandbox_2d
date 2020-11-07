@@ -1,5 +1,6 @@
 #include "entity.h"
 #include "enemy.h"
+#include "ammunition.h"
 #include "game.h"
 #include <vector>
 
@@ -21,6 +22,9 @@ void gameInput(S2D_Event e)
         if (key == SDLK_g)
             enemy.MovePosition(1, 1);
         break;
+        if (key == SDLK_x)
+            playerShoot();
+
     
     default:
         break;
@@ -39,6 +43,11 @@ void gameInit()
     playerClass.SetPosition(S2D_Vec2f{1920/2, 1080/2});
 }
 
+Entity *getPlayer()
+{
+    return (&playerClass);
+}
+
 void gameUpdate(update_args *args)
 {
     playerClass.Move(xAxis, yAxis);
@@ -49,5 +58,5 @@ void gameRender()
 {
     S2D_DrawSprite(background);
     playerClass.Draw(false);
+    renderShoot();
 }
-
