@@ -15,7 +15,7 @@ Ammunition *create_ammo()
     Entity *playerClass = getPlayer();
 
     Ammunition *ammo = (Ammunition *)malloc(sizeof(Ammunition));
-    
+
     ammo->sprite = new Entity("assets/256px/Laser_Large_png_processed.png");
     ammo->sprite->SetPosition(playerClass->GetPos());
     ammo->position = playerClass->GetPos();
