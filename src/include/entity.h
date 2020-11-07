@@ -23,7 +23,7 @@ public:
     void SetClipRectangle(int x, int y, int width, int height);
     void SetSize(float width, float height);
     void RotateSprite(float x, float y);
-    void SetPosition(float x, float y);
+    void SetPosition(S2D_Vec2f pos);
     void SetSprite(const char *path);
     void Move(float x, float y);
     void Draw(bool debugMode);

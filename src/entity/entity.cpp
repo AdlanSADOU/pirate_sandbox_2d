@@ -117,18 +117,18 @@
         this->facing.y = this->position.y + (rect.height / 2.0f) - 50;
     }
 
-    void Entity::SetPosition(float x, float y)
+    void Entity::SetPosition(S2D_Vec2f pos)
     {
-        this->sprite->x = x;
-        this->sprite->y = y;
-        this->position.x = x;
-        this->position.y = y;
-        this->rect.x = x;
-        this->rect.y = y;
-        this->center.x = x + (rect.width / 2.0f);
-        this->center.y = y + (rect.height / 2.0f);
-        this->facing.x = x + (rect.width / 2.0f);
-        this->facing.y = y + (rect.height / 2.0f) - 50;
+        this->sprite->x = pos.x;
+        this->sprite->y = pos.y;
+        this->position.x = pos.x;
+        this->position.y = pos.y;
+        this->rect.x = pos.x;
+        this->rect.y = pos.y;
+        this->center.x = pos.x + (rect.width / 2.0f);
+        this->center.y = pos.y + (rect.height / 2.0f);
+        this->facing.x = pos.x + (rect.width / 2.0f);
+        this->facing.y = pos.y + (rect.height / 2.0f) - 50;
     }
 
     /*
