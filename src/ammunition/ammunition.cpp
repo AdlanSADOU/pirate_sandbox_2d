@@ -1,11 +1,11 @@
 #include "ammunition.h"
 
-struct Ammunition {
+typedef struct Ammo {
     Entity *sprite;
     S2D_FRect rect;
     S2D_Vec2f position;
     S2D_Sound sound;
-}fion;
+} Ammunition;
 
 std::vector<Ammunition *> Ammunitions;
 
