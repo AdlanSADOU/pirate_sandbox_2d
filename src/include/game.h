@@ -14,8 +14,6 @@ typedef struct
     S2D_Vec2f center;
 } sdEntity;
 
-
-
 typedef struct args
 {
     char *str;
@@ -27,4 +25,3 @@ void gameInit();
 void gameUpdate(update_args *args);
 void gameRender();
 void gameInput(S2D_Event e);
-
