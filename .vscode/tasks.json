@@ -20,6 +20,7 @@
                 "src/entity/*.cpp",
                 "src/game/*.cpp",
                 "src/ammunition/*.cpp",
+                "src/particules/*.cpp",
 
                 "/I",
                 "simple2d/include",
@@ -64,11 +65,14 @@
                 "/GL",
                 "/Fe:",
                 "${workspaceFolder}/build/x64_Release/sample.exe",
+                
                 "src/*.cpp",
                 "src/enemy/*.cpp",
                 "src/entity/*.cpp",
                 "src/game/*.cpp",
                 "src/ammunition/*.cpp",
+                "src/particules/*.cpp",
+
                 "/I",
                 "simple2d/include",
                 "/I",

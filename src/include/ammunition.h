@@ -2,7 +2,7 @@
 
 #include "simple2d.h"
 #include "entity.h"
-#include "vector"
+#include <vector>
 
 
 Entity *getPlayer(void);

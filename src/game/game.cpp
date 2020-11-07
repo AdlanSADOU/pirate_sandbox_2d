@@ -24,7 +24,6 @@ void gameInput(S2D_Event e)
         break;
         if (key == SDLK_x)
             playerShoot();
-
     
     default:
         break;
