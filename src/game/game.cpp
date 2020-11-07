@@ -16,14 +16,16 @@ void gameInput(S2D_Event e)
 {
     SDL_Keycode key = SDL_GetKeyFromName(e.key);
     
+
+
     switch (e.type)
     {
     case S2D_KEY_HELD:
         if (key == SDLK_g)
             enemy.MovePosition(1, 1);
-        break;
         if (key == SDLK_x)
             playerShoot();
+        break;
 
     
     default:
