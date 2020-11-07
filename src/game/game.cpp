@@ -1,7 +1,7 @@
 #include "entity.h"
 #include "enemy.h"
 #include "game.h"
-#include "vector"
+#include <vector>
 
 // extern S2D_Window *gWindow;
 Entity playerClass;
@@ -28,29 +28,23 @@ void gameInput(S2D_Event e)
 
 void gameInit()
 {
-    background = S2D_CreateSprite("assets/PixelBackgroundSeamlessVertically.png");
-    background->width = gWindow->width;
-    background->height = gWindow->height;
+    background = S2D_CreateSprite("assets/background.jpg");
+    background->width = 3840;
+    background->height = 2160;
     
-
-    enemy = Enemy();
     playerClass = Entity();
     playerClass.SetSprite("assets/PlayerRed_Frame_01_png_processed.png");
-    playerClass.SetPosition(500,500);
-    playerClass.SetClipRectangle(0, 0, 500, 256);
+    playerClass.SetPosition(1920/2, 1080/2);
 }
 
-int x = 0;
 void gameUpdate(update_args *args)
 {
     playerClass.Move(xAxis, yAxis);
     playerClass.RotateSprite(xAxis, yAxis);
-    if (S2D_Intersect_FRect(playerClass.GetRect(), enemy.entity.GetRect())) printf("%d collided!\n", ++x);
 }
 
 void gameRender()
 {
     S2D_DrawSprite(background);
-    playerClass.Draw(true);
-    enemy.DrawEnemy();
+    playerClass.Draw(false);
 }
