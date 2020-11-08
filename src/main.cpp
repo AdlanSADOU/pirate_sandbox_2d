@@ -21,10 +21,10 @@ void onKeyHeld(SDL_Keycode key)
         (xAxis) += gWindow->deltaTime * speed;
         break;
     case SDLK_SPACE:
-        if (yAxis > -0.16 && yAxis < 0.01) yAxis = 0;
-        else (yAxis > 0) ? ((yAxis) -= gWindow->deltaTime * speed) : ((yAxis) += gWindow->deltaTime * speed);
-        if (xAxis > -0.16 && xAxis < 0.01) xAxis = 0;
-        else (xAxis > 0) ? ((xAxis) -= gWindow->deltaTime * speed) : ((xAxis) += gWindow->deltaTime * speed);
+        if (yAxis > -0.16f && yAxis < 0.01f) yAxis = 0;
+        ((yAxis) -= yAxis / 20);
+        if (xAxis > -0.16f && xAxis < 0.01f) xAxis = 0;
+        ((xAxis) -= xAxis / 20);
         break;
     default:
         break;

@@ -30,4 +30,5 @@ public:
 
     S2D_Vec2f GetPos();
     S2D_FRect GetRect();
+    S2D_Vec2f GetFacing();
 };
