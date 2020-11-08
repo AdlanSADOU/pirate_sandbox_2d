@@ -2,28 +2,24 @@
 
 // extern S2D_Window *gWindow;
 Entity playerClass;
-Enemy enemy;
+// Enemy enemy;
 
-S2D_Sprite *background = NULL;
+sf::Sprite background;
 float xAxis;
 float yAxis;
 
-void gameInput(S2D_Event e)
+void gameInput(sf::Event e)
 {
-    SDL_Keycode key = SDL_GetKeyFromName(e.key);
-    
-
 
     switch (e.type)
     {
-    case S2D_KEY_HELD:
-        if (key == SDLK_g)
-            enemy.MovePosition(1, 1);
-        if (key == SDLK_x)
-            playerShoot();
+    case sf::Event::EventType::KeyPressed:
+        // if (e.key.code == sf::Keyboard::G)
+        //     enemy.MovePosition(1, 1);
+        // if (e.key.code == sf::Keyboard::Space)
+        //     playerShoot();
         break;
 
-    
     default:
         break;
     }
@@ -31,14 +27,14 @@ void gameInput(S2D_Event e)
 
 void gameInit()
 {
-    background = S2D_CreateSprite("assets/background.jpg");
-    background->width = 3840;
-    background->height = 2160;
+    // background = S2D_CreateSprite("assets/background.jpg");
+    // background->width = 3840;
+    // background->height = 2160;
 
-    enemy = Enemy();
-    playerClass = Entity();
-    playerClass.SetSprite("assets/PlayerRed_Frame_01_png_processed.png");
-    playerClass.SetPosition({.x = 1920/2, .y = 1080/2});
+    // enemy = Enemy();
+    playerClass = Entity("assets/PlayerRed_Frame_01_png_processed.png");
+    // playerClass.SetSprite("assets/PlayerRed_Frame_01_png_processed.png");
+    playerClass.SetPosition({100,100});
 }
 
 Entity *getPlayer()
@@ -50,13 +46,15 @@ void gameUpdate(update_args *args)
 {
     playerClass.Move(xAxis, yAxis);
     playerClass.RotateSprite(xAxis, yAxis);
-    pushPart();
+    // pushPart();
 }
 
 void gameRender()
 {
-    S2D_DrawSprite(background);
-    engineParticules();
-    playerClass.Draw(false);
-    renderShoot();
+    // S2D_DrawSprite(background);
+    // engineParticules();
+    // playerClass.Draw(false);
+    printf("lollllllllllllllll\n");
+    gWindow->draw(playerClass.sprite);
+    // renderShoot();
 }

@@ -16,5 +16,5 @@ public:
 
     void DrawEnemy();
     void MovePosition(float x, float y);
-    S2D_FRect GetRect();
+    sf::FloatRect GetRect();
 };
