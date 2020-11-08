@@ -8,6 +8,8 @@ sf::Sprite background;
 float xAxis;
 float yAxis;
 
+bool space = false;
+
 void gameInput(sf::Event e)
 {
 
@@ -17,7 +19,11 @@ void gameInput(sf::Event e)
         if (e.key.code == sf::Keyboard::G)
             enemy.MovePosition(1, 1);
         if (e.key.code == sf::Keyboard::Space)
-            playerShoot();
+            space = true;
+        break;
+    case sf::Event::EventType::KeyReleased:
+        if (e.key.code == sf::Keyboard::Space)
+            space = false;
         break;
 
     default:
@@ -36,6 +42,9 @@ void gameUpdate(update_args *args)
 {
     playerClass.Move(xAxis, yAxis);
     playerClass.RotateSprite(xAxis, yAxis);
+    if (space) {
+        playerShoot();
+    }
     pushPart();
 }
 

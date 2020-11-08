@@ -44,7 +44,7 @@
         this->sprite = sprite;
     }
 
-    // TODO(Lorentz): the rect needs to be rotated as well
+    // TODO(Lorentz): Fix Rotation
     void Entity::RotateSprite(float x, float y)
     {
         if (y > -0.16f && y < 0.01f && x > -0.16f && x < 0.01f)
@@ -57,7 +57,7 @@
         float dif_angle = angle_sprite - angle_direction;
 
         // S2D_RotateSprite(this->sprite, dif_angle, S2D_CENTER);
-        // this->sprite->rotate(dif_angle);
+        this->sprite->rotate(dif_angle);
     }
 
     void Entity::Move(float x, float y)

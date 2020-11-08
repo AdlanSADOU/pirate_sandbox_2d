@@ -3,34 +3,64 @@
 // S2D_Window *gWindow = NULL;
 
 sf::RenderWindow *gWindow = NULL;
-sf::Time deltaTime;
 
 // S2D_Text *fps;
 
+float deltaTime;
+float fps;
 float speed = 0.1f;
+
+bool up, down, left, right = false;
 
 void onKeyHeld(sf::Keyboard::Key key)
 {
     printf("(%.2f, %.2f)\n", xAxis, yAxis);
-        printf("%f\n", deltaTime.asSeconds() * 1000);
+        printf("%f\n", deltaTime);
     switch (key) {
     case sf::Keyboard::Z:
-        (yAxis) -= deltaTime.asSeconds() * 1000 * speed;
+        up = true;
         break;
     case sf::Keyboard::Q:
-        (xAxis) -= deltaTime.asSeconds() * 1000 * speed;
+        left = true;
         break;
     case sf::Keyboard::S :
-        (yAxis) += deltaTime.asSeconds() * 1000 * speed;
+        down = true;
         break;
     case sf::Keyboard::D:
-        (xAxis) += deltaTime.asSeconds() * 1000 * speed;
+        right = true;
         break;
     case sf::Keyboard::LShift:
         if (yAxis > -0.16 && yAxis < 0.01) yAxis = 0;
-        else (yAxis > 0) ? ((yAxis) -= deltaTime.asSeconds() * 1000 * speed) : ((yAxis) += deltaTime.asSeconds() * 1000 * speed);
+        else (yAxis > 0) ? ((yAxis) -= deltaTime * speed) : ((yAxis) += deltaTime * speed);
         if (xAxis > -0.16 && xAxis < 0.01) xAxis = 0;
-        else (xAxis > 0) ? ((xAxis) -= deltaTime.asSeconds() * 1000 * speed) : ((xAxis) += deltaTime.asSeconds() * 1000 * speed);
+        else (xAxis > 0) ? ((xAxis) -= deltaTime * speed) : ((xAxis) += deltaTime * speed);
+        break;
+    default:
+        break;
+    }
+}
+
+void onKeyUp(sf::Keyboard::Key key)
+{
+
+    switch (key) {
+    case sf::Keyboard::Z:
+        up = false;
+        break;
+    case sf::Keyboard::Q:
+        left = false;
+        break;
+    case sf::Keyboard::S :
+        down = false;
+        break;
+    case sf::Keyboard::D:
+        right = false;
+        break;
+    case sf::Keyboard::LShift:
+        if (yAxis > -0.16 && yAxis < 0.01) yAxis = 0;
+        else (yAxis > 0) ? ((yAxis) -= deltaTime * speed) : ((yAxis) += deltaTime * speed);
+        if (xAxis > -0.16 && xAxis < 0.01) xAxis = 0;
+        else (xAxis > 0) ? ((xAxis) -= deltaTime * speed) : ((xAxis) += deltaTime * speed);
         break;
     default:
         break;
@@ -51,10 +81,8 @@ void onKeyCallback(sf::Event e)
         onKeyHeld(e.key.code);
         break;
 
-    // case S2D_KEY_HELD:
-    //     break;
-
     case sf::Event::EventType::KeyReleased:
+        onKeyUp(e.key.code);
         break;
     default:
         break;
@@ -66,6 +94,11 @@ void update(void *args)
     update_args *a_args = (update_args *)(args);
 
     // S2D_SetText(fps, "FPS:  %.2f  -  deltaTime:  %.2f", gWindow->fps,)
+
+        if (up) (yAxis) -= deltaTime * speed, printf("(%.2f, %.2f)\n", xAxis, yAxis);
+        if (left) (xAxis) -= deltaTime * speed, printf("(%.2f, %.2f)\n", xAxis, yAxis);
+        if (down) (yAxis) += deltaTime * speed, printf("(%.2f, %.2f)\n", xAxis, yAxis);
+        if (right) (xAxis) += deltaTime * speed, printf("(%.2f, %.2f)\n", xAxis, yAxis);
 
     gameUpdate(a_args);
 }
@@ -82,26 +115,25 @@ int main()
     update_args u_args;
     sf::Clock deltaClock;
 
+    sf::Clock clock = sf::Clock::Clock();
+    sf::Time previousTime = clock.getElapsedTime();
+    sf::Time currentTime;
+
     gWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
+    gWindow->setFramerateLimit(60);
 
     gameInit();
-    // Load a sprite to display
+
     const std::string str = "assets/background.jpg";
     sf::Texture texture;
     if (!texture.loadFromFile(str))
         return EXIT_FAILURE;
     sf::Sprite sprite(texture);
-    // Create a graphical text to display
+
     sf::Font font;
     if (!font.loadFromFile(sf::String("assets/fonts/space_invaders.ttf")))
         return EXIT_FAILURE;
     sf::Text text("Hello SFML", font, 50);
-    // Load a music to play
-    sf::Music music;
-    // if (!music.openFromFile("nice_music.ogg"))
-    //     return EXIT_FAILURE;
-    // // Play the music
-    // music.play();
 
     while (gWindow->isOpen()) {
         // Process events
@@ -123,11 +155,14 @@ int main()
         gWindow->draw(text);
 
         gWindow->display();
-        deltaTime = deltaClock.restart();
+
+        currentTime = clock.getElapsedTime();
+        fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds());
+        previousTime = currentTime;
+
+        deltaTime = 1.0f/fps*100.f;
+        // printf("fps = %f\n", (deltaTime));
     }
 
-    // fps = S2D_CreateText("assets/fonts/space_invaders.ttf", "Hello Space!", 20);
-    // gameInit();
-    // S2D_Show(gWindow);
     return 0;
 }

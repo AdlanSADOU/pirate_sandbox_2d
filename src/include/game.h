@@ -20,7 +20,7 @@
 
 // extern S2D_Window *gWindow;
 extern sf::RenderWindow *gWindow;
-extern sf::Time deltaTime;
+extern float deltaTime;
 extern Entity playerClass;
 
 extern float xAxis;
