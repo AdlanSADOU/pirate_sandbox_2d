@@ -4,10 +4,17 @@
 
 #include "game.h"
 
-typedef struct {
+class Particule {
+public:
     sf::FloatRect rect;
     sf::Color color;
-} Particule;
+    sf::VertexArray triangle;
+    bool dead = false;
+    
+    Particule() {
+        this->triangle = sf::VertexArray(sf::Triangles, 3);
+    }
+};
 
 void engineParticules(void);
 void renderParticules(std::vector<Particule *> Particules);
