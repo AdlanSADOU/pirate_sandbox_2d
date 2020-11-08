@@ -6,16 +6,16 @@
     // Parameterized Constructor
     Entity::Entity(const char *path)
     {
-        this->texture.loadFromFile(path);
-        this->sprite = sf::Sprite(this->texture);
-        // if (!sprite)
-        // {
-        //     printf("Sprite creation failed %d %s", __LINE__, __FILE__);
-        //     return;
-        // }
+        this->texture = new sf::Texture();
+        if (!this->texture->loadFromFile(path))
+        {
+            printf("Sprite creation failed %d %s", __LINE__, __FILE__);
+            return;
+        }
+        this->sprite = new sf::Sprite(*this->texture);
 
-        this->rect = this->sprite.getTextureRect();
-        this->position = this->sprite.getPosition();
+        this->rect = this->sprite->getTextureRect();
+        this->position = this->sprite->getPosition();
         
         this->center.x = this->position.x + (rect.width / 2.0f);
         this->center.y = this->position.y + (rect.height / 2.0f);
@@ -25,16 +25,16 @@
 
     void Entity::SetSprite(const char *path)
     {
-        this->texture.loadFromFile(path);
-        this->sprite = sf::Sprite(this->texture);
-        // if (!sprite)
-        // {
-        //     printf("Sprite creation failed %d %s", __LINE__, __FILE__);
-        //     return;
-        // }
+         this->texture = new sf::Texture();
+        if (!this->texture->loadFromFile(path))
+        {
+            printf("Sprite creation failed %d %s", __LINE__, __FILE__);
+            return;
+        }
+        this->sprite = new sf::Sprite(*this->texture);
 
-        this->rect = this->sprite.getTextureRect();
-        this->position = this->sprite.getPosition();
+        this->rect = this->sprite->getTextureRect();
+        this->position = this->sprite->getPosition();
 
         this->center.x = this->position.x + (rect.width / 2.0f);
         this->center.y = this->position.y + (rect.height / 2.0f);
@@ -42,14 +42,6 @@
         this->facing.y = this->position.y + (rect.height / 2.0f) - 50;
 
         this->sprite = sprite;
-    }
-
-    void Entity::SetSize(float width, float height)
-    {
-        // this->sprite.set = width;
-        // this->sprite->height = height;
-        // this->rect.width = width;
-        // this->rect.height = height;
     }
 
     // TODO(Lorentz): the rect needs to be rotated as well
@@ -65,13 +57,14 @@
         float dif_angle = angle_sprite - angle_direction;
 
         // S2D_RotateSprite(this->sprite, dif_angle, S2D_CENTER);
-        this->sprite.rotate(dif_angle);
+        // this->sprite->rotate(dif_angle);
     }
 
     void Entity::Move(float x, float y)
     {
         
-        this->sprite.move(sf::Vector2f(x, y));
+        this->sprite->move(sf::Vector2f(x, y));
+
 
         this->center.x = this->position.x + (rect.width / 2.0f);
         this->center.y = this->position.y + (rect.height / 2.0f);
@@ -81,7 +74,7 @@
 
     void Entity::SetPosition(sf::Vector2f pos)
     {
-        this->sprite.setPosition(pos);
+        this->sprite->setPosition(pos);
 
         this->position.x = pos.x;
         this->position.y = pos.y;
@@ -92,29 +85,12 @@
         this->facing.y = pos.y + (rect.height / 2.0f) - 50;
     }
 
-    /*
-     * Set a region of the Sprite to be visible
-     * if width or height extends the Sprite's width/height
-     * the Sprite will be repeated
-     */
-    // void Entity::SetClipRectangle(int x, int y, int width, int height)
-    // {
-    //     S2D_ClipSprite(this->sprite, x, y, width, height);
-    //     this->rect.height = height;
-    //     this->rect.width = width;
-    //     this->rect.x = this->sprite->x;
-    //     this->rect.y = this->sprite->y;
+    sf::Vector2f Entity::GetPos()
+    {
+        return this->sprite->getPosition();
+    }
 
-    //     this->position.x = this->sprite->x;
-    //     this->position.y = this->sprite->y;
-    // }
-
-    // S2D_Vec2f Entity::GetPos()
-    // {
-    //     return this->position;
-    // }
-
-    // S2D_FRect Entity::GetRect()
-    // {
-    //     return this->rect;
-    // }
+    sf::FloatRect Entity::GetRect()
+    {
+        return (sf::FloatRect)this->sprite->getTextureRect();
+    }

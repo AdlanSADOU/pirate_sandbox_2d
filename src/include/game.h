@@ -8,9 +8,9 @@
 
 // #include "simple2d.h"
 #include "entity.h"
-// #include "enemy.h"
-// #include "ammunition.h"
-// #include "particules.h"
+#include "enemy.h"
+#include "ammunition.h"
+#include "particules.h"
 
 #include <vector>
 
@@ -20,6 +20,8 @@
 
 // extern S2D_Window *gWindow;
 extern sf::RenderWindow *gWindow;
+extern sf::Time deltaTime;
+extern Entity playerClass;
 
 extern float xAxis;
 extern float yAxis;
@@ -34,5 +36,5 @@ typedef struct args
 void gameInit();
 void gameUpdate(update_args *args);
 void gameRender();
-Entity *getPlayer(void);
+Entity *getPlayer();
 void gameInput(sf::Event e);

@@ -3,6 +3,7 @@
 // S2D_Window *gWindow = NULL;
 
 sf::RenderWindow *gWindow = NULL;
+sf::Time deltaTime;
 
 // S2D_Text *fps;
 
@@ -10,24 +11,26 @@ float speed = 0.1f;
 
 void onKeyHeld(sf::Keyboard::Key key)
 {
+    printf("(%.2f, %.2f)\n", xAxis, yAxis);
+        printf("%f\n", deltaTime.asSeconds() * 1000);
     switch (key) {
-    case sf::Keyboard::W:
-        (yAxis) -=  speed;
+    case sf::Keyboard::Z:
+        (yAxis) -= deltaTime.asSeconds() * 1000 * speed;
         break;
-    case sf::Keyboard::A:
-        (xAxis) -=  speed;
+    case sf::Keyboard::Q:
+        (xAxis) -= deltaTime.asSeconds() * 1000 * speed;
         break;
     case sf::Keyboard::S :
-        (yAxis) +=  speed;
+        (yAxis) += deltaTime.asSeconds() * 1000 * speed;
         break;
     case sf::Keyboard::D:
-        (xAxis) +=  speed;
+        (xAxis) += deltaTime.asSeconds() * 1000 * speed;
         break;
     case sf::Keyboard::LShift:
         if (yAxis > -0.16 && yAxis < 0.01) yAxis = 0;
-        else (yAxis > 0) ? ((yAxis) -=  speed) : ((yAxis) +=  speed);
+        else (yAxis > 0) ? ((yAxis) -= deltaTime.asSeconds() * 1000 * speed) : ((yAxis) += deltaTime.asSeconds() * 1000 * speed);
         if (xAxis > -0.16 && xAxis < 0.01) xAxis = 0;
-        else (xAxis > 0) ? ((xAxis) -=  speed) : ((xAxis) +=  speed);
+        else (xAxis > 0) ? ((xAxis) -= deltaTime.asSeconds() * 1000 * speed) : ((xAxis) += deltaTime.asSeconds() * 1000 * speed);
         break;
     default:
         break;
@@ -40,7 +43,6 @@ void onKeyCallback(sf::Event e)
 
     gameInput(e);
  
-
     switch (e.type)
     {
     case sf::Event::EventType::KeyPressed:
@@ -78,17 +80,11 @@ void render()
 int main()
 {
     update_args u_args;
-    // gWindow = S2D_CreateWindow("Awesome Sample", 1920, 1080, update, render, S2D_RESIZABLE | S2D_HIGHDPI);
-    // gWindow->background = {.12f, .10f, .10f, 0.1f};
-    // gWindow->on_UpdateArgs = (&u_args);
-    // gWindow->viewport.mode = S2D_EXPAND;
-    // gWindow->on_key = onKeyCallback;
-    // gWindow->fps_cap = 60;
-    // gWindow->vsync = true;
-    //  1;
+    sf::Clock deltaClock;
+
     gWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
 
-    
+    gameInit();
     // Load a sprite to display
     const std::string str = "assets/background.jpg";
     sf::Texture texture;
@@ -106,29 +102,28 @@ int main()
     //     return EXIT_FAILURE;
     // // Play the music
     // music.play();
-    // Start the game loop
-    while (gWindow->isOpen())
-    {
+
+    while (gWindow->isOpen()) {
         // Process events
         sf::Event event;
-        while (gWindow->pollEvent(event))
-        {
+        while (gWindow->pollEvent(event)) {
             onKeyCallback(event);
-            // Close gWindow-> exit
+
             if (event.type == sf::Event::Closed)
                 gWindow->close();
         }
-        // Clear screen
+
         gWindow->clear();
-        // Draw the sprite
+
         gWindow->draw(sprite);
 
         update(&u_args);
         render();
-        // Draw the string
+
         gWindow->draw(text);
-        // Update the 
+
         gWindow->display();
+        deltaTime = deltaClock.restart();
     }
 
     // fps = S2D_CreateText("assets/fonts/space_invaders.ttf", "Hello Space!", 20);

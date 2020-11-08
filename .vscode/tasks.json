@@ -22,6 +22,9 @@
                 "src/*.cpp",
                 "src/game/*.cpp",
                 "src/entity/*.cpp",
+                "src/ammunition/*.cpp",
+                "src/enemy/*.cpp",
+                "src/particules/*.cpp",
 
                 "/I", "src/include/",
                 "/I", "vendor/SFML_x64/SFML-2.5.1/include",
@@ -29,9 +32,9 @@
                 "/link",
                 "/LIBPATH:vendor/SFML_x64/SFML-2.5.1/lib/",
                 // "winmm.lib", "flac.lib","freetype.lib", "ogg.lib", "openal32.lib",
-                "sfml-main.lib", 
+             
                 "sfml-window-d.lib", "sfml-system-d.lib", "sfml-graphics-d.lib", "sfml-audio-d.lib",
-                "kernel32.lib", "user32.lib", "gdi32.lib",
+                // "kernel32.lib", "user32.lib", "gdi32.lib",
                
                 "/SUBSYSTEM:CONSOLE"
             ],

@@ -2,6 +2,8 @@
 
 // #include "simple2d.h"
 #include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
+
 #ifndef M_PI
 #define M_PI    3.14159265358979323846264338327950288   /**< pi */
 #endif
@@ -17,8 +19,8 @@ private:
     // S2D_Vec2f center;
     // S2D_Vec2f facing;
 public:
-    sf::Texture texture;
-    sf::Sprite sprite;
+    sf::Texture *texture;
+    sf::Sprite *sprite;
     sf::IntRect rect;
     sf::Vector2f position;
     sf::Vector2f center;
@@ -37,6 +39,6 @@ public:
     void SetSprite(const char *path);
     void Move(float x, float y);
 
-    sf::Vector2f GetPos();
+    sf::Vector2f GetPos(void);
     sf::FloatRect GetRect();
 };
