@@ -18,7 +18,6 @@ Ammunition *create_ammo()
 void playerShoot()
 {
     Ammunitions.push_back(create_ammo());
-    printf("zae\n");
 }
 
 void renderShoot()

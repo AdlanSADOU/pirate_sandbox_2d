@@ -14,8 +14,6 @@ bool up, down, left, right = false;
 
 void onKeyHeld(sf::Keyboard::Key key)
 {
-    printf("(%.2f, %.2f)\n", xAxis, yAxis);
-        printf("%f\n", deltaTime);
     switch (key) {
     case sf::Keyboard::Z:
         up = true;
@@ -31,9 +29,9 @@ void onKeyHeld(sf::Keyboard::Key key)
         break;
     case sf::Keyboard::LShift:
         if (yAxis > -0.16 && yAxis < 0.01) yAxis = 0;
-        else (yAxis > 0) ? ((yAxis) -= deltaTime * speed) : ((yAxis) += deltaTime * speed);
+        else yAxis -= yAxis / 10;
         if (xAxis > -0.16 && xAxis < 0.01) xAxis = 0;
-        else (xAxis > 0) ? ((xAxis) -= deltaTime * speed) : ((xAxis) += deltaTime * speed);
+        else xAxis -= xAxis / 10;
         break;
     default:
         break;
@@ -55,12 +53,6 @@ void onKeyUp(sf::Keyboard::Key key)
         break;
     case sf::Keyboard::D:
         right = false;
-        break;
-    case sf::Keyboard::LShift:
-        if (yAxis > -0.16 && yAxis < 0.01) yAxis = 0;
-        else (yAxis > 0) ? ((yAxis) -= deltaTime * speed) : ((yAxis) += deltaTime * speed);
-        if (xAxis > -0.16 && xAxis < 0.01) xAxis = 0;
-        else (xAxis > 0) ? ((xAxis) -= deltaTime * speed) : ((xAxis) += deltaTime * speed);
         break;
     default:
         break;
@@ -95,10 +87,10 @@ void update(void *args)
 
     // S2D_SetText(fps, "FPS:  %.2f  -  deltaTime:  %.2f", gWindow->fps,)
 
-        if (up) (yAxis) -= deltaTime * speed, printf("(%.2f, %.2f)\n", xAxis, yAxis);
-        if (left) (xAxis) -= deltaTime * speed, printf("(%.2f, %.2f)\n", xAxis, yAxis);
-        if (down) (yAxis) += deltaTime * speed, printf("(%.2f, %.2f)\n", xAxis, yAxis);
-        if (right) (xAxis) += deltaTime * speed, printf("(%.2f, %.2f)\n", xAxis, yAxis);
+        if (up) yAxis -= deltaTime * speed;
+        if (left) xAxis -= deltaTime * speed;
+        if (down) yAxis += deltaTime * speed;
+        if (right) xAxis += deltaTime * speed;
 
     gameUpdate(a_args);
 }

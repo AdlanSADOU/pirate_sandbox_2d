@@ -16,8 +16,6 @@ void gameInput(sf::Event e)
     switch (e.type)
     {
     case sf::Event::EventType::KeyPressed:
-        if (e.key.code == sf::Keyboard::G)
-            enemy.MovePosition(1, 1);
         if (e.key.code == sf::Keyboard::Space)
             space = true;
         break;
@@ -33,7 +31,6 @@ void gameInput(sf::Event e)
 
 void gameInit()
 {
-    enemy = Enemy();
     playerClass = Entity("assets/PlayerRed_Frame_01_png_processed.png");
     playerClass.SetPosition({100,100});
 }
@@ -52,7 +49,6 @@ void gameRender()
 {
     engineParticules();
     gWindow->draw(*playerClass.sprite);
-    gWindow->draw(*enemy.entity.sprite);
     renderShoot();
 }
 

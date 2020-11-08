@@ -16,6 +16,7 @@
 
         this->rect = this->sprite->getTextureRect();
         this->position = this->sprite->getPosition();
+        this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
         
         this->center.x = this->position.x + (rect.width / 2.0f);
         this->center.y = this->position.y + (rect.height / 2.0f);
@@ -35,6 +36,7 @@
 
         this->rect = this->sprite->getTextureRect();
         this->position = this->sprite->getPosition();
+        this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
 
         this->center.x = this->position.x + (rect.width / 2.0f);
         this->center.y = this->position.y + (rect.height / 2.0f);
@@ -44,7 +46,6 @@
         this->sprite = sprite;
     }
 
-    // TODO(Lorentz): Fix Rotation
     void Entity::RotateSprite(float x, float y)
     {
         if (y > -0.16f && y < 0.01f && x > -0.16f && x < 0.01f)
@@ -56,8 +57,7 @@
         angle_sprite = angle_sprite * 180 / M_PI;
         float dif_angle = angle_sprite - angle_direction;
 
-        // S2D_RotateSprite(this->sprite, dif_angle, S2D_CENTER);
-        this->sprite->rotate(dif_angle);
+        this->sprite->setRotation(dif_angle);
     }
 
     void Entity::Move(float x, float y)
@@ -92,5 +92,5 @@
 
     sf::FloatRect Entity::GetRect()
     {
-        return (sf::FloatRect)this->sprite->getTextureRect();
+        return (sf::FloatRect)this->sprite->getGlobalBounds();
     }
