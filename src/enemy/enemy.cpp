@@ -10,7 +10,6 @@ sf::Vector2f GetRandomNormalizedVector()
     float randX = (-1.0f + float(rand() % 200 / 100.0f));
     float randY = (-1.0f + float(rand() % 200 / 100.0f));
 
-    printf("%f %f\n", randX, randY);
     return (sf::Vector2f(randX, randY));
 }
 

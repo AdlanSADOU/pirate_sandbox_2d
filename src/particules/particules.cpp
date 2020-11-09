@@ -16,10 +16,7 @@ Particule *createParticules(int offsetX, int offsetY, int size)
     sf::Vector2f playerBack = playerClass->behind;
     playerBack.x += offsetX;
     playerBack.y += offsetY;
-    sf::Uint8 r = 255;
-    sf::Uint8 g = 240;
-    sf::Uint8 b = 0;
-    sf::Uint8 a = 240;
+    sf::Uint8 r = 255, g = 240, b = 0, a = 240;
 
     part->direction = RotatePointAroundCenter(playerClass->behind_far, playerClass->position, (-0.6f + float(rand() % 120 / 100.0f)));
      float angle_direction = atan2((part->direction.y - playerClass->position.y),
@@ -61,19 +58,14 @@ void renderParticules()
     for (int i = 0; i < Particules.size(); i++) {
         gWindow->draw(Particules[i]->triangle);
 
-        Particules[i]->triangle[0].color.a -= 15;
-        Particules[i]->triangle[1].color.a -= 15;
-        Particules[i]->triangle[2].color.a -= 15;
-        Particules[i]->triangle[0].color.g -= 15;
-        Particules[i]->triangle[1].color.g -= 15;
-        Particules[i]->triangle[2].color.g -= 15;
-
-        Particules[i]->triangle[0].position.x += Particules[i]->direction.x * speed;
-        Particules[i]->triangle[0].position.y += Particules[i]->direction.y * speed;
-        Particules[i]->triangle[1].position.x += Particules[i]->direction.x * speed;
-        Particules[i]->triangle[1].position.y += Particules[i]->direction.y * speed;
-        Particules[i]->triangle[2].position.x += Particules[i]->direction.x * speed;
-        Particules[i]->triangle[2].position.y += Particules[i]->direction.y * speed;
+        for (int j = 0; j != 3; j++) {
+            Particules[i]->triangle[j].color.a -= 15;
+            Particules[i]->triangle[j].color.g -= 15;
+        }
+        for (int j = 0; j != 3; j++) {
+            Particules[i]->triangle[j].position.x += Particules[i]->direction.x * speed;
+            Particules[i]->triangle[j].position.y += Particules[i]->direction.y * speed;
+        }
 
         if (Particules[i]->triangle[0].color.a <= 0) {
             delete(Particules[i]);
