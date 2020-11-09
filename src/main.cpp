@@ -102,6 +102,8 @@ int main()
     sf::Time currentTime;
     sf::Time t_deltaTime;
 
+    int test = 0;
+
     gWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
     gWindow->setFramerateLimit(60);
 
