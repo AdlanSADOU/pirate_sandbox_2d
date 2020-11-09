@@ -25,6 +25,8 @@ public:
     sf::Vector2f position;
     sf::Vector2f facing;
     sf::Vector2f behind;
+    sf::Vector2f behind_far;
+    bool up = false, down = false, left = false, right = false, shift = false;
     float angle;
 
 
@@ -45,3 +47,5 @@ public:
     sf::Vector2f GetDirection(void);
     sf::FloatRect GetRect();
 };
+
+sf::Vector2f RotatePointAroundCenter(sf::Vector2f point, sf::Vector2f center, float angle_rad);
