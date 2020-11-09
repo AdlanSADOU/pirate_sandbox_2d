@@ -15,13 +15,13 @@
         this->sprite = new sf::Sprite(*this->texture);
 
         this->rect = this->sprite->getTextureRect();
-        this->position = this->sprite->getPosition();
         this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
-        
-        this->center.x = this->position.x + (rect.width / 2.0f);
-        this->center.y = this->position.y + (rect.height / 2.0f);
-        this->facing.x = this->position.x + (rect.width / 2.0f);
-        this->facing.y = this->position.y + (rect.height / 2.0f) - 50;
+        this->position = this->sprite->getPosition();
+
+        this->facing.x = this->position.x;
+        this->facing.y = this->position.y + 30;
+
+        this->angle = 0;
     }
 
     void Entity::SetSprite(const char *path)
@@ -35,15 +35,14 @@
         this->sprite = new sf::Sprite(*this->texture);
 
         this->rect = this->sprite->getTextureRect();
-        this->position = this->sprite->getPosition();
         this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
+        this->position = this->sprite->getPosition();
 
-        this->center.x = this->position.x + (rect.width / 2.0f);
-        this->center.y = this->position.y + (rect.height / 2.0f);
-        this->facing.x = this->position.x + (rect.width / 2.0f);
-        this->facing.y = this->position.y + (rect.height / 2.0f) - 50;
+        this->facing.x = this->position.x;
+        this->facing.y = this->position.y + 30;
 
         this->sprite = sprite;
+        this->angle = 0;
     }
 
     void Entity::RotateSprite(float x, float y)
@@ -51,38 +50,33 @@
         if (y > -0.16f && y < 0.01f && x > -0.16f && x < 0.01f)
             return;
 
-        float angle_direction = atan2((this->center.y + y) - (this->center.y), (this->center.x - x) - (this->center.x));
-        float angle_sprite = atan2((this->facing.y) - (this->center.y), (this->facing.x) - (this->center.x));
+        float angle_direction = atan2((this->position.y + y) - (this->position.y), (this->position.x - x) - (this->position.x));
+        float angle_sprite = atan2((this->facing.y) - (this->position.y), (this->facing.x) - (this->position.x));
         angle_direction = angle_direction * 180 / M_PI;
         angle_sprite = angle_sprite * 180 / M_PI;
-        float dif_angle = angle_sprite - angle_direction;
+        float dif_angle = angle_sprite - angle_direction + 180;
 
+        printf("%f\n", dif_angle);
         this->sprite->setRotation(dif_angle);
     }
 
     void Entity::Move(float x, float y)
     {
-        
+        //return;
         this->sprite->move(sf::Vector2f(x, y));
+        this->position = this->GetPos();
 
-
-        this->center.x = this->position.x + (rect.width / 2.0f);
-        this->center.y = this->position.y + (rect.height / 2.0f);
-        this->facing.x = this->position.x + (rect.width / 2.0f);
-        this->facing.y = this->position.y + (rect.height / 2.0f) - 50;
+        this->facing.x = this->position.x;
+        this->facing.y = this->position.y + 30;
     }
 
     void Entity::SetPosition(sf::Vector2f pos)
     {
         this->sprite->setPosition(pos);
+        this->position = this->GetPos();
 
-        this->position.x = pos.x;
-        this->position.y = pos.y;
-
-        this->center.x = pos.x + (rect.width / 2.0f);
-        this->center.y = pos.y + (rect.height / 2.0f);
-        this->facing.x = pos.x + (rect.width / 2.0f);
-        this->facing.y = pos.y + (rect.height / 2.0f) - 50;
+        this->facing.x = pos.x;
+        this->facing.y = pos.y + 30;
     }
 
     sf::Vector2f Entity::GetPos()

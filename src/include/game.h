@@ -34,7 +34,7 @@ typedef struct args
 
 // Game
 void gameInit();
-void gameUpdate(update_args *args);
+void gameUpdate();
 void gameRender();
 Entity *getPlayer();
 void gameInput(sf::Event e);

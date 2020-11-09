@@ -29,9 +29,9 @@ void onKeyHeld(sf::Keyboard::Key key)
         break;
     case sf::Keyboard::LShift:
         if (yAxis > -0.16 && yAxis < 0.01) yAxis = 0;
-        else yAxis -= yAxis / 10;
+        else yAxis -= yAxis / 10 * deltaTime;
         if (xAxis > -0.16 && xAxis < 0.01) xAxis = 0;
-        else xAxis -= xAxis / 10;
+        else xAxis -= xAxis / 10 * deltaTime;
         break;
     default:
         break;
@@ -81,18 +81,14 @@ void onKeyCallback(sf::Event e)
     }
 }
 
-void update(void *args)
+void update()
 {
-    update_args *a_args = (update_args *)(args);
-
-    // S2D_SetText(fps, "FPS:  %.2f  -  deltaTime:  %.2f", gWindow->fps,)
-
         if (up) yAxis -= deltaTime * speed;
         if (left) xAxis -= deltaTime * speed;
         if (down) yAxis += deltaTime * speed;
         if (right) xAxis += deltaTime * speed;
 
-    gameUpdate(a_args);
+    gameUpdate();
 }
 
 void render()
@@ -104,7 +100,6 @@ void render()
 
 int main()
 {
-    update_args u_args;
     sf::Clock deltaClock;
 
     sf::Clock clock = sf::Clock::Clock();
@@ -122,11 +117,6 @@ int main()
         return EXIT_FAILURE;
     sf::Sprite sprite(texture);
 
-    sf::Font font;
-    if (!font.loadFromFile(sf::String("assets/fonts/space_invaders.ttf")))
-        return EXIT_FAILURE;
-    sf::Text text("Hello SFML", font, 50);
-
     while (gWindow->isOpen()) {
         // Process events
         sf::Event event;
@@ -141,10 +131,8 @@ int main()
 
         gWindow->draw(sprite);
 
-        update(&u_args);
+        update();
         render();
-
-        gWindow->draw(text);
 
         gWindow->display();
 
@@ -152,7 +140,7 @@ int main()
         fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds());
         previousTime = currentTime;
 
-        deltaTime = 1.0f/fps*100.f;
+        deltaTime = 1.0f / fps * 100.0f;
         // printf("fps = %f\n", (deltaTime));
     }
 

@@ -23,8 +23,8 @@ public:
     sf::Sprite *sprite;
     sf::IntRect rect;
     sf::Vector2f position;
-    sf::Vector2f center;
     sf::Vector2f facing;
+    float angle;
 
 
     // Default Constructor
