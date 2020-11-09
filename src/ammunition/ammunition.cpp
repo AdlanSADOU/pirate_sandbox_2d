@@ -1,12 +1,13 @@
 #include "ammunition.h"
 
-std::vector<Ammunition *> Ammunitions;
+std::vector<AmmunitionType *> Ammunitions;
+sf::Clock ROFClock;
 
-Ammunition *CreateAmmo()
+AmmunitionType *CreateAmmo()
 {
     Entity *playerClass = getPlayer();
 
-    Ammunition *ammo = (Ammunition *)malloc(sizeof(Ammunition));
+    AmmunitionType *ammo = (AmmunitionType *)malloc(sizeof(AmmunitionType));
     ammo->speed = 5.0f + sqrt((xAxis * xAxis) + (yAxis * yAxis));
     ammo->direction = sf::Vector2f(cos(playerClass->angle * M_PI / 180), sin(playerClass->angle * M_PI / 180));
     ammo->entity = new Entity("assets/256px/Laser_Large_png_processed.png");
@@ -19,10 +20,15 @@ Ammunition *CreateAmmo()
 
 void playerShoot()
 {
-    Ammunitions.push_back(CreateAmmo());
+    sf::Time shootingTime = ROFClock.getElapsedTime();
+
+    if (shootingTime.asSeconds() > ROF_GREEN_LASER) {
+        Ammunitions.push_back(CreateAmmo());
+        ROFClock.restart();
+    }
 }
 
-void UpdatePosition(Ammunition *ammo)
+void UpdatePosition(AmmunitionType *ammo)
 {
     sf::Time time = ammo->clock.getElapsedTime();
 
@@ -33,7 +39,7 @@ void UpdatePosition(Ammunition *ammo)
     }
 }
 
-void UpdateShoot(Ammunition *ammo)
+void UpdateShoot(AmmunitionType *ammo)
 {
     UpdatePosition(ammo);
 }

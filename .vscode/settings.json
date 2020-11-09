@@ -53,7 +53,8 @@
         "xlocnum": "cpp",
         "xloctime": "cpp",
         "xstring": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "atomic": "cpp"
     },
     "cmake.configureOnOpen": false
 }

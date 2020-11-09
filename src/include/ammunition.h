@@ -4,6 +4,8 @@
 
 #include "game.h"
 
+#define ROF_GREEN_LASER (0.3)
+
 typedef struct {
     Entity *entity;
     sf::FloatRect rect;
@@ -12,7 +14,11 @@ typedef struct {
     sf::Vector2f direction;
     sf::Clock clock;
     float speed;
-} Ammunition;
+} AmmunitionType;
+
+typedef struct {
+    float speed;
+} Gun;
 
 Entity *getPlayer(void);
 void playerShoot(void);
