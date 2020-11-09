@@ -35,9 +35,9 @@ void pushPart()
     //} else if (gWindow->elapsed_ms - time > 10) {
     for (int i = 0, value = 15; i != 6; i++) {
         Particules.push_back(createParticules(rand() % value, rand() % value));
-        Particules.push_back(createParticules(rand() % -value, rand() % -value));
-        Particules.push_back(createParticules(rand() % value, rand() % -value));
-        Particules.push_back(createParticules(rand() % -value, rand() % value));
+        Particules.push_back(createParticules(-(rand() % value), -(rand() % value)));
+        Particules.push_back(createParticules(rand() % value, -(rand() % value)));
+        Particules.push_back(createParticules(-(rand() % value), rand() % value));
         Particules.push_back(createParticules(-(rand() % value), 0));
         Particules.push_back(createParticules(rand() % value, 0));
         Particules.push_back(createParticules(0, rand() % value));
