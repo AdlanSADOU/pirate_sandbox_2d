@@ -24,6 +24,7 @@ public:
     sf::IntRect rect;
     sf::Vector2f position;
     sf::Vector2f facing;
+    sf::Vector2f behind;
     float angle;
 
 

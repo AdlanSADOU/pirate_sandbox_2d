@@ -19,7 +19,9 @@
         this->position = this->sprite->getPosition();
 
         this->facing.x = this->position.x;
-        this->facing.y = this->position.y + 30;
+        this->facing.y = this->position.y - 30;
+        this->behind.x = this->position.x;
+        this->behind.y = this->position.y + 30;
 
         this->angle = 0;
     }
@@ -39,7 +41,9 @@
         this->position = this->sprite->getPosition();
 
         this->facing.x = this->position.x;
-        this->facing.y = this->position.y + 30;
+        this->facing.y = this->position.y - 30;
+        this->behind.x = this->position.x;
+        this->behind.y = this->position.y + 30;
 
         this->sprite = sprite;
         this->angle = 0;
@@ -50,14 +54,29 @@
         if (y > -0.16f && y < 0.01f && x > -0.16f && x < 0.01f)
             return;
 
-        float angle_direction = atan2((this->position.y + y) - (this->position.y), (this->position.x - x) - (this->position.x));
-        float angle_sprite = atan2((this->facing.y) - (this->position.y), (this->facing.x) - (this->position.x));
-        angle_direction = angle_direction * 180 / M_PI;
-        angle_sprite = angle_sprite * 180 / M_PI;
-        float dif_angle = angle_sprite - angle_direction + 180;
+        float angle_direction = atan2((this->position.y - y) - (this->position.y), (this->position.x - x) - (this->position.x));
+        angle_direction = angle_direction * 180 / M_PI - 90;
 
-        printf("%f\n", dif_angle);
-        this->sprite->setRotation(dif_angle);
+        float s = sin(angle_direction * M_PI / 180);
+        float c = cos(angle_direction * M_PI / 180);
+        // translate point back to origin:
+        this->facing.x -= this->position.x;
+        this->facing.y -= this->position.y;
+        this->behind.x -= this->position.x;
+        this->behind.y -= this->position.y;
+        // rotate point
+        float xnew1 = this->facing.x * c - this->facing.y * s;
+        float ynew1 = this->facing.x * s + this->facing.y * c;
+        float xnew2 = this->behind.x * c - this->behind.y * s;
+        float ynew2 = this->behind.x * s + this->behind.y * c;
+        // translate point back:
+        this->facing.x = xnew1 + this->position.x;
+        this->facing.y = ynew1 + this->position.y;
+        this->behind.x = xnew2 + this->position.x;
+        this->behind.y = ynew2 + this->position.y;
+    
+        this->angle = angle_direction;
+        this->sprite->setRotation(this->angle);
     }
 
     void Entity::Move(float x, float y)
@@ -67,7 +86,9 @@
         this->position = this->GetPos();
 
         this->facing.x = this->position.x;
-        this->facing.y = this->position.y + 30;
+        this->facing.y = this->position.y - 30;
+        this->behind.x = this->position.x;
+        this->behind.y = this->position.y + 30;
     }
 
     void Entity::SetPosition(sf::Vector2f pos)
@@ -75,8 +96,10 @@
         this->sprite->setPosition(pos);
         this->position = this->GetPos();
 
-        this->facing.x = pos.x;
-        this->facing.y = pos.y + 30;
+        this->facing.x = this->position.x;
+        this->facing.y = this->position.y - 30;
+        this->behind.x = this->position.x;
+        this->behind.y = this->position.y + 30;
     }
 
     sf::Vector2f Entity::GetPos()

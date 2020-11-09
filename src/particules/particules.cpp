@@ -48,8 +48,10 @@ void renderParticules()
         Particules[i]->triangle[1].color.g -= 11;
         Particules[i]->triangle[2].color.g -= 11;
 
-        if (Particules[i]->triangle[0].color.a <= 0)
+        if (Particules[i]->triangle[0].color.a <= 0) {
+            delete(Particules[i]);
             Particules.erase(Particules.begin() + i);
+        }
     }
 
 }

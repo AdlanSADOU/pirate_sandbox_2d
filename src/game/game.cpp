@@ -63,21 +63,23 @@ void gameUpdate()
     cameraMove();
 }
 
+void posDebug(sf::Vector2f pos)
+{
+    sf::CircleShape dot = sf::CircleShape();
+    dot.setPosition({pos.x - 2, pos.y - 2});
+    dot.setFillColor(sf::Color::White);
+    dot.setRadius(4.0f);
+    gWindow->draw(dot);
+}
+
 void gameRender()
 {
     engineParticules();
     gWindow->draw(*playerClass.sprite);
     renderShoot();
-    sf::CircleShape fion = sf::CircleShape();
-    fion.setPosition({playerClass.facing.x - 2, playerClass.facing.y - 2});
-    fion.setFillColor(sf::Color::White);
-    fion.setRadius(4.0f);
-    sf::CircleShape fiak = sf::CircleShape();
-    fiak.setPosition({playerClass.position.x - 2, playerClass.position.y - 2});
-    fiak.setFillColor(sf::Color::White);
-    fiak.setRadius(4.0f);
-    gWindow->draw(fion);
-    gWindow->draw(fiak);
+    posDebug(playerClass.facing);
+    posDebug(playerClass.position);
+    posDebug(playerClass.behind);
 }
 
 Entity *getPlayer()
