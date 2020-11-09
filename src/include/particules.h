@@ -16,6 +16,6 @@ public:
     }
 };
 
-void engineParticules(void);
-void renderParticules(std::vector<Particule *> Particules);
+void renderParticules();
 void pushPart(void);
+float vector_normalize(sf::Vector2f vector);

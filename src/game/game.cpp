@@ -12,7 +12,6 @@ bool space = false;
 
 void gameInput(sf::Event e)
 {
-
     switch (e.type)
     {
     case sf::Event::EventType::KeyPressed:
@@ -74,7 +73,7 @@ void posDebug(sf::Vector2f pos)
 
 void gameRender()
 {
-    engineParticules();
+    renderParticules();
     RenderShoot();
     gWindow->draw(*playerClass.sprite);
     /*posDebug(playerClass.facing);
@@ -85,4 +84,24 @@ void gameRender()
 Entity *getPlayer()
 {
     return (&playerClass);
+}
+
+sf::Vector2f RotatePointAroundCenter(sf::Vector2f point, sf::Vector2f center, float angle_rad)
+{
+    float sin_val = sin(angle_rad);
+    float cos_val = cos(angle_rad);
+
+    // translate point back to origin:
+    point.x -= center.x;
+    point.y -= center.y;
+
+    // rotate point
+    float xnew = point.x * cos_val - point.y * sin_val;
+    float ynew = point.x * sin_val + point.y * cos_val;
+
+    // translate point back:
+    point.x = xnew + center.x;
+    point.y = ynew + center.y;
+
+    return (point);
 }

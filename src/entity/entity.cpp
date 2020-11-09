@@ -1,5 +1,9 @@
 #include "entity.h"
 
+int behind_offset = 25;
+int behind_far_offset = 200;
+int facing_offset = 100;
+
     Entity::Entity()
     {}
 
@@ -18,10 +22,9 @@
         this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
         this->position = this->sprite->getPosition();
 
-        this->facing.x = this->position.x;
-        this->facing.y = this->position.y - 100;
-        this->behind.x = this->position.x;
-        this->behind.y = this->position.y + 25;
+        this->facing = sf::Vector2f(this->position.x, this->position.y - facing_offset);
+        this->behind = sf::Vector2f(this->position.x, this->position.y + behind_offset);
+        this->behind_far = sf::Vector2f(this->behind.x, this->behind.y + behind_far_offset);
 
         this->angle = 0;
     }
@@ -40,10 +43,9 @@
         this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
         this->position = this->sprite->getPosition();
 
-        this->facing.x = this->position.x;
-        this->facing.y = this->position.y - 100;
-        this->behind.x = this->position.x;
-        this->behind.y = this->position.y + 25;
+        this->facing = sf::Vector2f(this->position.x, this->position.y - facing_offset);
+        this->behind = sf::Vector2f(this->position.x, this->position.y + behind_offset);
+        this->behind_far = sf::Vector2f(this->behind.x, this->behind.y + behind_far_offset);
 
         this->sprite = sprite;
         this->angle = 0;
@@ -58,42 +60,31 @@
 
     void Entity::RotateSprite(float x, float y)
     {
+        if (x == 0.0f && y == 0.0f)
+            return;
+
         float angle_direction = atan2((this->position.y - y) - (this->position.y), (this->position.x - x) - (this->position.x));
         float save_angle = angle_direction * 180 / M_PI;
+        
         angle_direction = angle_direction * 180 / M_PI - 90;
-
-        float s = sin(angle_direction * M_PI / 180);
-        float c = cos(angle_direction * M_PI / 180);
-        // translate point back to origin:
-        this->facing.x -= this->position.x;
-        this->facing.y -= this->position.y;
-        this->behind.x -= this->position.x;
-        this->behind.y -= this->position.y;
-        // rotate point
-        float xnew1 = this->facing.x * c - this->facing.y * s;
-        float ynew1 = this->facing.x * s + this->facing.y * c;
-        float xnew2 = this->behind.x * c - this->behind.y * s;
-        float ynew2 = this->behind.x * s + this->behind.y * c;
-        // translate point back:
-        this->facing.x = xnew1 + this->position.x;
-        this->facing.y = ynew1 + this->position.y;
-        this->behind.x = xnew2 + this->position.x;
-        this->behind.y = ynew2 + this->position.y;
-    
+        this->facing = RotatePointAroundCenter(this->facing, this->position, angle_direction * M_PI / 180);
+        this->behind = RotatePointAroundCenter(this->behind, this->position, angle_direction * M_PI / 180);
+        this->behind_far = RotatePointAroundCenter(this->behind_far, this->position, angle_direction * M_PI / 180);
         this->angle = save_angle + 180;
+
+        if (this->shift == 1 && this->right == 0 && this->left == 0 && this->up == 0 && this->down == 0)
+            return;
         this->sprite->setRotation(angle_direction);
     }
 
     void Entity::Move(float x, float y)
     {
-        //return;
         this->sprite->move(sf::Vector2f(x, y));
         this->position = this->GetPos();
 
-        this->facing.x = this->position.x;
-        this->facing.y = this->position.y - 100;
-        this->behind.x = this->position.x;
-        this->behind.y = this->position.y + 25;
+        this->facing = sf::Vector2f(this->position.x, this->position.y - facing_offset);
+        this->behind = sf::Vector2f(this->position.x, this->position.y + behind_offset);
+        this->behind_far = sf::Vector2f(this->behind.x, this->behind.y + behind_far_offset);
     }
 
     void Entity::SetPosition(sf::Vector2f pos)
@@ -101,10 +92,9 @@
         this->sprite->setPosition(pos);
         this->position = this->GetPos();
 
-        this->facing.x = this->position.x;
-        this->facing.y = this->position.y - 100;
-        this->behind.x = this->position.x;
-        this->behind.y = this->position.y + 25;
+        this->facing = sf::Vector2f(this->position.x, this->position.y - facing_offset);
+        this->behind = sf::Vector2f(this->position.x, this->position.y + behind_offset);
+        this->behind_far = sf::Vector2f(this->behind.x, this->behind.y + behind_far_offset);
     }
 
     sf::Vector2f Entity::GetDirection()
