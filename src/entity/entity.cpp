@@ -51,10 +51,8 @@
 
     void Entity::RotateSprite(float x, float y)
     {
-        if (y > -0.16f && y < 0.01f && x > -0.16f && x < 0.01f)
-            return;
-
         float angle_direction = atan2((this->position.y - y) - (this->position.y), (this->position.x - x) - (this->position.x));
+        float save_angle = angle_direction * 180 / M_PI;
         angle_direction = angle_direction * 180 / M_PI - 90;
 
         float s = sin(angle_direction * M_PI / 180);
@@ -75,8 +73,8 @@
         this->behind.x = xnew2 + this->position.x;
         this->behind.y = ynew2 + this->position.y;
     
-        this->angle = angle_direction;
-        this->sprite->setRotation(this->angle);
+        this->angle = save_angle + 180;
+        this->sprite->setRotation(angle_direction);
     }
 
     void Entity::Move(float x, float y)
@@ -104,7 +102,7 @@
 
     sf::Vector2f Entity::GetDirection()
     {
-        return (sf::Vector2f(0, 0)); //TODO : return the futur direction.
+        return (this->facing);
     }
 
     sf::Vector2f Entity::GetPos()

@@ -41,6 +41,6 @@ public:
     void Move(float x, float y);
 
     sf::Vector2f GetPos(void);
-    sf::Vector2f GetDirection(void); //TODO : Implement the return function of direction.
+    sf::Vector2f GetDirection(void);
     sf::FloatRect GetRect();
 };

@@ -2,18 +2,28 @@
 
 std::vector<Ammunition *> Ammunitions;
 
+sf::Vector2f ShootVector(sf::Vector2f posCenter, sf::Vector2f posFacing, float speed)
+{
+    float vx = posFacing.x - posCenter.x;
+    float vy = posFacing.y - posCenter.y;
+    float normalise = sqrt(pow(vx, 2) + pow(vy, 2));
+    posCenter.x = posCenter.x + (speed * (vx / normalise));
+    posCenter.y = posCenter.y + (speed * (vy / normalise));
+    return (posCenter);
+}
+
 Ammunition *CreateAmmo()
 {
     Entity *playerClass = getPlayer();
 
     Ammunition *ammo = (Ammunition *)malloc(sizeof(Ammunition));
-
-    ammo->direction = sf::Vector2f{xAxis, yAxis};
+    ammo->speed = 5.0f + sqrt((xAxis * xAxis) + (yAxis * yAxis));
+    ammo->direction = sf::Vector2f(cos(playerClass->angle * M_PI / 180), sin(playerClass->angle * M_PI / 180));
+    printf("%f %f\n", ammo->direction.x, ammo->direction.y);
     ammo->entity = new Entity("assets/256px/Laser_Large_png_processed.png");
     ammo->entity->SetPosition(playerClass->GetPos());
     ammo->position = playerClass->GetPos();
     ammo->clock.restart();
-    ammo->speed = 3.5;
 
     return (ammo);
 }
@@ -27,7 +37,7 @@ void UpdatePosition(Ammunition *ammo)
 {
     sf::Time time = ammo->clock.getElapsedTime();
 
-    if (time.asSeconds() > 0.01) {
+    if (time.asSeconds() > 0.01f) {
         ammo->entity->RotateSprite(ammo->direction.x, ammo->direction.y);
         ammo->entity->Move(ammo->direction.x * ammo->speed, ammo->direction.y * ammo->speed);
         ammo->clock.restart();
