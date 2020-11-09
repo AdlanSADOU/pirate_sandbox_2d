@@ -8,6 +8,7 @@ class Particule {
 public:
     sf::Color color;
     sf::VertexArray triangle;
+    sf::Vector2f direction;
     bool dead = false;
     
     Particule() {
