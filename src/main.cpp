@@ -1,101 +1,149 @@
+
 #include "game.h"
+// S2D_Window *gWindow = NULL;
 
-S2D_Window *gWindow = NULL;
-S2D_Text *fps;
+sf::RenderWindow *gWindow = NULL;
 
+// S2D_Text *fps;
+
+float deltaTime;
+float fps;
 float speed = 0.1f;
 
-void onKeyHeld(SDL_Keycode key)
+bool up, down, left, right = false;
+
+void onKeyHeld(sf::Keyboard::Key key)
 {
     switch (key) {
-    case SDLK_w:
-        (yAxis) -= gWindow->deltaTime * speed;
+    case sf::Keyboard::Z:
+        up = true;
         break;
-    case SDLK_a:
-        (xAxis) -= gWindow->deltaTime * speed;
+    case sf::Keyboard::Q:
+        left = true;
         break;
-    case SDLK_s:
-        (yAxis) += gWindow->deltaTime * speed;
+    case sf::Keyboard::S :
+        down = true;
         break;
-    case SDLK_d:
-        (xAxis) += gWindow->deltaTime * speed;
+    case sf::Keyboard::D:
+        right = true;
         break;
-    case SDLK_SPACE:
-        if (yAxis > -0.16f && yAxis < 0.01f) yAxis = 0;
-        ((yAxis) -= yAxis / 20);
-        if (xAxis > -0.16f && xAxis < 0.01f) xAxis = 0;
-        ((xAxis) -= xAxis / 20);
+    case sf::Keyboard::LShift:
+        if (yAxis > -0.16 && yAxis < 0.01) yAxis = 0;
+        else yAxis -= yAxis / 10 * deltaTime;
+        if (xAxis > -0.16 && xAxis < 0.01) xAxis = 0;
+        else xAxis -= xAxis / 10 * deltaTime;
         break;
     default:
         break;
     }
 }
 
-void onKeyUp(SDL_Keycode key)
+void onKeyUp(sf::Keyboard::Key key)
 {
 
+    switch (key) {
+    case sf::Keyboard::Z:
+        up = false;
+        break;
+    case sf::Keyboard::Q:
+        left = false;
+        break;
+    case sf::Keyboard::S :
+        down = false;
+        break;
+    case sf::Keyboard::D:
+        right = false;
+        break;
+    default:
+        break;
+    }
 }
 
-void onKeyDown(SDL_Keycode key)
+void onKeyCallback(sf::Event e)
 {
 
-}
-
-void onKeyCallback(S2D_Event e)
-{
-    SDL_Keycode key = SDL_GetKeyFromName(e.key);
-
+    int maisquelfion = 1;
+    
     gameInput(e);
-
+ 
     switch (e.type)
     {
-    case S2D_KEY_UP:
-        key == SDLK_ESCAPE ? S2D_Close(gWindow) : 0;
-        onKeyUp(key);
+    case sf::Event::EventType::KeyPressed:
+        if (e.key.code == sf::Keyboard::Escape)
+            gWindow->close();
+        onKeyHeld(e.key.code);
         break;
 
-    case S2D_KEY_HELD:
-        onKeyHeld(key);
-        break;
-
-    case S2D_KEY_DOWN:
-        onKeyDown(key);
+    case sf::Event::EventType::KeyReleased:
+        onKeyUp(e.key.code);
         break;
     default:
         break;
     }
 }
 
-void update(void *args)
+void update()
 {
-    update_args *a_args = (update_args *)(args);
+        if (up) yAxis -= deltaTime * speed;
+        if (left) xAxis -= deltaTime * speed;
+        if (down) yAxis += deltaTime * speed;
+        if (right) xAxis += deltaTime * speed;
 
-    S2D_SetText(fps, "FPS:  %.2f  -  deltaTime:  %.2f", gWindow->fps, gWindow->deltaTime);
-
-    gameUpdate(a_args);
+    gameUpdate();
 }
 
 void render()
 {
     gameRender();
-    S2D_DrawText(fps);
+    // S2D_DrawText(fps);
 }
 
-int main(int argc, char *argv[])
-{
-    update_args u_args;
-    gWindow = S2D_CreateWindow("Awesome Sample", 1920, 1080, update, render, S2D_RESIZABLE | S2D_HIGHDPI);
-    gWindow->background = {.12f, .10f, .10f, 0.1f};
-    gWindow->on_UpdateArgs = (&u_args);
-    gWindow->viewport.mode = S2D_EXPAND;
-    gWindow->on_key = onKeyCallback;
-    gWindow->fps_cap = 60;
-    gWindow->vsync = true;
-    gWindow->deltaTime = 1;
 
-    fps = S2D_CreateText("assets/fonts/space_invaders.ttf", "Hello Space!", 20);
+int main()
+{
+    sf::Clock deltaClock;
+
+    sf::Clock clock = sf::Clock::Clock();
+    sf::Time previousTime = clock.getElapsedTime();
+    sf::Time currentTime;
+
+    gWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
+    gWindow->setFramerateLimit(60);
+
     gameInit();
 
-    S2D_Show(gWindow);
+    const std::string str = "assets/background.jpg";
+    sf::Texture texture;
+    if (!texture.loadFromFile(str))
+        return EXIT_FAILURE;
+    sf::Sprite sprite(texture);
+
+    while (gWindow->isOpen()) {
+        // Process events
+        sf::Event event;
+        while (gWindow->pollEvent(event)) {
+            onKeyCallback(event);
+
+            if (event.type == sf::Event::Closed)
+                gWindow->close();
+        }
+
+        gWindow->clear();
+
+        gWindow->draw(sprite);
+
+        update();
+        render();
+
+        gWindow->display();
+
+        currentTime = clock.getElapsedTime();
+        fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds());
+        previousTime = currentTime;
+
+        deltaTime = 1.0f / fps * 100.0f;
+        // printf("fps = %f\n", (deltaTime));
+    }
+
     return 0;
 }

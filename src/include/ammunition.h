@@ -5,12 +5,15 @@
 #include "game.h"
 
 typedef struct {
-    Entity *sprite;
-    S2D_FRect rect;
-    S2D_Vec2f position;
-    S2D_Sound sound;
+    Entity *entity;
+    sf::FloatRect rect;
+    sf::Vector2f position;
+    sf::Sound sound;
+    sf::Vector2f direction;
+    sf::Clock clock;
+    float speed;
 } Ammunition;
 
 Entity *getPlayer(void);
 void playerShoot(void);
-void renderShoot(void);
+void RenderShoot(void);

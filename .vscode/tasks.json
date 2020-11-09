@@ -9,29 +9,33 @@
             "label": "MSVC++: x64 Debug Build",
             "command": "cl.exe",
             "args": [
+                "/DEBUG",
                 "/Zi",
+                "/Od",
                 "/EHsc",
                 "/std:c++latest",
+                "/MTd",
+                
                 "/Fe:",
                 "${workspaceFolder}/build/x64_Debug/sample.exe",
 
                 "src/*.cpp",
-                "src/enemy/*.cpp",
-                "src/entity/*.cpp",
                 "src/game/*.cpp",
+                "src/entity/*.cpp",
                 "src/ammunition/*.cpp",
+                "src/enemy/*.cpp",
                 "src/particules/*.cpp",
 
-                "/I",
-                "simple2d/include",
-                "/I",
-                "src/include/",
-                "/I",
-                "simple2d/deps/headers",
+                "/I", "src/include/",
+                "/I", "vendor/SFML_x64/SFML-2.5.1/include",
+                
                 "/link",
-                "/LIBPATH",
-                "opengl32.lib", "glu32.lib",
-                "simple2d/build/simple2d.lib",
+                "/LIBPATH:vendor/SFML_x64/SFML-2.5.1/lib/",
+                // "winmm.lib", "flac.lib","freetype.lib", "ogg.lib", "openal32.lib",
+             
+                "sfml-window-d.lib", "sfml-system-d.lib", "sfml-graphics-d.lib", "sfml-audio-d.lib",
+                // "kernel32.lib", "user32.lib", "gdi32.lib",
+               
                 "/SUBSYSTEM:CONSOLE"
             ],
             "options": {

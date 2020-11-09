@@ -4,26 +4,26 @@
 Entity playerClass;
 Enemy enemy;
 
-S2D_Sprite *background = NULL;
+sf::Sprite background;
 float xAxis;
 float yAxis;
 
-void gameInput(S2D_Event e)
-{
-    SDL_Keycode key = SDL_GetKeyFromName(e.key);
-    
+bool space = false;
 
+void gameInput(sf::Event e)
+{
 
     switch (e.type)
     {
-    case S2D_KEY_HELD:
-        if (key == SDLK_g)
-            enemy.MovePosition(1, 1);
-        if (key == SDLK_x)
-            playerShoot();
+    case sf::Event::EventType::KeyPressed:
+        if (e.key.code == sf::Keyboard::Space)
+            space = true;
+        break;
+    case sf::Event::EventType::KeyReleased:
+        if (e.key.code == sf::Keyboard::Space)
+            space = false;
         break;
 
-    
     default:
         break;
     }
@@ -31,32 +31,58 @@ void gameInput(S2D_Event e)
 
 void gameInit()
 {
-    background = S2D_CreateSprite("assets/background.jpg");
-    background->width = 3840;
-    background->height = 2160;
+    playerClass = Entity("assets/PlayerRed_Frame_01_png_processed.png");
+    playerClass.SetPosition({3840 / 2, 2160 / 2});
+}
 
-    enemy = Enemy();
-    playerClass = Entity();
-    playerClass.SetSprite("assets/PlayerRed_Frame_01_png_processed.png");
-    playerClass.SetPosition({.x = 1920/2, .y = 1080/2});
+void cameraMove()
+{
+    sf::View view = sf::View();
+    view.setSize({(float)gWindow->getSize().x, (float)gWindow->getSize().y});
+    sf::Vector2f playerPos = playerClass.GetPos();
+    if (playerPos.x >= 3200)
+        playerPos.x = 3200;
+    if (playerPos.y >= 1800)
+        playerPos.y = 1800;
+    if (playerPos.x <= 640)
+        playerPos.x = 640;
+    if (playerPos.y <= 360)
+        playerPos.y = 360;
+    view.setCenter(playerPos);
+    gWindow->setView(view);
+}
+
+void gameUpdate()
+{
+    playerClass.Move(xAxis, yAxis);
+    playerClass.RotateSprite(xAxis, yAxis);
+    if (space) {
+        playerShoot();
+    }
+    pushPart();
+    cameraMove();
+}
+
+void posDebug(sf::Vector2f pos)
+{
+    sf::CircleShape dot = sf::CircleShape();
+    dot.setPosition({pos.x - 2, pos.y - 2});
+    dot.setFillColor(sf::Color::White);
+    dot.setRadius(4.0f);
+    gWindow->draw(dot);
+}
+
+void gameRender()
+{
+    engineParticules();
+    RenderShoot();
+    gWindow->draw(*playerClass.sprite);
+    /*posDebug(playerClass.facing);
+    posDebug(playerClass.position);
+    posDebug(playerClass.behind);*/
 }
 
 Entity *getPlayer()
 {
     return (&playerClass);
-}
-
-void gameUpdate(update_args *args)
-{
-    playerClass.Move(xAxis, yAxis);
-    playerClass.RotateSprite(xAxis, yAxis);
-    pushPart();
-}
-
-void gameRender()
-{
-    S2D_DrawSprite(background);
-    engineParticules();
-    playerClass.Draw(false);
-    renderShoot();
 }

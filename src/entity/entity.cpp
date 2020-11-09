@@ -1,162 +1,116 @@
 #include "entity.h"
 
     Entity::Entity()
-    {
-        this->sprite = NULL;
-        this->rect = {0};
-        this->position = {0};
-        this->center = {0};
-        this->facing = {0};
-    }
+    {}
 
     // Parameterized Constructor
     Entity::Entity(const char *path)
     {
-        this->sprite = S2D_CreateSprite(path);
-        if (!sprite)
+        this->texture = new sf::Texture();
+        if (!this->texture->loadFromFile(path))
         {
             printf("Sprite creation failed %d %s", __LINE__, __FILE__);
             return;
         }
+        this->sprite = new sf::Sprite(*this->texture);
 
-        this->rect.height = sprite->height;
-        this->rect.width = sprite->width;
-        this->rect.x = sprite->x;
-        this->rect.y = sprite->y;
+        this->rect = this->sprite->getTextureRect();
+        this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
+        this->position = this->sprite->getPosition();
 
-        this->position.x = sprite->x;
-        this->position.y = sprite->y;
-        this->center.x = this->position.x + (rect.width / 2.0f);
-        this->center.y = this->position.y + (rect.height / 2.0f);
-        this->facing.x = this->position.x + (rect.width / 2.0f);
-        this->facing.y = this->position.y + (rect.height / 2.0f) + 50;
+        this->facing.x = this->position.x;
+        this->facing.y = this->position.y - 100;
+        this->behind.x = this->position.x;
+        this->behind.y = this->position.y + 25;
+
+        this->angle = 0;
     }
 
     void Entity::SetSprite(const char *path)
     {
-        if (this->sprite)
-        {
-            S2D_FreeSprite(this->sprite);
-            this->sprite = NULL;
-        }
-
-        this->sprite = NULL;
-        this->sprite = S2D_CreateSprite(path);
-        if (!sprite)
+         this->texture = new sf::Texture();
+        if (!this->texture->loadFromFile(path))
         {
             printf("Sprite creation failed %d %s", __LINE__, __FILE__);
             return;
         }
+        this->sprite = new sf::Sprite(*this->texture);
 
-        this->rect.height = sprite->height;
-        this->rect.width = sprite->width;
-        this->rect.x = sprite->x;
-        this->rect.y = sprite->y;
+        this->rect = this->sprite->getTextureRect();
+        this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
+        this->position = this->sprite->getPosition();
 
-        this->position.x = sprite->x;
-        this->position.y = sprite->y;
-        this->center.x = this->position.x + (rect.width / 2.0f);
-        this->center.y = this->position.y + (rect.height / 2.0f);
-        this->facing.x = this->position.x + (rect.width / 2.0f);
-        this->facing.y = this->position.y + (rect.height / 2.0f) + 50;
+        this->facing.x = this->position.x;
+        this->facing.y = this->position.y - 100;
+        this->behind.x = this->position.x;
+        this->behind.y = this->position.y + 25;
 
         this->sprite = sprite;
+        this->angle = 0;
     }
 
-    void Entity::SetSize(float width, float height)
-    {
-        this->sprite->width = width;
-        this->sprite->height = height;
-        this->rect.width = width;
-        this->rect.height = height;
-    }
-
-    void Entity::Draw(bool debugMode)
-    {
-        S2D_FRect rect = this->rect;
-
-        GLfloat x1 = rect.x, y1 = rect.y;
-        GLfloat x2 = rect.x + rect.width, y2 = rect.y;
-        GLfloat x3 = rect.x + rect.width, y3 = rect.y + rect.height;
-        GLfloat x4 = rect.x, y4 = rect.y + rect.height;
-
-        S2D_Color color = {1.0f, 0.5f, 0.5f, 1.0f};
-
-        if (debugMode)
-            S2D_DrawRect(rect, color, true);
-
-        S2D_DrawSprite(this->sprite);
-    }
-
-    // TODO(Lorentz): the rect needs to be rotated as well
     void Entity::RotateSprite(float x, float y)
     {
-        float angle_direction = atan2((this->center.y - y) - (this->center.y), (this->center.x + x) - (this->center.x));
-        float angle_sprite = atan2((this->facing.y) - (this->center.y), (this->facing.x) - (this->center.x));
-        angle_direction = angle_direction * 180 / M_PI;
-        angle_sprite = angle_sprite * 180 / M_PI;
-        float dif_angle = angle_sprite - angle_direction;
-        
-        printf("%f\n", dif_angle);
-        S2D_RotateSprite(this->sprite, dif_angle, S2D_CENTER);
+        float angle_direction = atan2((this->position.y - y) - (this->position.y), (this->position.x - x) - (this->position.x));
+        float save_angle = angle_direction * 180 / M_PI;
+        angle_direction = angle_direction * 180 / M_PI - 90;
+
+        float s = sin(angle_direction * M_PI / 180);
+        float c = cos(angle_direction * M_PI / 180);
+        // translate point back to origin:
+        this->facing.x -= this->position.x;
+        this->facing.y -= this->position.y;
+        this->behind.x -= this->position.x;
+        this->behind.y -= this->position.y;
+        // rotate point
+        float xnew1 = this->facing.x * c - this->facing.y * s;
+        float ynew1 = this->facing.x * s + this->facing.y * c;
+        float xnew2 = this->behind.x * c - this->behind.y * s;
+        float ynew2 = this->behind.x * s + this->behind.y * c;
+        // translate point back:
+        this->facing.x = xnew1 + this->position.x;
+        this->facing.y = ynew1 + this->position.y;
+        this->behind.x = xnew2 + this->position.x;
+        this->behind.y = ynew2 + this->position.y;
+    
+        this->angle = save_angle + 180;
+        this->sprite->setRotation(angle_direction);
     }
 
     void Entity::Move(float x, float y)
     {
-        this->sprite->x += x;
-        this->sprite->y += y;
-        this->position.x += x;
-        this->position.y += y;
-        this->rect.x += x;
-        this->rect.y += y;
-        this->center.x = this->position.x + (rect.width / 2.0f);
-        this->center.y = this->position.y + (rect.height / 2.0f);
-        this->facing.x = this->position.x + (rect.width / 2.0f);
-        this->facing.y = this->position.y + (rect.height / 2.0f) + 50;
+        //return;
+        this->sprite->move(sf::Vector2f(x, y));
+        this->position = this->GetPos();
+
+        this->facing.x = this->position.x;
+        this->facing.y = this->position.y - 100;
+        this->behind.x = this->position.x;
+        this->behind.y = this->position.y + 25;
     }
 
-    void Entity::SetPosition(S2D_Vec2f pos)
+    void Entity::SetPosition(sf::Vector2f pos)
     {
-        this->sprite->x = pos.x;
-        this->sprite->y = pos.y;
-        this->position.x = pos.x;
-        this->position.y = pos.y;
-        this->rect.x = pos.x;
-        this->rect.y = pos.y;
-        this->center.x = pos.x + (rect.width / 2.0f);
-        this->center.y = pos.y + (rect.height / 2.0f);
-        this->facing.x = pos.x + (rect.width / 2.0f);
-        this->facing.y = pos.y + (rect.height / 2.0f) + 50;
+        this->sprite->setPosition(pos);
+        this->position = this->GetPos();
+
+        this->facing.x = this->position.x;
+        this->facing.y = this->position.y - 100;
+        this->behind.x = this->position.x;
+        this->behind.y = this->position.y + 25;
     }
 
-    /*
-     * Set a region of the Sprite to be visible
-     * if width or height extends the Sprite's width/height
-     * the Sprite will be repeated
-     */
-    void Entity::SetClipRectangle(int x, int y, int width, int height)
+    sf::Vector2f Entity::GetDirection()
     {
-        S2D_ClipSprite(this->sprite, x, y, width, height);
-        this->rect.height = height;
-        this->rect.width = width;
-        this->rect.x = this->sprite->x;
-        this->rect.y = this->sprite->y;
-
-        this->position.x = this->sprite->x;
-        this->position.y = this->sprite->y;
+        return (this->facing);
     }
 
-    S2D_Vec2f Entity::GetPos()
+    sf::Vector2f Entity::GetPos()
     {
-        return this->position;
+        return this->sprite->getPosition();
     }
 
-    S2D_FRect Entity::GetRect()
+    sf::FloatRect Entity::GetRect()
     {
-        return this->rect;
-    }
-
-    S2D_Vec2f Entity::GetFacing()
-    {
-        return this->facing;
+        return (sf::FloatRect)this->sprite->getGlobalBounds();
     }
