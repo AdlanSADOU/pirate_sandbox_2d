@@ -36,7 +36,7 @@ void UpdatePosition(AmmunitionType *ammo)
     sf::Time time = ammo->clock.getElapsedTime();
 
     if (time.asSeconds() > 0.01f) {
-        ammo->entity->RotateSprite(ammo->direction.x, ammo->direction.y);
+        ammo->entity->RotateSprite(ammo->direction.x, ammo->direction.y, 90);
         ammo->entity->Move(ammo->direction.x * ammo->speed, ammo->direction.y * ammo->speed);
         ammo->clock.restart();
     }

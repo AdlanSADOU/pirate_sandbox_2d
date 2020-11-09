@@ -1,19 +1,17 @@
 #pragma once
 
-#include "entity.h"
-#include "vector"
+#include "game.h"
 
-class Enemy
-{
+typedef struct {
+    Entity *entity;
+    sf::FloatRect rect;
+    sf::Vector2f position;
+    sf::Sound sound;
+    sf::Vector2f direction;
+    sf::Clock clock;
+    sf::Clock lifeClock;
+    float speed;
+} EnnemyType;
 
-public:
-    Entity entity;
-
-    Enemy() 
-    {
-        this->entity = Entity("assets/PlayerRed_Frame_01_png_processed.png");
-    }
-
-    void MovePosition(float x, float y);
-    sf::FloatRect GetRect();
-};
+void PushEnemy(void);
+void RenderEnnemies(void);

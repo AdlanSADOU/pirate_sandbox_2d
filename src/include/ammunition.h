@@ -17,9 +17,6 @@ typedef struct {
     float speed;
 } AmmunitionType;
 
-typedef struct {
-    float speed;
-} Gun;
 
 Entity *getPlayer(void);
 void playerShoot(void);

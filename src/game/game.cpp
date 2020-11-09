@@ -2,7 +2,6 @@
 
 // extern S2D_Window *gWindow;
 Entity playerClass;
-Enemy enemy;
 
 sf::Sprite background;
 float xAxis;
@@ -18,6 +17,8 @@ void gameInput(sf::Event e)
     case sf::Event::EventType::KeyPressed:
         if (e.key.code == sf::Keyboard::Space)
             space = true;
+        if (e.key.code == sf::Keyboard::B)
+            PushEnemy();
         break;
     case sf::Event::EventType::KeyReleased:
         if (e.key.code == sf::Keyboard::Space)
@@ -55,7 +56,7 @@ void cameraMove()
 void gameUpdate()
 {
     playerClass.Move(xAxis, yAxis);
-    playerClass.RotateSprite(xAxis, yAxis);
+    playerClass.RotateSprite(xAxis, yAxis, 90);
     if (space) {
         playerShoot();
     }
@@ -76,6 +77,7 @@ void gameRender()
 {
     engineParticules();
     RenderShoot();
+    RenderEnnemies();
     gWindow->draw(*playerClass.sprite);
     /*posDebug(playerClass.facing);
     posDebug(playerClass.position);

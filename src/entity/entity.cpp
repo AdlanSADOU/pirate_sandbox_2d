@@ -56,11 +56,11 @@
         free(this);
     }
 
-    void Entity::RotateSprite(float x, float y)
+    void Entity::RotateSprite(float x, float y, int offset)
     {
         float angle_direction = atan2((this->position.y - y) - (this->position.y), (this->position.x - x) - (this->position.x));
         float save_angle = angle_direction * 180 / M_PI;
-        angle_direction = angle_direction * 180 / M_PI - 90;
+        angle_direction = angle_direction * 180 / M_PI - offset;
 
         float s = sin(angle_direction * M_PI / 180);
         float c = cos(angle_direction * M_PI / 180);

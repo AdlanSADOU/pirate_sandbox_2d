@@ -35,7 +35,7 @@ public:
 
     void SetClipRectangle(int x, int y, int width, int height);
     void SetSize(float width, float height);
-    void RotateSprite(float x, float y);
+    void RotateSprite(float x, float y, int offset);
     void SetPosition(sf::Vector2f pos);
     void SetSprite(const char *path);
     void FreeEntity(void);
