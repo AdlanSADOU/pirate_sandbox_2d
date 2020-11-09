@@ -27,6 +27,8 @@ void playerShoot()
         Ammunitions.push_back(CreateAmmo());
         ROFClock.restart();
     }
+    // Ammunitions.push_back(CreateAmmo());
+    
 }
 
 void UpdatePosition(AmmunitionType *ammo)

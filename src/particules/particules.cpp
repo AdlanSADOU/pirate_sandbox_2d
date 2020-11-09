@@ -8,6 +8,7 @@ Particule *createParticules(int offsetX, int offsetY)
 
     Entity *playerClass = getPlayer();
     sf::Vector2f playerBack = playerClass->behind;
+    sf::Vector2f rotation = playerClass->behind;
     playerBack.x += offsetX;
     playerBack.y += offsetY;
     sf::Uint8 r = 22;
@@ -15,7 +16,19 @@ Particule *createParticules(int offsetX, int offsetY)
     sf::Uint8 b = 22;
     sf::Uint8 a = 240;
 
-    part->direction = sf::Vector2f(cos(playerClass->angle - 180 * M_PI / 180), sin(playerClass->angle - 180 * M_PI / 180));
+    float s = sin(-0.3f + float(rand() % 60 / 100.0f));
+    float c = cos(-0.3f + float(rand() % 60 / 100.0f));
+    // translate point back to origin:
+    rotation.x -= playerClass->position.x;
+    rotation.y -= playerClass->position.y;
+    // rotate point
+    float xnew = rotation.x * c - rotation.y * s;
+    float ynew = rotation.x * s + rotation.y * c;
+    // translate point back:
+    rotation.x = xnew + playerClass->position.x;
+    rotation.y = ynew + playerClass->position.y;
+
+    part->direction = rotation;
     part->triangle[0].position = sf::Vector2f(playerBack.x - 2, playerBack.y - 2);
     part->triangle[1].position = sf::Vector2f(playerBack.x + 2, playerBack.y - 2);
     part->triangle[2].position = sf::Vector2f(playerBack.x, playerBack.y + 2);
@@ -51,9 +64,9 @@ void renderParticules()
 {
 
     for (int i = 0; i < Particules.size(); i++) {
-        // define the position of the triangle's points
 
         gWindow->draw(Particules[i]->triangle);
+
         Particules[i]->triangle[0].color.a -= 12;
         Particules[i]->triangle[1].color.a -= 12;
         Particules[i]->triangle[2].color.a -= 12;
