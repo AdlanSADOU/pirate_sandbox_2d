@@ -76,7 +76,7 @@ void gameRender()
 {
     engineParticules();
     gWindow->draw(*playerClass.sprite);
-    renderShoot();
+    RenderShoot();
     posDebug(playerClass.facing);
     posDebug(playerClass.position);
     posDebug(playerClass.behind);

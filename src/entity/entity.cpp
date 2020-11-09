@@ -102,6 +102,11 @@
         this->behind.y = this->position.y + 30;
     }
 
+    sf::Vector2f Entity::GetDirection()
+    {
+        return (sf::Vector2f(0, 0)); //TODO : return the futur direction.
+    }
+
     sf::Vector2f Entity::GetPos()
     {
         return this->sprite->getPosition();
