@@ -20,6 +20,7 @@ Ammunition *CreateAmmo()
 void playerShoot()
 {
     Ammunitions.push_back(CreateAmmo());
+    
 }
 
 void UpdatePosition(Ammunition *ammo)
