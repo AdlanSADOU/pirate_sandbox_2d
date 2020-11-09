@@ -12,6 +12,8 @@
 #include "ammunition.h"
 #include "particules.h"
 
+#include "imgui/imgui-SFML.h"
+#include "imgui/imgui.h"
 #include <vector>
 
 #ifndef M_PI

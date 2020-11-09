@@ -107,9 +107,13 @@ int main()
     sf::Time previousTime = clock.getElapsedTime();
     sf::Time currentTime;
 
+    sf::Time t_deltaTime;
+
     gWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
     gWindow->setFramerateLimit(60);
 
+    ImGui::SFML::Init(*gWindow, true); // ImGui init
+    
     gameInit();
 
     const std::string str = "assets/background.jpg";
@@ -122,6 +126,8 @@ int main()
         // Process events
         sf::Event event;
         while (gWindow->pollEvent(event)) {
+            ImGui::SFML::ProcessEvent(event); // ImGui events
+
             onKeyCallback(event);
 
             if (event.type == sf::Event::Closed)
@@ -132,10 +138,24 @@ int main()
 
         gWindow->draw(sprite);
 
+        ImGui::SFML::Update(*gWindow, t_deltaTime);
+
+        ImGui::Begin("Hello, world!");
+        ImGui::Button("Look at this pretty button");
+
         update();
         render();
 
+
+
+        ImGui::End();
+        // ImGui::EndFrame();
+
+        ImGui::SFML::Render(*gWindow);
         gWindow->display();
+
+        t_deltaTime = deltaClock.getElapsedTime();
+        deltaClock.restart();
 
         currentTime = clock.getElapsedTime();
         fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds());
