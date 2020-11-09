@@ -109,6 +109,8 @@ int main()
 
     sf::Time t_deltaTime;
 
+    int test = 0;
+
     gWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
     gWindow->setFramerateLimit(60);
 
@@ -140,15 +142,24 @@ int main()
 
         ImGui::SFML::Update(*gWindow, t_deltaTime);
 
-        ImGui::Begin("Hello, world!");
-        ImGui::Button("Look at this pretty button");
+        ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
+        ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+    if (ImGui::Begin("Example: Simple overlay"), (bool *)false, window_flags);
+    {
+        // window_flags |= ImGuiWindowFlags_NoMove;
+        ImGui::Text("Simple overlay\n" "in the corner of the screen.\n" "(right-click to change position)");
+        ImGui::Separator();
+        
+    }
+        ImGui::End();
+
+        if (ImGui::Button("Look at this pretty button")) {
+            ++test;
+        }
 
         update();
         render();
 
-
-
-        ImGui::End();
         // ImGui::EndFrame();
 
         ImGui::SFML::Render(*gWindow);
