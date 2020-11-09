@@ -62,7 +62,8 @@ void onKeyUp(sf::Keyboard::Key key)
 void onKeyCallback(sf::Event e)
 {
 
-
+    int maisquelfion = 1;
+    
     gameInput(e);
  
     switch (e.type)
