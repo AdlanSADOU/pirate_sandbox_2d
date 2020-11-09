@@ -23,7 +23,7 @@ public:
     sf::Sprite *sprite;
     sf::IntRect rect;
     sf::Vector2f position;
-    sf::Vector2f facing;
+    sf::Vector2f facing; //This will be the directiobn vector.
     float angle;
 
 
@@ -40,5 +40,6 @@ public:
     void Move(float x, float y);
 
     sf::Vector2f GetPos(void);
+    sf::Vector2f GetDirection(void); //TODO : Implement the return function of direction.
     sf::FloatRect GetRect();
 };

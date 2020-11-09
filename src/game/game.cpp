@@ -67,7 +67,7 @@ void gameRender()
 {
     engineParticules();
     gWindow->draw(*playerClass.sprite);
-    renderShoot();
+    RenderShoot();
     sf::CircleShape fion = sf::CircleShape();
     fion.setPosition({playerClass.facing.x - 2, playerClass.facing.y - 2});
     fion.setFillColor(sf::Color::White);
