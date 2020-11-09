@@ -4,7 +4,7 @@
 
 #include "game.h"
 
-#define ROF_GREEN_LASER (0.3)
+#define ROF_GREEN_LASER (0.15)
 
 typedef struct {
     Entity *entity;
@@ -13,6 +13,7 @@ typedef struct {
     sf::Sound sound;
     sf::Vector2f direction;
     sf::Clock clock;
+    sf::Clock lifeClock;
     float speed;
 } AmmunitionType;
 

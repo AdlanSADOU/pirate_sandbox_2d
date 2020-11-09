@@ -38,6 +38,7 @@ public:
     void RotateSprite(float x, float y);
     void SetPosition(sf::Vector2f pos);
     void SetSprite(const char *path);
+    void FreeEntity(void);
     void Move(float x, float y);
 
     sf::Vector2f GetPos(void);

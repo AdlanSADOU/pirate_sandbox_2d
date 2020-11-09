@@ -14,6 +14,7 @@ AmmunitionType *CreateAmmo()
     ammo->entity->SetPosition(playerClass->GetPos());
     ammo->position = playerClass->GetPos();
     ammo->clock.restart();
+    ammo->lifeClock.restart();
 
     return (ammo);
 }
@@ -39,15 +40,26 @@ void UpdatePosition(AmmunitionType *ammo)
     }
 }
 
-void UpdateShoot(AmmunitionType *ammo)
+void FreeShoot(AmmunitionType *ammo, int index)
+{
+    sf::Time ammoLifeTime = ammo->lifeClock.getElapsedTime();
+    if (ammoLifeTime.asSeconds() > 3.0f) {
+        ammo->entity->FreeEntity();
+        Ammunitions.erase(Ammunitions.begin() + index);
+    }
+}
+
+void UpdateShoot(AmmunitionType *ammo, int index)
 {
     UpdatePosition(ammo);
+    if (Ammunitions.size() > 0)
+        FreeShoot(ammo, index);
 }
 
 void RenderShoot()
 {
     for (int i = 0; i < Ammunitions.size(); i++) {
-        UpdateShoot(Ammunitions[i]);
         gWindow->draw(*Ammunitions[i]->entity->sprite);
+        UpdateShoot(Ammunitions[i], i);
     }
 }

@@ -49,6 +49,13 @@
         this->angle = 0;
     }
 
+    void Entity::FreeEntity()
+    {
+        free(this->sprite);
+        free(this->texture);
+        free(this);
+    }
+
     void Entity::RotateSprite(float x, float y)
     {
         float angle_direction = atan2((this->position.y - y) - (this->position.y), (this->position.x - x) - (this->position.x));
