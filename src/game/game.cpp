@@ -75,8 +75,8 @@ void posDebug(sf::Vector2f pos)
 void gameRender()
 {
     engineParticules();
-    gWindow->draw(*playerClass.sprite);
     RenderShoot();
+    gWindow->draw(*playerClass.sprite);
     posDebug(playerClass.facing);
     posDebug(playerClass.position);
     posDebug(playerClass.behind);
