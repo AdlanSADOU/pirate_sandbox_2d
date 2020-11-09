@@ -19,9 +19,9 @@
         this->position = this->sprite->getPosition();
 
         this->facing.x = this->position.x;
-        this->facing.y = this->position.y - 30;
+        this->facing.y = this->position.y - 100;
         this->behind.x = this->position.x;
-        this->behind.y = this->position.y + 30;
+        this->behind.y = this->position.y + 25;
 
         this->angle = 0;
     }
@@ -41,9 +41,9 @@
         this->position = this->sprite->getPosition();
 
         this->facing.x = this->position.x;
-        this->facing.y = this->position.y - 30;
+        this->facing.y = this->position.y - 100;
         this->behind.x = this->position.x;
-        this->behind.y = this->position.y + 30;
+        this->behind.y = this->position.y + 25;
 
         this->sprite = sprite;
         this->angle = 0;
@@ -86,9 +86,9 @@
         this->position = this->GetPos();
 
         this->facing.x = this->position.x;
-        this->facing.y = this->position.y - 30;
+        this->facing.y = this->position.y - 100;
         this->behind.x = this->position.x;
-        this->behind.y = this->position.y + 30;
+        this->behind.y = this->position.y + 25;
     }
 
     void Entity::SetPosition(sf::Vector2f pos)
@@ -97,9 +97,9 @@
         this->position = this->GetPos();
 
         this->facing.x = this->position.x;
-        this->facing.y = this->position.y - 30;
+        this->facing.y = this->position.y - 100;
         this->behind.x = this->position.x;
-        this->behind.y = this->position.y + 30;
+        this->behind.y = this->position.y + 25;
     }
 
     sf::Vector2f Entity::GetDirection()

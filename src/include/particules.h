@@ -6,7 +6,6 @@
 
 class Particule {
 public:
-    sf::FloatRect rect;
     sf::Color color;
     sf::VertexArray triangle;
     bool dead = false;

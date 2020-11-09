@@ -6,15 +6,15 @@ Particule *createParticules()
 {
     Particule *part = new Particule();
 
-    part->rect = getPlayer()->GetRect();
+    sf::Vector2f playerBack = getPlayer()->behind;
     sf::Uint8 r = 255;
     sf::Uint8 g = 220;
     sf::Uint8 b = 0;
     sf::Uint8 a = 240;
 
-    part->triangle[0].position = sf::Vector2f(part->rect.left + 20, part->rect.top + part->rect.height / 2 - 5);
-    part->triangle[1].position = sf::Vector2f(part->rect.left + part->rect.width - 20, part->rect.top + part->rect.height / 2 - 5);
-    part->triangle[2].position = sf::Vector2f(part->rect.left + part->rect.width / 2, part->rect.top + part->rect.height - 25);
+    part->triangle[0].position = sf::Vector2f(playerBack.x - 5, playerBack.y - 5);
+    part->triangle[1].position = sf::Vector2f(playerBack.x + 5, playerBack.y - 5);
+    part->triangle[2].position = sf::Vector2f(playerBack.x, playerBack.y + 5);
     // define the color of the part->triangle's points
     part->triangle[0].color = sf::Color{r, g, b, a};
     part->triangle[1].color = sf::Color{r, g, b, a};
