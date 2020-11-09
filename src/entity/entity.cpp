@@ -79,9 +79,12 @@ int facing_offset = 100;
 
     void Entity::Move(float x, float y)
     {
+
         this->sprite->move(sf::Vector2f(x, y));
         this->position = this->GetPos();
 
+        if (x == 0.0f && y == 0.0f)
+            return;
         this->facing = sf::Vector2f(this->position.x, this->position.y - facing_offset);
         this->behind = sf::Vector2f(this->position.x, this->position.y + behind_offset);
         this->behind_far = sf::Vector2f(this->behind.x, this->behind.y + behind_far_offset);
