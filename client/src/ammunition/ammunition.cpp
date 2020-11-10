@@ -49,9 +49,22 @@ void FreeShoot(AmmunitionType *ammo, int index)
     }
 }
 
+void CheckIfHit(AmmunitionType *ammo)
+{
+    Entity *playerClass = getPlayer();
+
+    sf::FloatRect ammoRect = ammo->entity->sprite->getGlobalBounds();
+    sf::FloatRect playerRect = playerClass->sprite->getGlobalBounds();
+
+    //Check if intersects
+    if (playerRect.intersects(ammoRect))
+        printf("HIIIIIIIIIIT\n");
+}
 void UpdateShoot(AmmunitionType *ammo, int index)
 {
+    CheckIfHit(ammo);
     UpdatePosition(ammo);
+
     if (Ammunitions.size() > 0)
         FreeShoot(ammo, index);
 }
