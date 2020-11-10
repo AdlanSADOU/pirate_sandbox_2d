@@ -5,7 +5,8 @@ del *.ilk
 del *.obj
 del /s *.exe
 
-del build\x64_Debug\*.pdb
-del build\x64_Debug\*.ilk
+del client\build\x64_debug\*.pdb
+del client\build\x64_debug\*.ilk
 
-cls
+del server\build\x64_debug\*.pdb
+del server\build\x64_debug\*.ilk
