@@ -48,7 +48,7 @@ void UpdatePosition(EnnemyType *ennemy)
 void FreeEnemy(EnnemyType *ennemy, int index)
 {
     sf::Time ammoLifeTime = ennemy->lifeClock.getElapsedTime();
-    if (ammoLifeTime.asSeconds() > 100.0f) {
+    if (ammoLifeTime.asSeconds() > 3.0f) {
         ennemy->entity->FreeEntity();
         Ennemies.erase(Ennemies.begin() + index);
     }
@@ -67,4 +67,5 @@ void RenderEnnemies()
         gWindow->draw(*Ennemies[i]->entity->sprite);
         UpdateEnnemy(Ennemies[i], i);
     }
+    ImGui::Text("Mobs count: %d\n", Ennemies.size());
 }

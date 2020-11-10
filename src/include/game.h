@@ -5,6 +5,8 @@
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
+#include <SFML/OpenGL.hpp>
+#include <gl/GLU.h>
 
 // #include "simple2d.h"
 #include "entity.h"

@@ -107,9 +107,13 @@ int main()
     gWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
     gWindow->setFramerateLimit(60);
 
+    sf::ContextSettings settings = gWindow->getSettings();
     ImGui::SFML::Init(*gWindow, true);
     
     gameInit();
+
+    GLuint vertexBuffer;
+    
 
     const std::string str = "assets/background.jpg";
     sf::Texture texture;
@@ -130,9 +134,10 @@ int main()
         gWindow->clear();
         gWindow->draw(sprite);
 
-        ImGui::SFML::Update(*gWindow, t_deltaTime);
-        ImGui::Begin("Hello, world!");
-        ImGui::Button("Look at this pretty button");
+        ImGui::SFML::Update(*gWindow, deltaClock.restart());
+        ImGui::Begin("Info");
+        ImGui::Text("%d.%d", gWindow->getSettings().majorVersion, gWindow->getSettings().minorVersion);
+        ImGui::Text("fps: %.2f, %.2fms", fps, deltaTime);
 
         update();
         gameRender();
@@ -141,9 +146,11 @@ int main()
         ImGui::SFML::Render(*gWindow);
 
         gWindow->display();
+    
+        
 
         t_deltaTime = deltaClock.getElapsedTime();
-        deltaClock.restart();
+
         currentTime = clock.getElapsedTime();
         fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds());
         previousTime = currentTime;

@@ -59,17 +59,17 @@ void renderParticules()
         gWindow->draw(Particules[i]->triangle);
 
         for (int j = 0; j != 3; j++) {
-            Particules[i]->triangle[j].color.a -= 15;
-            Particules[i]->triangle[j].color.g -= 15;
+            //Particules[i]->triangle[j].color.a -= 1;
+            Particules[i]->triangle[j].color.g -= 2;
         }
         for (int j = 0; j != 3; j++) {
             Particules[i]->triangle[j].position.x += Particules[i]->direction.x * speed;
             Particules[i]->triangle[j].position.y += Particules[i]->direction.y * speed;
         }
-
-        if (Particules[i]->triangle[0].color.a <= 0) {
+        if (Particules[i]->triangle[0].color.g <= 0) {
             delete(Particules[i]);
             Particules.erase(Particules.begin() + i);
         }
     }
+    ImGui::Text("Particules count: %d", Particules.size());
 }
