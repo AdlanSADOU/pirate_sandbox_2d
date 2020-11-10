@@ -15,7 +15,7 @@
                 "/EHsc",
                 "/std:c++latest",
                 "/MTd",
-                
+                "/MP",
                 "/Fe:",
                 "${workspaceFolder}/build/x64_Debug/sample.exe",
 
