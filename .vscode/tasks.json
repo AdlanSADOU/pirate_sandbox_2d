@@ -11,16 +11,14 @@
             "args": [
                 "/DEBUG",
                 "/Zi",
-                "/Od",
                 "/EHsc",
                 "/std:c++latest",
                 "/MTd",
                 "/MP",
-                
                 "/Fe:",
                 "${workspaceFolder}/build/x64_Debug/sample.exe",
-
-
+                
+                
                 "src/*.cpp",
                 "src/imgui/*.cpp",
                 "src/game/*.cpp",
@@ -28,12 +26,12 @@
                 "src/ammunition/*.cpp",
                 "src/enemy/*.cpp",
                 "src/particules/*.cpp",
-
+                
                 "/I", "src/include/",
                 "/I", "src/include/imgui/",
                 "/I", "vendor/SFML_x64/SFML-2.5.1/include",
                 
-                "/link",
+                "/link", "/verbose:incr", "/time",
                 "/LIBPATH:vendor/SFML_x64/SFML-2.5.1/lib/",
                 // "winmm.lib", "flac.lib","freetype.lib", "ogg.lib", "openal32.lib",
                 "opengl32.lib",
