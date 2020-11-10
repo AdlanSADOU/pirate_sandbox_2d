@@ -4,19 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "Server",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/server/build/x64_Debug/server.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/server/build/x64_Debug/",
-            "environment": [],
-            "externalConsole": true,
-            // "preLaunchTask": "C/C++: x64 Debug Build"
-        },
-
+        
         {
             "name": "Client",
             "type": "cppvsdbg",
@@ -29,11 +17,24 @@
             "externalConsole": true,
             // "preLaunchTask": "C/C++: x64 Debug Build"
         },
+
+        {
+            "name": "Server",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/server/build/x64_Debug/server.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/server/build/x64_Debug/",
+            "environment": [],
+            "externalConsole": true,
+            // "preLaunchTask": "C/C++: x64 Debug Build"
+        }
     ],
     "compounds": [
         {
           "name": "Server/Client",
-          "configurations": ["Server", "Client"],
+          "configurations": ["Client", "Server"],
         //   "preLaunchTask": "${defaultBuildTask}"
         }
       ]
