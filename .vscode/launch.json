@@ -5,7 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "cl.exe - Launch client",
+            "name": "Server",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/server/build/x64_Debug/server.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/server/build/x64_Debug/",
+            "environment": [],
+            "externalConsole": true,
+            // "preLaunchTask": "C/C++: x64 Debug Build"
+        },
+
+        {
+            "name": "Client",
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/client/build/x64_Debug/client.exe",
@@ -16,18 +29,12 @@
             "externalConsole": true,
             // "preLaunchTask": "C/C++: x64 Debug Build"
         },
-
+    ],
+    "compounds": [
         {
-            "name": "cl.exe - Launch server",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/server/build/x64_Debug/server.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/server/build/x64_Debug/",
-            "environment": [],
-            "externalConsole": true,
-            // "preLaunchTask": "C/C++: x64 Debug Build"
+          "name": "Server/Client",
+          "configurations": ["Server", "Client"],
+        //   "preLaunchTask": "${defaultBuildTask}"
         }
-    ]
+      ]
 }
