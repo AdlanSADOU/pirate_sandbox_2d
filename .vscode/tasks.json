@@ -1,4 +1,4 @@
-/* 
+/*
  * MSVC++ Compiler options
  * https://docs.microsoft.com/en-us/cpp/build/reference/compiler-options-listed-by-category?view=msvc-160
  */
@@ -6,7 +6,7 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "MSVC++: x64 Debug Build",
+            "label": "msvc++: x64 debug build",
             "command": "cl.exe",
             "args": [
                 "/DEBUG",
@@ -15,27 +15,27 @@
                 "/std:c++latest",
                 "/MTd",
                 "/MP",
-                "/Fe:",
-                "${workspaceFolder}/build/x64_Debug/sample.exe",
-                
-                "src/*.cpp",
-                "src/imgui/*.cpp",
-                "src/game/*.cpp",
-                "src/entity/*.cpp",
-                "src/ammunition/*.cpp",
-                "src/enemy/*.cpp",
-                "src/particules/*.cpp",
-                
-                "/I", "src/include/",
-                "/I", "src/include/imgui/",
-                "/I", "vendor/SFML_x64/SFML-2.5.1/include",
-                
+
+                "/Fe:", "${workspaceFolder}/client/build/x64_Debug/client.exe",
+
+                "${workspaceFolder}/client/src/*.cpp",
+                "${workspaceFolder}/client/src/imgui/*.cpp",
+                "${workspaceFolder}/client/src/game/*.cpp",
+                "${workspaceFolder}/client/src/entity/*.cpp",
+                "${workspaceFolder}/client/src/ammunition/*.cpp",
+                "${workspaceFolder}/client/src/enemy/*.cpp",
+                "${workspaceFolder}/client/src/particules/*.cpp",
+
+                "/I", "${workspaceFolder}/client/src/include/",
+                "/I", "${workspaceFolder}/client/src/include/imgui/",
+                "/I", "${workspaceFolder}/vendor/SFML_x64/SFML-2.5.1/include",
+
                 "/link", "/verbose:incr", "/time",
-                "/LIBPATH:vendor/SFML_x64/SFML-2.5.1/lib/",
+                "/LIBPATH:${workspaceFolder}/vendor/SFML_x64/SFML-2.5.1/lib/",
                 //"flac.lib","freetype.lib", "ogg.lib", "openal32.lib",
                 "opengl32.lib",
                 "sfml-window-d.lib", "sfml-system-d.lib", "sfml-graphics-d.lib", "sfml-audio-d.lib",
-               
+
                 "/SUBSYSTEM:CONSOLE"
             ],
             "options": {
@@ -58,18 +58,18 @@
             }
         },
 
-        {
+        { // TODO:(adlan) must be updated, drop simple2d
             "type": "shell",
-            "label": "MSVC++: x64 Release Build",
+            "label": "msvc++: x64 release build",
             "command": "cl.exe",
             "args": [
                 "/EHsc",
                 "/std:c++latest",
                 "/O2",
                 "/GL",
-                "/Fe:",
-                "${workspaceFolder}/build/x64_Release/sample.exe",
-                
+
+                "/Fe:", "${workspaceFolder}/build/x64_Release/sample.exe",
+
                 "src/*.cpp",
                 "src/enemy/*.cpp",
                 "src/entity/*.cpp",
@@ -102,6 +102,50 @@
                 "echo": true,
                 "reveal": "always",
                 "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+
+        {
+            "type": "shell",
+            "label": "msvc++: SERVER x64 debug build",
+            "command": "cl.exe",
+            "args": [
+                "/DEBUG",
+                "/Zi",
+                "/EHsc",
+                "/std:c++latest",
+                "/MTd",
+                "/MP",
+
+                "/Fe:", "${workspaceFolder}/server/build/x64_Debug/server.exe",
+
+                "${workspaceFolder}/server/src/*.cpp",
+
+                "/I", "${workspaceFolder}/server/include/",
+                "/I", "${workspaceFolder}/vendor/SFML_x64/SFML-2.5.1/include",
+
+                "/link", "/verbose:incr", "/time",
+                "/LIBPATH:${workspaceFolder}/vendor/SFML_x64/SFML-2.5.1/lib/",
+                "sfml-system-d.lib", "sfml-network-d.lib",
+                "/SUBSYSTEM:CONSOLE"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/server"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
                 "panel": "shared",
                 "showReuseMessage": true,
                 "clear": true
