@@ -1,3 +1,5 @@
+[OUTDATED]
+
 # Getting started
 
 This project makes use of my fork of [simple2d](https://github.com/AdlanSADOU/simple2d) repository as a submodule.
