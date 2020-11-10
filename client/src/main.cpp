@@ -1,4 +1,5 @@
 #include "game.h"
+#include "client.h"
 
 sf::RenderWindow *gWindow = NULL;
 
@@ -110,6 +111,7 @@ int main()
     sf::ContextSettings settings = gWindow->getSettings();
     ImGui::SFML::Init(*gWindow, true);
     
+    startClient();
     gameInit();
 
     GLuint vertexBuffer;
