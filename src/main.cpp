@@ -102,7 +102,10 @@ int main()
     sf::Time currentTime;
     sf::Time t_deltaTime;
 
-    int test = 0;
+    glEnable(GL_POINT_SMOOTH); // allow to have rounded dots
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glPointSize(1);
 
     gWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
     gWindow->setFramerateLimit(60);
@@ -128,6 +131,7 @@ int main()
                 gWindow->close();
         }
         gWindow->clear();
+        glClear(GL_COLOR_BUFFER_BIT);
         gWindow->draw(sprite);
 
         ImGui::SFML::Update(*gWindow, t_deltaTime);

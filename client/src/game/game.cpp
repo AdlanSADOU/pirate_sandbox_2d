@@ -83,7 +83,7 @@ void PushEngineParticules()
     sf::Color startColor = {255, 255, 0, 255};
     sf::Color endColor = {255, 0, 0, 0};
 
-    for (int i = 0, value = 6; i != loop * 2; i++) {
+    for (int i = 0, value = 4; i != loop * 2; i++) {
         particlePool.Generate(sf::Vector2f(playerBack.x + rand() % (value - value / 3), playerBack.y + rand() % (value - value / 3)), speed, direction, randomDirection, size, life, startColor, endColor, sf::BlendAdd);
         randomDirection = GetRandomNormalizedVector();
         particlePool.Generate(sf::Vector2f(playerBack.x + (-(rand() % (value - value / 3))), playerBack.y + (-(rand() % (value - value / 3)))), speed, direction, randomDirection, size, life, startColor, endColor, sf::BlendAdd);
