@@ -24,6 +24,7 @@ EnnemyType *PushEnnemy()
     ennemy->explosionRect = sf::IntRect(0, 0, 120, 120);
     ennemy->explosion = new Entity("assets/256px/explosion.png", ennemy->explosionRect);
     ennemy->explosion->SetPosition(sf::Vector2f{1500, 1000});
+    ennemy->explosion->sprite->setScale(sf::Vector2f(1.5, 1.5));
 
 
     //Common attributes
@@ -48,8 +49,6 @@ void MoveExplosionRect(EnnemyType *ennemy)
 {
     sf::Time time = ennemy->explosionClock.getElapsedTime();
 
-    printf("%f\n", time.asSeconds());
-    printf("%d\n", ennemy->explosionRect.left);
     if (ennemy->explosionRect.left < 960 && time.asSeconds() > 0.08) {
         ennemy->explosionRect.left += 120;
         ennemy->explosion->sprite->setTextureRect(ennemy->explosionRect);
@@ -104,10 +103,10 @@ void RenderEnnemies()
 {
     for (int i = 0; i < Ennemies.size(); i++) {
 
-        if (Ennemies[i]->dead == 1) {
+        if (Ennemies[i]->dead) {
             gWindow->draw(*Ennemies[i]->explosion->sprite);
         }
-        else {
+        else if (!Ennemies[i]->dead) {
             gWindow->draw(*Ennemies[i]->entity->sprite);
         }
         UpdateEnnemy(Ennemies[i], i);
