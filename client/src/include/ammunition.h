@@ -15,6 +15,8 @@ typedef struct {
     sf::Clock clock;
     sf::Clock lifeClock;
     float speed;
+    int destroyed;
+    int dmg;
 } AmmunitionType;
 
 

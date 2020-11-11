@@ -4,12 +4,17 @@
 
 typedef struct {
     Entity *entity;
+    Entity *explosion;
+    sf::FloatRect explosionRect;
     sf::FloatRect rect;
     sf::Vector2f position;
-    sf::Sound sound;
     sf::Vector2f direction;
     sf::Clock clock;
     sf::Clock lifeClock;
+    sf::Clock explosionClock;
+    sf::Sound sound;
+    int hp;
+    int dead;
     float speed;
 } EnnemyType;
 

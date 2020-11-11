@@ -20,6 +20,8 @@ EnnemyType *CreateEnemy()
     ennemy->entity = new Entity("assets/256px/Enemy02_Teal_Frame_1_png_processed.png");
     // ennemy->speed = rand() % 10 + 1;
     ennemy->speed = 3;
+    ennemy->dead = 0;
+    ennemy->hp = 100;
     ennemy->direction = GetRandomNormalizedVector();
     ennemy->entity->SetPosition(sf::Vector2f{1500, 1000});
     ennemy->position = sf::Vector2f{1500, 1000};
@@ -47,18 +49,26 @@ void UpdatePosition(EnnemyType *ennemy)
 
 void FreeEnemy(EnnemyType *ennemy, int index)
 {
-    sf::Time ammoLifeTime = ennemy->lifeClock.getElapsedTime();
-    if (ammoLifeTime.asSeconds() > 30.0f) {
-        ennemy->entity->FreeEntity();
-        Ennemies.erase(Ennemies.begin() + index);
-    }
+    ennemy->entity->FreeEntity();
+    free(ennemy);
+    Ennemies.erase(Ennemies.begin() + index);
 }
 
 void UpdateEnnemy(EnnemyType *ennemy, int index)
 {
+    sf::Time ammoLifeTime = ennemy->lifeClock.getElapsedTime();
     UpdatePosition(ennemy);
-    if (Ennemies.size() > 0)
-        FreeEnemy(ennemy, index);
+
+    if (Ennemies.size() > 0) {
+        if (ammoLifeTime.asSeconds() > 30.0f || ennemy->dead == 1) {
+            FreeEnemy(ennemy, index);
+        }
+    }
+}
+
+void FreeEnnemies()
+{
+
 }
 
 std::vector<EnnemyType *> GetEnnemies()
