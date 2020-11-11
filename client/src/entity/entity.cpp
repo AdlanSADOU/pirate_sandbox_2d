@@ -18,8 +18,27 @@ int facing_offset = 100;
         }
         this->sprite = new sf::Sprite(*this->texture);
 
-        this->rect = this->sprite->getTextureRect();
-        // this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
+        this->sprite->setOrigin(this->sprite->getGlobalBounds().width / 2, this->sprite->getGlobalBounds().height / 2);
+        this->position = this->sprite->getPosition();
+
+        this->facing = sf::Vector2f(this->position.x, this->position.y - facing_offset);
+        this->behind = sf::Vector2f(this->position.x, this->position.y + behind_offset);
+        this->behind_far = sf::Vector2f(this->behind.x, this->behind.y + behind_far_offset);
+
+        this->angle = -90;
+    }
+
+    Entity::Entity(const char *path, sf::IntRect rect)
+    {
+        this->texture = new sf::Texture();
+        if (!this->texture->loadFromFile(path))
+        {
+            printf("Sprite creation failed %d %s", __LINE__, __FILE__);
+            return;
+        }
+        this->sprite = new sf::Sprite(*this->texture);
+        this->sprite->setTextureRect(rect);
+        this->sprite->setOrigin(this->sprite->getGlobalBounds().width / 2, this->sprite->getGlobalBounds().height / 2);
         this->position = this->sprite->getPosition();
 
         this->facing = sf::Vector2f(this->position.x, this->position.y - facing_offset);

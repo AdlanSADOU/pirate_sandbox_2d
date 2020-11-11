@@ -34,6 +34,7 @@ public:
     Entity();
     // Parameterized Constructor
     Entity(const char *path);
+    Entity(const char *path, sf::IntRect rect);
 
     void SetClipRectangle(int x, int y, int width, int height);
     void SetSize(float width, float height);
