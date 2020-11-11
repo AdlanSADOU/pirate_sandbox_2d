@@ -1,4 +1,5 @@
 #include "ammunition.h"
+#include "enemy.h"
 
 std::vector<AmmunitionType *> Ammunitions;
 sf::Clock ROFClock;
@@ -51,14 +52,18 @@ void FreeShoot(AmmunitionType *ammo, int index)
 
 void CheckIfHit(AmmunitionType *ammo)
 {
-    Entity *playerClass = getPlayer();
+    std::vector<EnnemyType *> Ennemies = GetEnnemies();
 
     sf::FloatRect ammoRect = ammo->entity->sprite->getGlobalBounds();
-    sf::FloatRect playerRect = playerClass->sprite->getGlobalBounds();
 
-    //Check if intersects
-    if (playerRect.intersects(ammoRect))
-        printf("HIIIIIIIIIIT\n");
+    for (int i = 0; i < Ennemies.size(); i++) {
+        sf::FloatRect ennemyRect = Ennemies[i]->entity->sprite->getGlobalBounds();
+
+        //Check if intersects
+        if (ennemyRect.intersects(ammoRect))
+            printf("HIIIIIIIIIIT\n");
+    }
+
 }
 void UpdateShoot(AmmunitionType *ammo, int index)
 {

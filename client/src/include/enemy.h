@@ -13,5 +13,6 @@ typedef struct {
     float speed;
 } EnnemyType;
 
+std::vector<EnnemyType *> GetEnnemies(void);
 void PushEnemy(void);
 void RenderEnnemies(void);

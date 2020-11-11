@@ -2,7 +2,6 @@
 
 // definitions in cpp file
 
-
 std::vector<EnnemyType *> Ennemies;
 
 sf::Vector2f GetRandomNormalizedVector()
@@ -19,7 +18,8 @@ EnnemyType *CreateEnemy()
 
     EnnemyType *ennemy = (EnnemyType *)malloc(sizeof(EnnemyType));
     ennemy->entity = new Entity("assets/256px/Enemy02_Teal_Frame_1_png_processed.png");
-    ennemy->speed = rand() % 10 + 1;
+    // ennemy->speed = rand() % 10 + 1;
+    ennemy->speed = 3;
     ennemy->direction = GetRandomNormalizedVector();
     ennemy->entity->SetPosition(sf::Vector2f{1500, 1000});
     ennemy->position = sf::Vector2f{1500, 1000};
@@ -48,7 +48,7 @@ void UpdatePosition(EnnemyType *ennemy)
 void FreeEnemy(EnnemyType *ennemy, int index)
 {
     sf::Time ammoLifeTime = ennemy->lifeClock.getElapsedTime();
-    if (ammoLifeTime.asSeconds() > 3.0f) {
+    if (ammoLifeTime.asSeconds() > 30.0f) {
         ennemy->entity->FreeEntity();
         Ennemies.erase(Ennemies.begin() + index);
     }
@@ -59,6 +59,11 @@ void UpdateEnnemy(EnnemyType *ennemy, int index)
     UpdatePosition(ennemy);
     if (Ennemies.size() > 0)
         FreeEnemy(ennemy, index);
+}
+
+std::vector<EnnemyType *> GetEnnemies()
+{
+    return (Ennemies);
 }
 
 void RenderEnnemies()
