@@ -2,10 +2,10 @@
 
 std::vector<Particule *> Particules;
 
-float vector_normalize(sf::Vector2f vector)
+float vector_magnitude(sf::Vector2f vector)
 {
-    float normalize = sqrt(pow(vector.x, 2) + pow(vector.y, 2));
-    return (normalize);
+    float magnitude = sqrt(pow(vector.x, 2) + pow(vector.y, 2));
+    return (magnitude);
 }
 
 Particule *createParticules(int offsetX, int offsetY, int size)
@@ -22,8 +22,8 @@ Particule *createParticules(int offsetX, int offsetY, int size)
      float angle_direction = atan2((part->direction.y - playerClass->position.y),
         (part->direction.x - playerClass->position.x));
     part->direction = sf::Vector2f(cos(angle_direction), sin(angle_direction));
-    float normalize = vector_normalize(part->direction);
-    part->direction = sf::Vector2f(part->direction.x / normalize, part->direction.y / normalize);
+    float magnitude = vector_magnitude(part->direction);
+    part->direction = sf::Vector2f(part->direction.x / magnitude, part->direction.y / magnitude);
 
     part->triangle[0].position = sf::Vector2f(playerBack.x - size, playerBack.y - size);
     part->triangle[1].position = sf::Vector2f(playerBack.x + size, playerBack.y - size);
@@ -39,23 +39,22 @@ Particule *createParticules(int offsetX, int offsetY, int size)
 void pushPart()
 {
     Entity *playerClass = getPlayer();
+    int size = 2, number = vector_magnitude(sf::Vector2f(xAxis, yAxis));
+    if (number == 0) number = 1;
 
-    int size = 2;
-    for (int i = 0, value = 10; i != 6; i++) {
+    for (int i = 0, value = 10; i != number * 2; i++) {
         Particules.push_back(createParticules(rand() % (value - value / 3), rand() % (value - value / 3), size));
         Particules.push_back(createParticules(-(rand() % (value - value / 3)), -(rand() % (value - value / 3)), size));
         Particules.push_back(createParticules(rand() % (value - value / 3), -(rand() % (value - value / 3)), size));
         Particules.push_back(createParticules(-(rand() % (value - value / 3)), rand() % (value - value / 3), size));
-        Particules.push_back(createParticules(-(rand() % value), 0, size));
-        Particules.push_back(createParticules(rand() % value, 0, size));
-        Particules.push_back(createParticules(0, rand() % value, size));
-        Particules.push_back(createParticules(0, -(rand() % value), size));
     }
 }
 
 void renderParticules()
 {
-    int speed = 3;
+
+    int speed = vector_magnitude(sf::Vector2f(xAxis, yAxis)) / 2;
+    if (speed == 0) speed = 1;
 
     for (int i = 0; i < Particules.size(); i++) {
         gWindow->draw(Particules[i]->triangle);

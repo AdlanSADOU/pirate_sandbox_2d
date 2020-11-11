@@ -138,7 +138,6 @@ int main()
 
         ImGui::SFML::Update(*gWindow, deltaClock.restart());
         ImGui::Begin("Info");
-        ImGui::Text("%d.%d", gWindow->getSettings().majorVersion, gWindow->getSettings().minorVersion);
         ImGui::Text("fps: %.2f, %.2fms", fps, deltaTime);
 
         update();

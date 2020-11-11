@@ -18,4 +18,4 @@ public:
 
 void renderParticules();
 void pushPart(void);
-float vector_normalize(sf::Vector2f vector);
+float vector_magnitude(sf::Vector2f vector);
