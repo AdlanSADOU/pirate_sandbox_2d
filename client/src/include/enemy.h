@@ -18,5 +18,5 @@ typedef struct {
 } EnnemyType;
 
 std::vector<EnnemyType *> GetEnnemies(void);
-void PushEnemy(void);
+void CreateEnemy(void);
 void RenderEnnemies(void);

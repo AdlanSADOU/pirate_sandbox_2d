@@ -12,7 +12,7 @@ sf::Vector2f GetRandomNormalizedVector()
     return (sf::Vector2f(randX, randY));
 }
 
-EnnemyType *CreateEnemy()
+EnnemyType *PushEnnemy()
 {
     Entity *playerClass = getPlayer();
 
@@ -39,20 +39,23 @@ EnnemyType *CreateEnemy()
     return (ennemy);
 }
 
-void PushEnemy()
+void CreateEnemy()
 {
-    Ennemies.push_back(CreateEnemy());
+    Ennemies.push_back(PushEnnemy());
 }
 
 void MoveExplosionRect(EnnemyType *ennemy)
 {
     sf::Time time = ennemy->explosionClock.getElapsedTime();
 
-    if (ennemy->explosionRect.left < 960 && time.asSeconds() > 0.1) {
+    printf("%f\n", time.asSeconds());
+    printf("%d\n", ennemy->explosionRect.left);
+    if (ennemy->explosionRect.left < 960 && time.asSeconds() > 0.08) {
         ennemy->explosionRect.left += 120;
+        ennemy->explosion->sprite->setTextureRect(ennemy->explosionRect);
         ennemy->explosionClock.restart();
     }
-    else {
+    else if (ennemy->explosionRect.left >= 960 && time.asSeconds() > 0.1){
         ennemy->dead = 2;
     }
 }
@@ -75,6 +78,7 @@ void UpdatePosition(EnnemyType *ennemy)
 void FreeEnemy(EnnemyType *ennemy, int index)
 {
     ennemy->entity->FreeEntity();
+    ennemy->explosion->FreeEntity();
     free(ennemy);
     Ennemies.erase(Ennemies.begin() + index);
 }
