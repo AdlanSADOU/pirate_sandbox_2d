@@ -1,20 +1,20 @@
 #include "server.h"
 
 sf::TcpSocket socket;
+
+sf::TcpSocket serverSocket;
 sf::TcpListener server;
 
 int main(int argc, char const *argv[])
 {
     printf("server starting ...\n");
+    // std::cout << "Local IP: " << sf::IpAddress::getLocalAddress().toString() << std::endl;
+    // printf("Public IP: %s\n", sf::IpAddress::getPublicAddress().toString());
 
-    // socket.setBlocking(false);
-    // sf::Socket::Status status = socket.connect(sf::IpAddress::LocalHost, 8889);
-    // if (status != sf::Socket::Done) {
-    //     printf("count not connect\n");
-    // }
+    
 
     while (1) {
-        printf("Wainting for client connection...\n");
+        printf("Waiting for client connection...\n");
         if (server.listen(8889) == sf::Socket::Done) {
             sf::Socket::Status clientStatus;
             clientStatus = server.accept(socket);
@@ -31,6 +31,8 @@ int main(int argc, char const *argv[])
             default:
                 break;
             }
+
+            
         }
     }
 
