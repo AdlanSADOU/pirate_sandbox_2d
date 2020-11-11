@@ -9,7 +9,6 @@
 typedef struct {
     Entity *entity;
     sf::FloatRect rect;
-    sf::Vector2f position;
     sf::Sound sound;
     sf::Vector2f direction;
     sf::Clock clock;

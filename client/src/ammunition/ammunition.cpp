@@ -13,7 +13,6 @@ AmmunitionType *CreateAmmo()
     ammo->direction = sf::Vector2f(cos(playerClass->angle * M_PI / 180), sin(playerClass->angle * M_PI / 180));
     ammo->entity = new Entity("assets/256px/Laser_Large_png_processed.png");
     ammo->entity->SetPosition(playerClass->GetPos());
-    ammo->position = playerClass->GetPos();
     ammo->dmg = 50;
     ammo->destroyed = 0;
     ammo->clock.restart();

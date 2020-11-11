@@ -5,9 +5,8 @@
 typedef struct {
     Entity *entity;
     Entity *explosion;
-    sf::FloatRect explosionRect;
+    sf::IntRect explosionRect;
     sf::FloatRect rect;
-    sf::Vector2f position;
     sf::Vector2f direction;
     sf::Clock clock;
     sf::Clock lifeClock;
