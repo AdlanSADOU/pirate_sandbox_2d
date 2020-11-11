@@ -13,7 +13,7 @@
                 "/Zi",
                 "/EHsc",
                 "/std:c++latest",
-                "/MTd",
+                "/MDd",
                 "/MP",
 
                 "/Fe:", "${workspaceFolder}/client/build/x64_Debug/client.exe",
@@ -118,7 +118,7 @@
                 "/Zi",
                 "/EHsc",
                 "/std:c++latest",
-                "/MTd",
+                "/MDd",
                 "/MP",
 
                 "/Fe:", "${workspaceFolder}/server/build/x64_Debug/server.exe",

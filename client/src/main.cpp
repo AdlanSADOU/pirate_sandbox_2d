@@ -111,7 +111,7 @@ int main()
     sf::ContextSettings settings = gWindow->getSettings();
     ImGui::SFML::Init(*gWindow, true);
     
-    startClient();
+    clientStart();
     gameInit();
 
     GLuint vertexBuffer;
@@ -157,5 +157,7 @@ int main()
         previousTime = currentTime;
         deltaTime = 1.0f / fps * 100.0f;
     }
+
+    clientDisconnect();
     return 0;
 }
