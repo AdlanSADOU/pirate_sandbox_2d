@@ -39,8 +39,7 @@ Particule *createParticules(int offsetX, int offsetY, int size)
 void pushPart()
 {
     Entity *playerClass = getPlayer();
-    if (xAxis == 0.0f && yAxis == 0.0f)
-        playerClass->behind_far = RotatePointAroundCenter(playerClass->behind_far, playerClass->position, (0.5));
+
     int size = 2;
     for (int i = 0, value = 10; i != 6; i++) {
         Particules.push_back(createParticules(rand() % (value - value / 3), rand() % (value - value / 3), size));

@@ -26,7 +26,7 @@ int facing_offset = 100;
         this->behind = sf::Vector2f(this->position.x, this->position.y + behind_offset);
         this->behind_far = sf::Vector2f(this->behind.x, this->behind.y + behind_far_offset);
 
-        this->angle = 0;
+        this->angle = -90;
     }
 
     void Entity::SetSprite(const char *path)
@@ -48,7 +48,7 @@ int facing_offset = 100;
         this->behind_far = sf::Vector2f(this->behind.x, this->behind.y + behind_far_offset);
 
         this->sprite = sprite;
-        this->angle = 0;
+        this->angle = -90;
     }
 
     void Entity::FreeEntity()
