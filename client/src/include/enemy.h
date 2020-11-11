@@ -20,3 +20,4 @@ typedef struct {
 std::vector<EnnemyType *> GetEnnemies(void);
 void PushEnemy(void);
 void RenderEnnemies(void);
+sf::Vector2f GetRandomNormalizedVector();

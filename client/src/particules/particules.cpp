@@ -1,4 +1,4 @@
-#include "particules.h"
+/*#include "particules.h"
 
 std::vector<Particule *> Particules;
 
@@ -74,3 +74,4 @@ void renderParticules()
     }
     ImGui::Text("Particules count: %d", Particules.size());
 }
+*/
