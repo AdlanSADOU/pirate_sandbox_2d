@@ -1,4 +1,5 @@
 #include "ammunition.h"
+#include "enemy.h"
 
 std::vector<AmmunitionType *> Ammunitions;
 sf::Clock ROFClock;
@@ -13,6 +14,8 @@ AmmunitionType *CreateAmmo()
     ammo->entity = new Entity("assets/256px/Laser_Large_png_processed.png");
     ammo->entity->SetPosition(playerClass->GetPos());
     ammo->position = playerClass->GetPos();
+    ammo->dmg = 50;
+    ammo->destroyed = 0;
     ammo->clock.restart();
     ammo->lifeClock.restart();
 
@@ -42,31 +45,44 @@ void UpdatePosition(AmmunitionType *ammo)
 
 void FreeShoot(AmmunitionType *ammo, int index)
 {
-    sf::Time ammoLifeTime = ammo->lifeClock.getElapsedTime();
-    if (ammoLifeTime.asSeconds() > 3.0f) {
-        ammo->entity->FreeEntity();
-        Ammunitions.erase(Ammunitions.begin() + index);
+    ammo->entity->FreeEntity();
+    free(ammo);
+    Ammunitions.erase(Ammunitions.begin() + index);
+}
+
+void CheckIfHit(AmmunitionType *ammo, int index)
+{
+    std::vector<EnnemyType *> Ennemies = GetEnnemies();
+
+    sf::FloatRect ammoRect = ammo->entity->sprite->getGlobalBounds();
+
+    for (int i = 0; i < Ennemies.size(); i++) {
+        sf::FloatRect ennemyRect = Ennemies[i]->entity->sprite->getGlobalBounds();
+
+        //Check if intersects
+        if (ennemyRect.intersects(ammoRect)) {
+            ammo->destroyed = 1;
+            Ennemies[i]->hp -= ammo->dmg;
+            if (Ennemies[i]->hp <= 0) {
+                Ennemies[i]->dead = 1;
+            }
+        }
     }
 }
 
-void CheckIfHit(AmmunitionType *ammo)
-{
-    Entity *playerClass = getPlayer();
-
-    sf::FloatRect ammoRect = ammo->entity->sprite->getGlobalBounds();
-    sf::FloatRect playerRect = playerClass->sprite->getGlobalBounds();
-
-    //Check if intersects
-    if (playerRect.intersects(ammoRect))
-        printf("HIIIIIIIIIIT\n");
-}
 void UpdateShoot(AmmunitionType *ammo, int index)
 {
-    CheckIfHit(ammo);
     UpdatePosition(ammo);
+    CheckIfHit(ammo, index);
 
-    if (Ammunitions.size() > 0)
-        FreeShoot(ammo, index);
+    sf::Time ammoLifeTime = ammo->lifeClock.getElapsedTime();
+
+    if (Ammunitions.size() > 0) {
+        if (ammoLifeTime.asSeconds() > 3.0f || ammo->destroyed == 1) {
+            FreeShoot(ammo, index);
+            return;
+        }
+    }
 }
 
 void RenderShoot()
