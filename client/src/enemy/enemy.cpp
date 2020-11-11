@@ -12,7 +12,7 @@ sf::Vector2f GetRandomNormalizedVector()
     return (sf::Vector2f(randX, randY));
 }
 
-EnnemyType *CreateEnemy()
+EnnemyType *PushEnnemy()
 {
     Entity *playerClass = getPlayer();
 
@@ -24,6 +24,7 @@ EnnemyType *CreateEnemy()
     ennemy->explosionRect = sf::IntRect(0, 0, 120, 120);
     ennemy->explosion = new Entity("assets/256px/explosion.png", ennemy->explosionRect);
     ennemy->explosion->SetPosition(sf::Vector2f{1500, 1000});
+    ennemy->explosion->sprite->setScale(sf::Vector2f(1.5, 1.5));
 
 
     //Common attributes
@@ -39,20 +40,21 @@ EnnemyType *CreateEnemy()
     return (ennemy);
 }
 
-void PushEnemy()
+void CreateEnemy()
 {
-    Ennemies.push_back(CreateEnemy());
+    Ennemies.push_back(PushEnnemy());
 }
 
 void MoveExplosionRect(EnnemyType *ennemy)
 {
     sf::Time time = ennemy->explosionClock.getElapsedTime();
 
-    if (ennemy->explosionRect.left < 960 && time.asSeconds() > 0.1) {
+    if (ennemy->explosionRect.left < 960 && time.asSeconds() > 0.08) {
         ennemy->explosionRect.left += 120;
+        ennemy->explosion->sprite->setTextureRect(ennemy->explosionRect);
         ennemy->explosionClock.restart();
     }
-    else {
+    else if (ennemy->explosionRect.left >= 960 && time.asSeconds() > 0.1){
         ennemy->dead = 2;
     }
 }
@@ -75,6 +77,7 @@ void UpdatePosition(EnnemyType *ennemy)
 void FreeEnemy(EnnemyType *ennemy, int index)
 {
     ennemy->entity->FreeEntity();
+    ennemy->explosion->FreeEntity();
     free(ennemy);
     Ennemies.erase(Ennemies.begin() + index);
 }
@@ -100,10 +103,10 @@ void RenderEnnemies()
 {
     for (int i = 0; i < Ennemies.size(); i++) {
 
-        if (Ennemies[i]->dead == 1) {
+        if (Ennemies[i]->dead) {
             gWindow->draw(*Ennemies[i]->explosion->sprite);
         }
-        else {
+        else if (!Ennemies[i]->dead) {
             gWindow->draw(*Ennemies[i]->entity->sprite);
         }
         UpdateEnnemy(Ennemies[i], i);

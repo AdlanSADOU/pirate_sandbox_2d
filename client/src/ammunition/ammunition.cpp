@@ -56,6 +56,9 @@ void CheckIfHit(AmmunitionType *ammo, int index)
     sf::FloatRect ammoRect = ammo->entity->sprite->getGlobalBounds();
 
     for (int i = 0; i < Ennemies.size(); i++) {
+        //Do not check if dead
+        if (Ennemies[i]->dead != 0) continue;
+
         sf::FloatRect ennemyRect = Ennemies[i]->entity->sprite->getGlobalBounds();
 
         //Check if intersects

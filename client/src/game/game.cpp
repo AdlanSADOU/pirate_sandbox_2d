@@ -24,7 +24,7 @@ void gameInput(sf::Event e)
         if (e.key.code == sf::Keyboard::Space)
             space = true;
         if (e.key.code == sf::Keyboard::B)
-            PushEnemy();
+            CreateEnemy();
         break;
     case sf::Event::EventType::KeyReleased:
         if (e.key.code == sf::Keyboard::Space)
