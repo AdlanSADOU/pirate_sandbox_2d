@@ -22,7 +22,7 @@ EnnemyType *CreateEnemy()
 
     //Explosion
     ennemy->explosion = new Entity("assets/256px/explosion.png");
-    ennemy->explosionRect = sf::IntRect(0, 0, 80, 80);
+    ennemy->explosionRect = sf::IntRect(0, 0, 120, 120);
     ennemy->explosion->sprite->setTextureRect(ennemy->explosionRect);
     ennemy->explosion->SetPosition(sf::Vector2f{1500, 1000});
 
@@ -34,6 +34,7 @@ EnnemyType *CreateEnemy()
     ennemy->entity->SetPosition(sf::Vector2f{1500, 1000});
     ennemy->entity->RotateSprite(ennemy->direction.x, ennemy->direction.y, 270);
     ennemy->lifeClock.restart();
+    ennemy->explosionClock.restart();
 
     return (ennemy);
 }
@@ -43,15 +44,31 @@ void PushEnemy()
     Ennemies.push_back(CreateEnemy());
 }
 
+void MoveExplosionRect(EnnemyType *ennemy)
+{
+    sf::Time time = ennemy->explosionClock.getElapsedTime();
+
+    if (ennemy->explosionRect.left < 960 && time.asSeconds() > 0.1) {
+        ennemy->explosionRect.left += 120;
+        ennemy->explosionClock.restart();
+    }
+    else {
+        ennemy->dead = 2;
+    }
+}
 
 void UpdatePosition(EnnemyType *ennemy)
 {
     sf::Time time = ennemy->clock.getElapsedTime();
 
-    if (time.asSeconds() > 0.01f) {
+    if (time.asSeconds() > 0.01f && ennemy->dead != 1) {
         ennemy->entity->Move(ennemy->direction.x * ennemy->speed, ennemy->direction.y * ennemy->speed);
         ennemy->explosion->Move(ennemy->direction.x * ennemy->speed, ennemy->direction.y * ennemy->speed);
         ennemy->clock.restart();
+    }
+
+    if (ennemy->dead == 1) {
+        MoveExplosionRect(ennemy);
     }
 }
 
@@ -64,11 +81,11 @@ void FreeEnemy(EnnemyType *ennemy, int index)
 
 void UpdateEnnemy(EnnemyType *ennemy, int index)
 {
-    sf::Time ammoLifeTime = ennemy->lifeClock.getElapsedTime();
+    sf::Time ennemyLifeTime = ennemy->lifeClock.getElapsedTime();
     UpdatePosition(ennemy);
 
     if (Ennemies.size() > 0) {
-        if (ammoLifeTime.asSeconds() > 30.0f || ennemy->dead == 1) {
+        if (ennemyLifeTime.asSeconds() > 30.0f || ennemy->dead == 2) {
             FreeEnemy(ennemy, index);
         }
     }
@@ -82,7 +99,12 @@ std::vector<EnnemyType *> GetEnnemies()
 void RenderEnnemies()
 {
     for (int i = 0; i < Ennemies.size(); i++) {
-        gWindow->draw(*Ennemies[i]->explosion->sprite);
+        // if (Ennemies[i]->dead == 1) {
+            gWindow->draw(*Ennemies[i]->explosion->sprite);
+        // }
+        // else {
+            gWindow->draw(*Ennemies[i]->entity->sprite);
+        // }
         UpdateEnnemy(Ennemies[i], i);
     }
     ImGui::Text("Mobs count: %d\n", Ennemies.size());

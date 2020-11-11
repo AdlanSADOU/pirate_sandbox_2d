@@ -64,6 +64,8 @@ void CheckIfHit(AmmunitionType *ammo, int index)
             Ennemies[i]->hp -= ammo->dmg;
             if (Ennemies[i]->hp <= 0) {
                 Ennemies[i]->dead = 1;
+                Ennemies[i]->explosionClock.restart();
+                Ennemies[i]->lifeClock.restart();
             }
         }
     }

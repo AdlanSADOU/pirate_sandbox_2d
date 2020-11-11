@@ -19,7 +19,7 @@ int facing_offset = 100;
         this->sprite = new sf::Sprite(*this->texture);
 
         this->rect = this->sprite->getTextureRect();
-        this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
+        // this->sprite->setOrigin(this->rect.width / 2, this->rect.height / 2);
         this->position = this->sprite->getPosition();
 
         this->facing = sf::Vector2f(this->position.x, this->position.y - facing_offset);
