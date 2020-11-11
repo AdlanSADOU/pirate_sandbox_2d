@@ -1,6 +1,6 @@
 // Particules.h
 
-#pragma once
+/*#pragma once
 
 #include "game.h"
 
@@ -18,4 +18,4 @@ public:
 
 void renderParticules();
 void pushPart(void);
-float vector_magnitude(sf::Vector2f vector);
+float vector_magnitude(sf::Vector2f vector);*/
