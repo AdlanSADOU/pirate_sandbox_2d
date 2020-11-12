@@ -2,8 +2,8 @@
 
 ## On Windows
 
-First of all, you should have the Visual C++ compiler installed that comes with the Visual Studio installation.
-Also, I'm using Visual Studio Code for this project and it should `just work`.
+First of all, you should have the Visual C++ compiler installed that comes with the Visual Studio Community.
+Also, we're using Visual Studio Code for this project and it should `just work`.
 
 To build this repository you'll need:
 - `Visual Studio Community 2017` atleast
