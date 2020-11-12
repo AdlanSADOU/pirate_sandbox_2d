@@ -1,5 +1,3 @@
-[OUTDATED]
-
 # Getting started
 
 ## On Windows
