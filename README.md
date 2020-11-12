@@ -16,7 +16,7 @@ To build this repository you'll need:
 
 ---
 
-If you are running this as a workspace in `Visual Studio Code` you can simply press `Ctrl + Shift + B` to build and `F5` to run.
+If you are running this as a workspace in `Visual Studio Code` you can simply press `Ctrl + Shift + B` to build then `F5` to run.
 If you want to run the Client make sure you are on the `Client` debug configuration in the debug panel (`Ctrl + Shift + D`).
 
 If you dont, you're on your own.
