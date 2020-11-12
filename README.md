@@ -1,5 +1,8 @@
 # Getting started
 
+This is a 2D game project using SFML 2.5.
+It is set in space and is mainly inspired by Dark Orbit.
+
 ## On Windows
 
 First of all, you should have the Visual C++ compiler installed that comes with the Visual Studio Community.
