@@ -6,12 +6,13 @@ First of all, you should have the Visual C++ compiler installed that comes with 
 Also, we're using Visual Studio Code for this project and it should `just work`.
 
 To build this repository you'll need:
-- `Visual Studio Community 2017` atleast
+- `Visual Studio Community 2017` at least
 - `Visual Studio Code`
 
 - clone this repo somewhere
 - open `x64 Native Tools Command Prompt`, type `code` to open vscode (so that you have access to windows development environment)
 - open your clone in vscode as a Workspace
+- build and run
 
 ---
 
