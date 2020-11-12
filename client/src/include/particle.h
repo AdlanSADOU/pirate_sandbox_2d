@@ -1,4 +1,4 @@
-#ifndef __PARTICLE_H__
+/*#ifndef __PARTICLE_H__
 #define __PARTICLE_H__
 
 #include "SFML/Graphics.hpp"
@@ -12,14 +12,10 @@ class Particle
 {
 	private:
 
-	/*  This is the only variable we care about no matter if
-	   the particle is alive or dead */
 	unsigned int life = 0;
 
 	union ParticleInfo
 	{
-		/* This struct holds the state of the particle when 
-		   it's being update (it's still alive).*/
 		struct ParticleState
 		{
 			unsigned int startLife;
@@ -37,10 +33,6 @@ class Particle
 
 		} pLive;
 
-		/* If the particle is dead, then the 'next' member comes 
-		   into play and the struct it's not used. This pointer
-		   called 'next' holds a pointer to the next available 
-		   particle after this one. */
 		Particle* next;
 
 		ParticleInfo() {}
@@ -65,9 +57,7 @@ class Particle
 	// Given two colors interpolates linearly over time and returns the resulting color
 	sf::Color RgbInterpolation(sf::Color startColor, float timeStep, sf::Color endColor);
 
-	/* Calculates particle position considering its velocity
-	   and if there's a vortex in the system */
 	void CalculateParticlePos();
 };
 
-#endif
+#endif*/

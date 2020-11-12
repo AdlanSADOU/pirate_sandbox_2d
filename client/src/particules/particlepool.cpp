@@ -1,4 +1,4 @@
-#include "particlepool.h"
+/*#include "particlepool.h"
 #include <assert.h>
 
 // This pool constructor sets our particles to available
@@ -77,4 +77,4 @@ ParticleState ParticlePool::Update(sf::RenderWindow *gWindow)
 	}
 
 	return (retState);
-}
+}*/

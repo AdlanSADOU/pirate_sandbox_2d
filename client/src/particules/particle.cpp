@@ -1,4 +1,4 @@
-#include "particle.h"
+/*#include "particle.h"
 
 Particle::Particle():life(0) { }
 
@@ -90,4 +90,4 @@ void Particle::CalculateParticlePos()
 {
 	pState.pLive.pos.x += pState.pLive.direction.x * pState.pLive.randomDirection.x * pState.pLive.speed;
 	pState.pLive.pos.y += pState.pLive.direction.y * pState.pLive.randomDirection.y * pState.pLive.speed;
-}
+}*/

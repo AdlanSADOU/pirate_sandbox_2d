@@ -1,4 +1,4 @@
-#ifndef __PARTICLE_POOL_H__
+/*#ifndef __PARTICLE_POOL_H__
 #define __PARTICLE_POOL_H__
 
 #include "particle.h"
@@ -40,4 +40,4 @@ public:
 	ParticleState Update(sf::RenderWindow *gWindow);
 };
 
-#endif
+#endif*/
