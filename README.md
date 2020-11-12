@@ -14,8 +14,6 @@ To build this repository you'll need:
 - open your clone in vscode as a Workspace
 - build and run
 
-## No Linux build yet
-
 ---
 
 If you are running this as a workspace in `Visual Studio Code` you can simply press `Ctrl + Shift + B` to build then `F5` to run.
