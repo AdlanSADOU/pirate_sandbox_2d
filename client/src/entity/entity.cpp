@@ -98,7 +98,7 @@ int facing_offset = 100;
 
     void Entity::Move(float x, float y)
     {
-
+        
         this->sprite->move(sf::Vector2f(x, y));
         this->position = this->GetPos();
 
