@@ -106,8 +106,9 @@ void cameraMove()
 */
 void gameUpdate()
 {
+    // clientRoute();
     playerClass.Move(xAxis, yAxis);
-    //clientSendPlayerAxis(xAxis, yAxis);
+    // clientSendPlayerAxis(xAxis, yAxis);
 
     playerClass.RotateSprite(xAxis, yAxis, 90);
     if (space) {

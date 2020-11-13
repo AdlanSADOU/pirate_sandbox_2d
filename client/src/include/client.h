@@ -4,3 +4,4 @@
 void clientStart();
 void clientDisconnect();
 void clientSendPlayerAxis(sf::Int32 x, sf::Int32 y);
+void clientRoute();
