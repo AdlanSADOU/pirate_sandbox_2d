@@ -6,11 +6,14 @@ void receivePlayerAxis(sf::Packet &packet)
 {
     // printf("received axis\n");
 
-    sf::String str;
     sf::Int32 x;
     sf::Int32 y;
-    packet >> x >> y;
-    printf("player (%d, %d)\n", x, y);
+    sf::Int32 client_id;
+
+    packet >> x >> y >> client_id;
+
+    printf("player (%d, %d)", x, y);
+    printf("from player %d\n", (int)client_id);
 }
 
 void clientStart()
@@ -56,18 +59,24 @@ void clientRoute()
     if (client.receive(packet) == sf::Socket::Done)
     {
         sf::String str = "";
-        packet >> str;
-
+        if(!(packet >> str)) {
+            printf("error while reading packet\n");
+        }
+        
         // printf("Client said: %s\n", str.toAnsiString().c_str());
         messageType = *str.toAnsiString().c_str();
-        printf("packet type: %c ", messageType);
+        
+        printf("received type %c packet | ", messageType);
 
         switch (messageType)
         {
         case 'A':
             receivePlayerAxis(packet);
             break;
-
+        case 'I':
+            sf::Int32 id;
+            packet >> id;
+            printf("received ID %d\n", id);
         default:
             break;
         }

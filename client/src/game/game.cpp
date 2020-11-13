@@ -1,7 +1,7 @@
 //#include "game.h"
 
 #include "game.h"
-#include "particules.h"
+#include "particles.h"
 #include "client.h"
 
 // extern S2D_Window *gWindow;
@@ -106,9 +106,9 @@ void cameraMove()
 */
 void gameUpdate()
 {
-    // clientRoute();
+    clientRoute();
     playerClass.Move(xAxis, yAxis);
-    // clientSendPlayerAxis(xAxis, yAxis);
+    clientSendPlayerAxis(xAxis, yAxis);
 
     playerClass.RotateSprite(xAxis, yAxis, 90);
     if (space) {

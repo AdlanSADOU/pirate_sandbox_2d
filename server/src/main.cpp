@@ -1,10 +1,9 @@
 #include "server.h"
 
 sf::TcpListener listener;
-std::list<sf::TcpSocket *> clients;
+std::vector<Client> clients;
 sf::SocketSelector selector;
 
-int id;
 bool running = true;
 
 void receivePlayerAxis(sf::Packet &packet)
@@ -15,7 +14,7 @@ void receivePlayerAxis(sf::Packet &packet)
     sf::Int32 x;
     sf::Int32 y;
     packet >> x >> y;
-    printf("player (%d, %d)\n", x, y);
+    // printf("player (%d, %d) ", x, y);
 }
 
 int main(int argc, char const *argv[])
@@ -39,6 +38,7 @@ int main(int argc, char const *argv[])
 
     listener.listen(8889);
     selector.add(listener);
+    int IDs = 0;
 
     while (running)
     {
@@ -46,54 +46,64 @@ int main(int argc, char const *argv[])
         {
             if (selector.isReady(listener))
             {
-                // The listener is ready: there is a pending connection
-                sf::TcpSocket *client = new sf::TcpSocket;
-                if (listener.accept(*client) == sf::Socket::Done)
+                sf::TcpSocket *clientSocket = new sf::TcpSocket;
+                if (listener.accept(*clientSocket) == sf::Socket::Done)
                 {
-                    clients.push_back(client);
-                    selector.add(*client);
+                    Client tmpClient = Client(clientSocket, IDs++);
+                    printf("client n° %d connected\n", tmpClient.id);
+
+                    clients.push_back(tmpClient);
+                    selector.add(*clientSocket);
+                    
                 }
                 else
                 {
-                    // Error, we won't get a new connection, delete the socket
-                    delete client;
+                    delete clientSocket;
                 }
             }
             else
             {
-                // The listener socket is not ready, test all other sockets (the clients)
-                for (std::list<sf::TcpSocket *>::iterator it = clients.begin(); it != clients.end(); ++it)
-                {
-                    sf::TcpSocket &client = **it;
-                    if (selector.isReady(client))
-                    {
-                        sf::Packet packet;
-                        char messageType;
 
-                        if (client.receive(packet) == sf::Socket::Done)
+                for (size_t i = 0; i < clients.size(); i++)
+                {
+                    sf::Packet packet;
+                    char messageType;
+                    Client m_client;
+                    m_client = (clients[i]);
+
+                    if (selector.isReady(*m_client.socket))
+                    {
+
+                        if ((*m_client.socket).receive(packet) == sf::Socket::Done)
                         {
                             sf::String str = "";
                             packet >> str;
 
                             // printf("Client said: %s\n", str.toAnsiString().c_str());
                             messageType = *str.toAnsiString().c_str();
-                            printf("packet type: %c ", messageType);
+                            //printf("packet type: %c from client n° %d ", messageType, m_client.id);
 
                             switch (messageType)
                             {
                             case 'A':
                                 receivePlayerAxis(packet);
-                                client.send(packet);
+                                for (size_t i = 0; i < clients.size(); i++)
+                                {
+                                    if (clients[i].id == m_client.id)
+                                        continue;
+                                    printf("sending data from client %d to client %d\n", m_client.id, clients[i].id);
+                                    packet << (sf::Int32)m_client.id;
+                                    clients[i].socket->send(packet);
+                                }
                                 break;
 
                             default:
                                 break;
                             }
                         }
-
-                        
                     }
                 }
+                // client 0
             }
         }
     }

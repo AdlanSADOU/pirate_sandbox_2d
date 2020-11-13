@@ -12,8 +12,8 @@
 #include "entity.h"
 #include "enemy.h"
 #include "ammunition.h"
-#include "particle.h"
-#include "particlepool.h"
+#include "particles.h"
+// #include "particlepool.h"
 
 #include "imgui/imgui-SFML.h"
 #include "imgui/imgui.h"
