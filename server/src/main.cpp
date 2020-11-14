@@ -1,51 +1,110 @@
 #include "server.h"
 
-std::vector<sf::TcpSocket *> clients;
+sf::TcpListener listener;
+std::vector<Client> clients;
+sf::SocketSelector selector;
 
-sf::TcpSocket serverSocket;
-sf::TcpListener server;
+bool running = true;
+
+void receivePlayerAxis(sf::Packet &packet)
+{
+    // printf("received axis\n");
+
+    sf::String str;
+    sf::Int32 x;
+    sf::Int32 y;
+    packet >> x >> y;
+    // printf("player (%d, %d) ", x, y);
+}
 
 int main(int argc, char const *argv[])
 {
     printf("server starting ...\n");
-    // std::cout << "Local IP: " << sf::IpAddress::getLocalAddress().toString() << std::endl;
-    // printf("Public IP: %s\n", sf::IpAddress::getPublicAddress().toString());
-
-    
+    printf("Local IP : %s\n", sf::IpAddress::getLocalAddress().toString().c_str());
+    printf("Public IP: %s\n", sf::IpAddress::getPublicAddress().toString().c_str());
 
     sf::TcpSocket tmpClient;
-    while (1)
-     {
-        printf("Waiting for client connection...\n");
-        if (server.listen(8889) == sf::Socket::Done) {
-            sf::Socket::Status clientStatus;
-            clientStatus = server.accept(tmpClient);
+    sf::Socket::Status clientStatus;
 
-            switch (clientStatus) {
-            case sf::Socket::Done:
-                printf("client connected\n");
-                clients.push_back(&tmpClient);
-                break;
+    // printf("Waiting for client connection...\n");
+    // if (server.listen(8889, sf::IpAddress::getLocalAddress()) == sf::Socket::Done)
+    // {
+    //     clientStatus = server.accept(tmpClient);
+    //     clientsMap.insert(std::pair<sf::TcpSocket &, int>(tmpClient, id++));
+    //     selector.add(tmpClient);
 
-            case sf::Socket::Partial:
-                printf("client partial\n");
-                break;
+    //     printf("client %d connected, IP: %s\n", clientsMap);
+    // }
 
-            case sf::Socket::Disconnected:
-                printf("client disconnected\n");
-                break;
+    listener.listen(8889);
+    selector.add(listener);
+    int IDs = 0;
 
-            default:
-                break;
+    while (running)
+    {
+        if (selector.wait())
+        {
+            if (selector.isReady(listener))
+            {
+                sf::TcpSocket *clientSocket = new sf::TcpSocket;
+                if (listener.accept(*clientSocket) == sf::Socket::Done)
+                {
+                    Client tmpClient = Client(clientSocket, IDs++);
+                    printf("client n° %d connected\n", tmpClient.id);
+
+                    clients.push_back(tmpClient);
+                    selector.add(*clientSocket);
+                    
+                }
+                else
+                {
+                    delete clientSocket;
+                }
             }
-        }
+            else
+            {
 
-        sf::Packet packet;
-        if (clients[0]->receive(packet) == sf::Socket::Done) {
-            sf::String str = "";
-            packet >> str;
-            // std::cout << str.toWideString().c_str() << std::endl;
-            printf("Client said: %s\n", str.toAnsiString().c_str());
+                for (size_t i = 0; i < clients.size(); i++)
+                {
+                    sf::Packet packet;
+                    char messageType;
+                    Client m_client;
+                    m_client = (clients[i]);
+
+                    if (selector.isReady(*m_client.socket))
+                    {
+
+                        if ((*m_client.socket).receive(packet) == sf::Socket::Done)
+                        {
+                            sf::String str = "";
+                            packet >> str;
+
+                            // printf("Client said: %s\n", str.toAnsiString().c_str());
+                            messageType = *str.toAnsiString().c_str();
+                            //printf("packet type: %c from client n° %d ", messageType, m_client.id);
+
+                            switch (messageType)
+                            {
+                            case 'A':
+                                receivePlayerAxis(packet);
+                                for (size_t i = 0; i < clients.size(); i++)
+                                {
+                                    if (clients[i].id == m_client.id)
+                                        continue;
+                                    printf("sending data from client %d to client %d\n", m_client.id, clients[i].id);
+                                    packet << (sf::Int32)m_client.id;
+                                    clients[i].socket->send(packet);
+                                }
+                                break;
+
+                            default:
+                                break;
+                            }
+                        }
+                    }
+                }
+                // client 0
+            }
         }
     }
 

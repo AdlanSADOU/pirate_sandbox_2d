@@ -6,7 +6,7 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "msvc++: x64 debug build",
+            "label": "msvc++: Client x64 debug build",
             "command": "cl.exe",
             "args": [
                 "/DEBUG",
@@ -40,7 +40,7 @@
                 "/SUBSYSTEM:CONSOLE"
             ],
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}/client"
             },
             "problemMatcher": [
                 "$msCompile"
@@ -111,7 +111,7 @@
 
         {
             "type": "shell",
-            "label": "msvc++: SERVER x64 debug build",
+            "label": "msvc++: Server x64 debug build",
             "command": "cl.exe",
             "args": [
                 "/DEBUG",
@@ -131,6 +131,7 @@
                 "/link", "/verbose:incr", "/time",
                 "/LIBPATH:${workspaceFolder}/vendor/SFML_x64/SFML-2.5.1/lib/",
                 "sfml-system-d.lib", "sfml-network-d.lib",
+                
                 "/SUBSYSTEM:CONSOLE"
             ],
             "options": {

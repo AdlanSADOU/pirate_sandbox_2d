@@ -1,4 +1,4 @@
-/*#include "particules.h"
+#include "particles.h"
 
 std::vector<Particule *> Particules;
 
@@ -8,7 +8,7 @@ float vector_magnitude(sf::Vector2f vector)
     return (magnitude);
 }
 
-Particule *createParticules(int offsetX, int offsetY, int size)
+Particule *createParticules(int offsetX, int offsetY, int size, sf::Vector2f randomDirection)
 {
     Particule *part = new Particule();
 
@@ -25,13 +25,10 @@ Particule *createParticules(int offsetX, int offsetY, int size)
     float magnitude = vector_magnitude(part->direction);
     part->direction = sf::Vector2f(part->direction.x / magnitude, part->direction.y / magnitude);
 
-    part->triangle[0].position = sf::Vector2f(playerBack.x - size, playerBack.y - size);
-    part->triangle[1].position = sf::Vector2f(playerBack.x + size, playerBack.y - size);
-    part->triangle[2].position = sf::Vector2f(playerBack.x, playerBack.y + size);
+    part->randomDirection = randomDirection;
 
-    part->triangle[0].color = sf::Color{r, g, b, a};
-    part->triangle[1].color = sf::Color{r, g, b, a};
-    part->triangle[2].color = sf::Color{r, g, b, a};
+    part->circle[0].position = playerBack;
+    part->circle[0].color = sf::Color{r, g, b, a};
 
     return (part);
 }
@@ -39,14 +36,20 @@ Particule *createParticules(int offsetX, int offsetY, int size)
 void pushPart()
 {
     Entity *playerClass = getPlayer();
-    int size = 2, number = vector_magnitude(sf::Vector2f(xAxis, yAxis));
+    int size = 5, number = vector_magnitude(sf::Vector2f(xAxis, yAxis));
     if (number == 0) number = 1;
+    else if (number > 3) number = 3;
+    sf::Vector2f randomDirection = GetRandomNormalizedVector();
 
-    for (int i = 0, value = 10; i != number * 2; i++) {
-        Particules.push_back(createParticules(rand() % (value - value / 3), rand() % (value - value / 3), size));
-        Particules.push_back(createParticules(-(rand() % (value - value / 3)), -(rand() % (value - value / 3)), size));
-        Particules.push_back(createParticules(rand() % (value - value / 3), -(rand() % (value - value / 3)), size));
-        Particules.push_back(createParticules(-(rand() % (value - value / 3)), rand() % (value - value / 3), size));
+    for (int i = 0, value = 10; i != number; i++) {
+        Particules.push_back(createParticules(rand() % (value - value / 3), rand() % (value - value / 3), size, randomDirection));
+        randomDirection = GetRandomNormalizedVector();
+        Particules.push_back(createParticules(-(rand() % (value - value / 3)), -(rand() % (value - value / 3)), size, randomDirection));
+        randomDirection = GetRandomNormalizedVector();
+        Particules.push_back(createParticules(rand() % (value - value / 3), -(rand() % (value - value / 3)), size, randomDirection));
+        randomDirection = GetRandomNormalizedVector();
+        Particules.push_back(createParticules(-(rand() % (value - value / 3)), rand() % (value - value / 3), size, randomDirection));
+        randomDirection = GetRandomNormalizedVector();
     }
 }
 
@@ -55,23 +58,26 @@ void renderParticules()
 
     int speed = vector_magnitude(sf::Vector2f(xAxis, yAxis)) / 2;
     if (speed == 0) speed = 1;
+    else if (speed > 5) speed = 5;
+
+    /*sf::RenderStates state;
+    state.shader = nullptr;
+    state.texture = nullptr;
+    state.blendMode = sf::BlendAlpha;*/
 
     for (int i = 0; i < Particules.size(); i++) {
-        gWindow->draw(Particules[i]->triangle);
+        gWindow->draw(Particules[i]->circle);
 
-        for (int j = 0; j != 3; j++) {
-            Particules[i]->triangle[j].color.a -= 15;
-            Particules[i]->triangle[j].color.g -= 15;
-        }
-        for (int j = 0; j != 3; j++) {
-            Particules[i]->triangle[j].position.x += Particules[i]->direction.x * speed;
-            Particules[i]->triangle[j].position.y += Particules[i]->direction.y * speed;
-        }
-        if (Particules[i]->triangle[0].color.g <= 0) {
+        Particules[i]->circle[0].color.a -= 15;
+        Particules[i]->circle[0].color.g -= 15;
+        
+        Particules[i]->circle[0].position.x += Particules[i]->direction.x * (Particules[i]->randomDirection.x * speed);
+        Particules[i]->circle[0].position.y += Particules[i]->direction.y * (Particules[i]->randomDirection.y * speed);
+
+        if (Particules[i]->circle[0].color.g <= 0) {
             delete(Particules[i]);
             Particules.erase(Particules.begin() + i);
         }
     }
-    ImGui::Text("Particules count: %d", Particules.size());
+    ImGui::Text("Particle count: %d", Particules.size());
 }
-*/

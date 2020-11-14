@@ -1,8 +1,12 @@
+//#include "game.h"
+
 #include "game.h"
+#include "particles.h"
+#include "client.h"
 
 // extern S2D_Window *gWindow;
 Entity playerClass;
-ParticlePool particlePool;
+//ParticlePool particlePool;
 
 sf::Sprite background;
 float xAxis;
@@ -10,11 +14,11 @@ float yAxis;
 
 bool space = false;
 
-float vector_magnitude(sf::Vector2f vector)
+/*float vector_magnitude(sf::Vector2f vector)
 {
     float magnitude = sqrt(pow(vector.x, 2) + pow(vector.y, 2));
     return (magnitude);
-}
+}*/
 
 void gameInput(sf::Event e)
 {
@@ -40,7 +44,7 @@ void gameInit()
 {
     playerClass = Entity("assets/PlayerRed_Frame_01_png_processed.png");
     playerClass.SetPosition({3840 / 2, 2160 / 2});
-    particlePool = ParticlePool();
+    //particlePool = ParticlePool();
 }
 
 void cameraMove()
@@ -60,7 +64,7 @@ void cameraMove()
     gWindow->setView(view);
 }
 
-void PushEngineParticules()
+/*void PushEngineParticules()
 {
     int size = 2;
     int loop = vector_magnitude(sf::Vector2f(xAxis, yAxis));
@@ -93,21 +97,25 @@ void PushEngineParticules()
         particlePool.Generate(sf::Vector2f(playerBack.x + (-(rand() % (value - value / 3))), playerBack.y + rand() % (value - value / 3)), speed, direction, randomDirection, size, life, startColor, endColor, sf::BlendAdd);
         randomDirection = GetRandomNormalizedVector();
     }
-}
+}*/
 
-void renderEngineParticules()
+/*void renderEngineParticules()
 {
     particlePool.Update(gWindow);
 }
-
+*/
 void gameUpdate()
 {
+    clientRoute();
     playerClass.Move(xAxis, yAxis);
+    clientSendPlayerAxis(xAxis, yAxis);
+
     playerClass.RotateSprite(xAxis, yAxis, 90);
     if (space) {
         playerShoot();
     }
-    PushEngineParticules();
+    //PushEngineParticules();
+    pushPart();
     cameraMove();
 }
 
@@ -122,12 +130,13 @@ void posDebug(sf::Vector2f pos)
 
 void gameRender()
 {
-    renderEngineParticules();
+    //renderEngineParticules();
     RenderShoot();
     RenderEnnemies();
+    renderParticules();
     gWindow->draw(*playerClass.sprite);
 
-    ImGui::Text("Particules count: %d", particlePool.CountParticleAlive());
+    //ImGui::Text("Particle count: %d", particlePool.CountParticleAlive());
     /*posDebug(playerClass.facing);
     posDebug(playerClass.position);
     posDebug(playerClass.behind);*/

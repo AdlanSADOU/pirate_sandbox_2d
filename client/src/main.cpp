@@ -103,8 +103,6 @@ int main()
     sf::Time currentTime;
     sf::Time t_deltaTime;
 
-    int test = 0;
-
     gWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
     gWindow->setFramerateLimit(60);
 
@@ -114,8 +112,10 @@ int main()
     clientStart();
     gameInit();
 
-    GLuint vertexBuffer;
-    
+    glEnable(GL_POINT_SMOOTH);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glPointSize(8);
 
     const std::string str = "assets/background.jpg";
     sf::Texture texture;
