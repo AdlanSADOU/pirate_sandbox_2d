@@ -1,8 +1,7 @@
 #include "server.h"
 
-sf::TcpListener listener;
+sf::UdpSocket serverSocket;
 std::vector<Client> clients;
-sf::SocketSelector selector;
 sf::Clock rateClock;
 
 bool running = true;
@@ -26,97 +25,98 @@ int main(int argc, char const *argv[])
     sf::TcpSocket tmpClient;
     sf::Socket::Status clientStatus;
 
-    listener.listen(8889);
-    selector.add(listener);
+    serverSocket.bind(8889, sf::IpAddress::getLocalAddress());
     int IDs = 0;
     sf::Int32 rate = 4;
     rateClock.restart();
 
     while (running)
     {
-        if (selector.wait())
+        Client tmpClient;
+        sf::IpAddress remoteClientIp;
+        sf::Packet remoteClientPacket;
+        unsigned short remoteClientPort;
+        
+        if (serverSocket.receive(remoteClientPacket, remoteClientIp, remoteClientPort) == sf::Socket::Done)
         {
-            if (selector.isReady(listener))
-            {
-                sf::TcpSocket *clientSocket = new sf::TcpSocket;
-                if (listener.accept(*clientSocket) == sf::Socket::Done)
-                {
-                    Client tmpClient = Client(clientSocket, IDs++);
-                    printf("client with ID %d connected\n", tmpClient.id);
+            sf::Int8 rpcType;
+            remoteClientPacket >> rpcType;
 
-                    clients.push_back(tmpClient);
-                    selector.add(*clientSocket);
-                    
-                    // tell other clients that someone just connected
-                    if (clients.size() > 1)
+            switch (rpcType)
+            {
+            case RpcType::CONNECT:
+                tmpClient = Client(remoteClientIp, remoteClientPort, serverSocket, IDs++);
+                printf("client with ID %d connected\n", tmpClient.id);
+
+                clients.push_back(tmpClient);
+                // selector.add(*tmpClient.socket);
+
+                if (clients.size() > 1)
+                {
+                    for (size_t i = 0; i < clients.size(); i++)
                     {
-                        for (size_t i = 0; i < clients.size(); i++)
-                        {
-                            if (clients[i].id == tmpClient.id)
-                                continue;
-                            
-                        }
+                        if (clients[i].id == tmpClient.id)
+                            continue;
+                        clients[i].SendRemoteClientId(IDs);
                     }
                 }
-                else
-                {
-                    delete clientSocket;
-                }
-            }
-            else
-            {
+                break;
+
+            case RpcType::PLAYER_AXIS:
+                receivePlayerAxis(remoteClientPacket);
 
                 for (size_t i = 0; i < clients.size(); i++)
                 {
-                    sf::Packet packet;
-                    RpcType type;
-
-                    Client m_client;
-                    m_client = (clients[i]);
-
-                    if (selector.isReady(*m_client.socket))
+                    if (clients[i].id == tmpClient.id)
+                        continue;
+                    if (rateClock.getElapsedTime().asMilliseconds() > rate)
                     {
-
-                        if ((*m_client.socket).receive(packet) == sf::Socket::Done)
-                        {
-                            sf::Int8 pType;
-                            packet >> pType;
-
-                            // printf("Client said: %s\n", str.toAnsiString().c_str());
-                            // messageType = *str.toAnsiString().c_str();
-                            //printf("packet type: %c from client n° %d ", messageType, m_client.id);
-
-                            switch (pType)
-                            {
-                            case RpcType::PLAYER_AXIS:
-                                receivePlayerAxis(packet);
-
-                                for (size_t i = 0; i < clients.size(); i++)
-                                {
-                                    if (clients[i].id == m_client.id)
-                                        continue;
-                                    if (rateClock.getElapsedTime().asMilliseconds() > rate)
-                                    {
-                                        printf("sending data from client %d to client %d\n", m_client.id, clients[i].id);
-                                        packet << (sf::Int32)m_client.id;
-                                        clients[i].socket->send(packet);
-                                        rateClock.restart();
-                                    }
-                                    {
-                                        //printf("time %d < rate %d\n", rateClock.getElapsedTime().asMilliseconds(), rate);
-                                    }
-                                }
-                                break;
-
-                            default:
-                                break;
-                            }
-                        }
+                        printf("sending data from client %d to client %d\n", tmpClient.id, clients[i].id);
+                        remoteClientPacket << (sf::Int32)tmpClient.id;
+                        serverSocket.send(remoteClientPacket, clients[i].ip, clients[i].port);
+                        rateClock.restart();
+                    }
+                    {
+                        //printf("time %d < rate %d\n", rateClock.getElapsedTime().asMilliseconds(), rate);
                     }
                 }
-                // client 0
+                break;
+
+            default:
+                break;
             }
         }
+        else
+        {
+        }
+
+        // for (size_t i = 0; i < clients.size(); i++)
+        // {
+        //     sf::Packet packet;
+        //     RpcType type;
+
+        //     Client m_client;
+        //     m_client = (clients[i]);
+
+        //     if (serverSocket.receive(packet, m_client.ip, m_client.port))
+        //     {
+
+        //         sf::Int8 pType;
+        //         packet >> pType;
+
+        //         // printf("Client said: %s\n", str.toAnsiString().c_str());
+        //         // messageType = *str.toAnsiString().c_str();
+        //         //printf("packet type: %c from client n° %d ", messageType, m_client.id);
+
+        //         switch (pType)
+        //         {
+
+        //         default:
+        //             break;
+        //         }
+        //     }
+        // }
+        // client 0
     }
 
     system("PAUSE");

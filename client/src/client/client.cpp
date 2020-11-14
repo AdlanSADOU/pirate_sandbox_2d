@@ -1,5 +1,7 @@
 #include "client.h"
 
+sf::IpAddress gServerIP;
+unsigned short gServerPort;
 
 void Client::DrawRemotePlayers()
 {
@@ -43,7 +45,10 @@ void Client::Start()
     remotePlayers[0]->SetPosition({400, 300});
 
     printf("running client...\n");
-    sf::Socket::Status status = client.connect(sf::IpAddress::getLocalAddress(), 8889);
+    sf::Packet packet;
+    packet << RpcType::CONNECT;
+
+    sf::Socket::Status status = client.send(packet, sf::IpAddress::getLocalAddress(), 8889);
     if (status != sf::Socket::Done)
     {
         printf("Server connection failed...\n");
@@ -61,8 +66,10 @@ void Client::Start()
 void Client::Route()
 {
     sf::Packet packet;
+    sf::IpAddress serverIP;
+    unsigned short serverPort;
 
-    if (client.receive(packet) == sf::Socket::Done)
+    if (client.receive(packet, serverIP, serverPort) == sf::Socket::Done)
     {   
         sf::Int8 type;
         packet >> type;
@@ -75,7 +82,9 @@ void Client::Route()
         case RpcType::PLAYER_ID:
             sf::Int32 myId;
             packet >> myId;
-
+            Client::myId = myId;
+            gServerIP = serverIP;
+            gServerPort = serverPort;
             printf("received myId %d\n", myId);
         default:
             break;
@@ -85,20 +94,21 @@ void Client::Route()
 
 void Client::SendPacket(sf::Packet &packet)
 {
-    sf::Socket::Status sendStatus = client.send(packet);
+
+    sf::Socket::Status sendStatus = client.send(packet, gServerIP, gServerPort);
 
     if (sendStatus == sf::Socket::Done) {
         //printf("packet send %zd bytes, is data left ?: %d \n", packet.getDataSize(), packet.endOfPacket());
     } else if (sendStatus == sf::Socket::Partial) {
         printf("partially send, is data left ? : %d\n", packet.endOfPacket());
     } else if (sendStatus == sf::Socket::Error) {
-        printf("an error occured during send");
+        printf("an error occured during send\n");
+        printf("server IP: %s\nPort: %d\n", gServerIP.toString().c_str(), gServerPort);
     }
 }
 
 void Client::Disconnect()
 {
-    client.disconnect();
 }
 
 

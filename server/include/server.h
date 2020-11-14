@@ -11,6 +11,7 @@
 
 
 typedef enum RemoteProcedureCallType {
+    CONNECT,
     PLAYER_AXIS,
     PLAYER_ID,
     REMOTE_ID,
@@ -20,13 +21,19 @@ typedef enum RemoteProcedureCallType {
 class Client
 {
 public:
-    sf::TcpSocket *socket;
+    sf::UdpSocket *serverSocket;
+    sf::IpAddress ip;
+    unsigned short port;
+
     int id = 0;
 
     Client() {};
 
-    Client(sf::TcpSocket *m_socket, int m_ID) {
-        this->socket = m_socket;
+    Client(sf::IpAddress m_ip, unsigned int m_port, sf::UdpSocket &m_serverSocket, int m_ID) {
+        // this->socket->bind(m_port, m_ip);
+        this->ip = m_ip;
+        this->port = m_port;
+        this->serverSocket = &m_serverSocket;
         this->id = m_ID;
         this->SendId();
     }
@@ -34,16 +41,16 @@ public:
     void SendId() {
         sf::Packet packet;
 
-        packet << static_cast<sf::Uint8>(RpcType::REMOTE_ID);
+        packet << static_cast<sf::Uint8>(RpcType::PLAYER_ID);
         packet << this->id;
-        this->socket->send(packet);
+        this->serverSocket->send(packet, this->ip, this->port);
     }
 
     void SendRemoteClientId(int m_id) {
         sf::Packet packet;
 
-        packet << static_cast<sf::Uint8>(RpcType::PLAYER_ID);
+        packet << static_cast<sf::Uint8>(RpcType::REMOTE_ID);
         packet << m_id;
-        this->socket->send(packet);
+        this->serverSocket->send(packet, this->ip, this->port);
     }
 };

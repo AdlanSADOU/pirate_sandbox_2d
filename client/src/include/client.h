@@ -7,13 +7,15 @@ namespace Client
 {
     typedef enum RemoteProcedureCallType
     {
+        CONNECT,
         PLAYER_AXIS,
         PLAYER_ID,
         REMOTE_ID,
 
     } RpcType;
 
-    static sf::TcpSocket client;
+    static sf::UdpSocket client;
+    static sf::Int32 myId;
     static std::vector<Entity *> remotePlayers;
 
     void Start();
