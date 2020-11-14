@@ -109,7 +109,6 @@ int main()
     sf::ContextSettings settings = gWindow->getSettings();
     ImGui::SFML::Init(*gWindow, true);
     
-    clientStart();
     gameInit();
 
     glEnable(GL_POINT_SMOOTH);
@@ -158,6 +157,6 @@ int main()
         deltaTime = 1.0f / fps * 100.0f;
     }
 
-    clientDisconnect();
+    Client::Disconnect();
     return 0;
 }

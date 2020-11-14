@@ -4,8 +4,8 @@
 #include "particles.h"
 #include "client.h"
 
-// extern S2D_Window *gWindow;
 Entity playerClass;
+
 //ParticlePool particlePool;
 
 sf::Sprite background;
@@ -42,6 +42,8 @@ void gameInput(sf::Event e)
 
 void gameInit()
 {
+    Client::Start();
+
     playerClass = Entity("assets/PlayerRed_Frame_01_png_processed.png");
     playerClass.SetPosition({3840 / 2, 2160 / 2});
     //particlePool = ParticlePool();
@@ -106,9 +108,9 @@ void cameraMove()
 */
 void gameUpdate()
 {
-    clientRoute();
+    Client::Route();
     playerClass.Move(xAxis, yAxis);
-    clientSendPlayerAxis(xAxis, yAxis);
+    Client::SendPlayerAxis(xAxis, yAxis);
 
     playerClass.RotateSprite(xAxis, yAxis, 90);
     if (space) {
@@ -135,7 +137,7 @@ void gameRender()
     RenderEnnemies();
     renderParticules();
     gWindow->draw(*playerClass.sprite);
-
+    Client::DrawRemotePlayers();
     //ImGui::Text("Particle count: %d", particlePool.CountParticleAlive());
     /*posDebug(playerClass.facing);
     posDebug(playerClass.position);

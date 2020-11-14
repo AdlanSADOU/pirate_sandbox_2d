@@ -1,23 +1,46 @@
 #include "client.h"
 
-sf::TcpSocket client;
 
-void receivePlayerAxis(sf::Packet &packet)
+void Client::DrawRemotePlayers()
 {
-    // printf("received axis\n");
-
-    sf::Int32 x;
-    sf::Int32 y;
-    sf::Int32 client_id;
-
-    packet >> x >> y >> client_id;
-
-    printf("player (%d, %d)", x, y);
-    printf("from player %d\n", (int)client_id);
+    gWindow->draw(*remotePlayers[0]->sprite);
 }
 
-void clientStart()
+void Client::ReceiveRemotePlayerAxis(sf::Packet &packet)
 {
+    float x;
+    float y;
+    sf::Int32 remoteClientId;
+
+    packet >> x >> y >> remoteClientId;
+    remotePlayers[0]->Move(x, y);
+    printf("player (%f, %f)", x, y);
+    printf("from player %d\n", remoteClientId);
+}
+
+void Client::SendPlayerAxis(float x, float y)
+{
+    sf::Packet packet;
+    sf::Int8 rpc = RpcType::PLAYER_AXIS;
+    packet << rpc << x << y;
+
+    sf::Int8 trpc;
+    float tx;
+    float ty;
+
+    packet >> trpc >> tx >> ty;
+
+    SendPacket(packet);    
+}
+
+/////////////////////////////////////////////////////////////////////////
+/// CLIENT START
+void Client::Start()
+{
+    remotePlayers.push_back(new Entity("assets/PlayerRed_Frame_01_png_processed.png"));
+
+    // before doing this, server must send  remote clients positions
+    remotePlayers[0]->SetPosition({400, 300});
 
     printf("running client...\n");
     sf::Socket::Status status = client.connect(sf::IpAddress::getLocalAddress(), 8889);
@@ -31,89 +54,51 @@ void clientStart()
         printf("Connected to server\n");
     }
 
-    // sf::Packet packet;
-    // int x = 256;
-    // sf::String str = "marton sucks\n";
-    // packet << str;
-    // printf("packet conaints %zd bytes of data\n", packet.getDataSize());
-    // sf::Socket::Status sendStatus = client.send(packet);
-    // if (sendStatus == sf::Socket::Done) {
-    //     printf("packet send %zd bytes, is data left ?: %d \n", packet.getDataSize(), packet.endOfPacket());
-    // } else if (sendStatus == sf::Socket::Partial) {
-    //     printf("partially send, is data left ? : %d\n", packet.endOfPacket());
-    // } else if (sendStatus == sf::Socket::Error) {
-    //     printf("an error occured during send");
-    // }
-
     client.setBlocking(false);
-    sf::Packet recPacket;
-    sf::String recStr = "";
-    client.receive(recPacket);
+    
 }
 
-void clientRoute()
+void Client::Route()
 {
     sf::Packet packet;
-    char messageType;
 
     if (client.receive(packet) == sf::Socket::Done)
-    {
-        sf::String str = "";
-        if(!(packet >> str)) {
-            printf("error while reading packet\n");
-        }
-        
-        // printf("Client said: %s\n", str.toAnsiString().c_str());
-        messageType = *str.toAnsiString().c_str();
-        
-        printf("received type %c packet | ", messageType);
+    {   
+        sf::Int8 type;
+        packet >> type;
 
-        switch (messageType)
+        switch (type)
         {
-        case 'A':
-            receivePlayerAxis(packet);
+        case RpcType::PLAYER_AXIS:
+            ReceiveRemotePlayerAxis(packet);
             break;
-        case 'I':
-            sf::Int32 id;
-            packet >> id;
-            printf("received ID %d\n", id);
+        case RpcType::PLAYER_ID:
+            sf::Int32 myId;
+            packet >> myId;
+
+            printf("received myId %d\n", myId);
         default:
             break;
         }
     }
 }
 
-void clientDisconnect()
+void Client::SendPacket(sf::Packet &packet)
+{
+    sf::Socket::Status sendStatus = client.send(packet);
+
+    if (sendStatus == sf::Socket::Done) {
+        //printf("packet send %zd bytes, is data left ?: %d \n", packet.getDataSize(), packet.endOfPacket());
+    } else if (sendStatus == sf::Socket::Partial) {
+        printf("partially send, is data left ? : %d\n", packet.endOfPacket());
+    } else if (sendStatus == sf::Socket::Error) {
+        printf("an error occured during send");
+    }
+}
+
+void Client::Disconnect()
 {
     client.disconnect();
 }
 
-void clientSendPlayerAxis(sf::Int32 x, sf::Int32 y)
-{
-    sf::Packet packet;
-    sf::String str = "A";
-    packet << str << x << y;
 
-    sf::String tstr;
-    sf::Int32 tx;
-    sf::Int32 ty;
-
-    packet >> str >> tx >> ty;
-
-    // printf("%s %d %d\n", str.toAnsiString().c_str(), tx, ty);
-
-    // printf("packet conaints %zd bytes of data\n", packet.getDataSize());
-    sf::Socket::Status sendStatus = client.send(packet);
-    if (sendStatus == sf::Socket::Done)
-    {
-        //printf("packet send %zd bytes, is data left ?: %d \n", packet.getDataSize(), packet.endOfPacket());
-    }
-    else if (sendStatus == sf::Socket::Partial)
-    {
-        printf("partially send, is data left ? : %d\n", packet.endOfPacket());
-    }
-    else if (sendStatus == sf::Socket::Error)
-    {
-        printf("an error occured during send");
-    }
-}
