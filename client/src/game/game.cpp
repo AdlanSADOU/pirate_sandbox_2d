@@ -9,6 +9,7 @@ class Player
 public:
     Entity entity;
     Projectiles projectile;
+    ParticleSystem particleSystem;
 
     Player(){};
     Player(const char *path) {
@@ -17,11 +18,12 @@ public:
     }
 
     void Update() {
-
+        particleSystem.pushPart(entity);
     }
 
     void Render() {
         projectile.RenderShoot();
+        particleSystem.renderParticules();
     }
 
     void Move(float xAxis, float yAxis) {
@@ -141,10 +143,10 @@ void gameInit()
 
 void gameUpdate()
 {
+    player.Update();
     player.Move(xAxis, yAxis);
     player.Shoot(space);
     //PushEngineParticules();
-    pushPart();
     CameraFollow(player.entity);
 
 }
@@ -164,7 +166,6 @@ void gameRender()
     // RenderShoot();
     player.Render();
     RenderEnnemies();
-    renderParticules();
     gWindow->draw(*player.entity.sprite);
     //ImGui::Text("Particle count: %d", particlePool.CountParticleAlive());
     /*posDebug(playerClass.facing);

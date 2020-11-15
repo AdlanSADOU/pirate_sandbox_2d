@@ -4,19 +4,26 @@
 
 #include "game.h"
 
-class Particule {
+class Particule
+{
 public:
     sf::Color color;
     sf::VertexArray circle;
     sf::Vector2f direction;
     sf::Vector2f randomDirection;
     bool dead = false;
-    
-    Particule() {
+
+    Particule()
+    {
         this->circle = sf::VertexArray(sf::Points, 1);
     }
 };
 
-void renderParticules();
-void pushPart(void);
-float vector_magnitude(sf::Vector2f vector);
+class ParticleSystem
+{
+    std::vector<Particule *> Particules;
+    Particule *createParticules(int offsetX, int offsetY, int size, sf::Vector2f randomDirection, Entity &entity);
+public:
+    void renderParticules();
+    void pushPart(Entity &entity);
+};
