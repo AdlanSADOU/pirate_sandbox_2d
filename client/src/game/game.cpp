@@ -8,11 +8,20 @@ class Player
 {
 public:
     Entity entity;
+    Projectiles projectile;
 
     Player(){};
     Player(const char *path) {
         entity = Entity(path);
         entity.SetPosition({3840 / 2, 2160 / 2});
+    }
+
+    void Update() {
+
+    }
+
+    void Render() {
+        projectile.RenderShoot();
     }
 
     void Move(float xAxis, float yAxis) {
@@ -27,7 +36,7 @@ public:
 
     void Shoot(bool key) {
         if (key) {
-            playerShoot();
+            projectile.PlayerShoot(&this->entity);
         }
     }
 };
@@ -137,6 +146,7 @@ void gameUpdate()
     //PushEngineParticules();
     pushPart();
     CameraFollow(player.entity);
+
 }
 
 void posDebug(sf::Vector2f pos)
@@ -151,7 +161,8 @@ void posDebug(sf::Vector2f pos)
 void gameRender()
 {
     //renderEngineParticules();
-    RenderShoot();
+    // RenderShoot();
+    player.Render();
     RenderEnnemies();
     renderParticules();
     gWindow->draw(*player.entity.sprite);

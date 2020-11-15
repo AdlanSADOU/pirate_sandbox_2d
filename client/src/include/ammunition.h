@@ -6,6 +6,8 @@
 
 #define ROF_GREEN_LASER (0.15)
 
+Entity *getPlayer(void);
+
 typedef struct {
     Entity *entity;
     sf::FloatRect rect;
@@ -18,7 +20,20 @@ typedef struct {
     int dmg;
 } AmmunitionType;
 
+class Projectiles
+{
+    sf::Clock ROFClock;
 
-Entity *getPlayer(void);
-void playerShoot(void);
-void RenderShoot(void);
+    AmmunitionType *CreateAmmo(Entity *entity);
+    void UpdatePosition(AmmunitionType *ammo);
+    void FreeShoot(AmmunitionType *ammo, int index);
+    void CheckIfHit(AmmunitionType *ammo, int index);
+    void UpdateShoot(AmmunitionType *ammo, int index);
+
+public:
+    std::vector<AmmunitionType *> Ammunitions;
+    
+    void PlayerShoot(Entity *entity);
+    void RenderShoot(void);
+
+};
