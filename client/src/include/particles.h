@@ -2,7 +2,9 @@
 
 #pragma once
 
-#include "game.h"
+#include <SFML/System.hpp>
+#include "entity.h"
+
 
 class Particule
 {
@@ -21,9 +23,11 @@ public:
 
 class ParticleSystem
 {
+    
     std::vector<Particule *> Particules;
     Particule *createParticules(int offsetX, int offsetY, int size, sf::Vector2f randomDirection, Entity &entity);
 public:
-    void renderParticules();
-    void pushPart(Entity &entity);
+    ParticleSystem(){};
+    void Update(Entity &entity);
+    void Render(sf::RenderWindow &window);
 };

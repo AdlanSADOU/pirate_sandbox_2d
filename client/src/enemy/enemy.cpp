@@ -4,18 +4,8 @@
 
 std::vector<EnnemyType *> Ennemies;
 
-sf::Vector2f GetRandomNormalizedVector()
-{
-    float randX = (-1.0f + float(rand() % 200 / 100.0f));
-    float randY = (-1.0f + float(rand() % 200 / 100.0f));
-
-    return (sf::Vector2f(randX, randY));
-}
-
 EnnemyType *PushEnnemy()
 {
-    Entity *playerClass = getPlayer();
-
     //Init
     EnnemyType *ennemy = (EnnemyType *)malloc(sizeof(EnnemyType));
     ennemy->entity = new Entity("assets/256px/Enemy02_Teal_Frame_1_png_processed.png");
@@ -26,12 +16,11 @@ EnnemyType *PushEnnemy()
     ennemy->explosion->SetPosition(sf::Vector2f{1500, 1000});
     ennemy->explosion->sprite->setScale(sf::Vector2f(1.5, 1.5));
 
-
     //Common attributes
     ennemy->speed = rand() % 7 + 1;
     ennemy->dead = 0;
     ennemy->hp = 100;
-    ennemy->direction = GetRandomNormalizedVector();
+    ennemy->direction = utils::GetRandomNormalizedVector();
     ennemy->entity->SetPosition(sf::Vector2f{1500, 1000});
     ennemy->entity->RotateSprite(ennemy->direction.x, ennemy->direction.y, 270);
     ennemy->lifeClock.restart();
@@ -99,15 +88,15 @@ std::vector<EnnemyType *> GetEnnemies()
     return (Ennemies);
 }
 
-void RenderEnnemies()
+void RenderEnnemies(sf::RenderWindow &window)
 {
     for (int i = 0; i < Ennemies.size(); i++) {
 
         if (Ennemies[i]->dead) {
-            gWindow->draw(*Ennemies[i]->explosion->sprite);
+            window.draw(*Ennemies[i]->explosion->sprite);
         }
         else if (!Ennemies[i]->dead) {
-            gWindow->draw(*Ennemies[i]->entity->sprite);
+            window.draw(*Ennemies[i]->entity->sprite);
         }
         UpdateEnnemy(Ennemies[i], i);
     }

@@ -1,8 +1,8 @@
 #include "client.h"
 
-void Client::DrawRemotePlayers()
+void Client::DrawRemotePlayers(sf::RenderWindow &window)
 {
-    gWindow->draw(*remotePlayers[0]->sprite);
+    window.draw(*remotePlayers[0]->sprite);
 }
 
 void Client::ReceiveRemotePlayerAxis(sf::Packet &packet)

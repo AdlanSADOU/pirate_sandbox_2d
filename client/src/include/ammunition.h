@@ -2,11 +2,13 @@
 
 #pragma once
 
-#include "game.h"
+// #include "game.h"
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
+
+#include "entity.h"
 
 #define ROF_GREEN_LASER (0.15)
-
-Entity *getPlayer(void);
 
 typedef struct {
     Entity *entity;
@@ -34,6 +36,6 @@ public:
     std::vector<AmmunitionType *> Ammunitions;
     
     void PlayerShoot(Entity *entity);
-    void RenderShoot(void);
+    void RenderShoot(sf::RenderWindow &window);
 
 };

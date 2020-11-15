@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game.h"
+#include "entity.h"
 #include "SFML/Network.hpp"
 
 namespace Client
@@ -20,7 +21,7 @@ namespace Client
     void Disconnect();
     void Route();
     void SendPacket(sf::Packet &packet);
-    void DrawRemotePlayers();
+    void DrawRemotePlayers(sf::RenderWindow &window);
     void SendPlayerAxis(float x, float y);
     void ReceiveRemotePlayerAxis(sf::Packet &packet);
 }; // namespace Client

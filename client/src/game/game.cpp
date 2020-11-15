@@ -1,66 +1,22 @@
 //#include "game.h"
 
 #include "game.h"
-#include "particles.h"
 #include "client.h"
+#include "player.h"
+#include "enemy.h"
 
-class Player
-{
-public:
-    Entity entity;
-    Projectiles projectile;
-    ParticleSystem particleSystem;
-
-    Player(){};
-    Player(const char *path) {
-        entity = Entity(path);
-        entity.SetPosition({3840 / 2, 2160 / 2});
-    }
-
-    void Update() {
-        particleSystem.pushPart(entity);
-    }
-
-    void Render() {
-        projectile.RenderShoot();
-        particleSystem.renderParticules();
-    }
-
-    void Move(float xAxis, float yAxis) {
-        entity.up = up;
-        entity.down = down;
-        entity.right = right;
-        entity.left = left;
-
-        entity.Move(xAxis, yAxis);
-        entity.RotateSprite(xAxis, yAxis, 90);
-    }
-
-    void Shoot(bool key) {
-        if (key) {
-            projectile.PlayerShoot(&this->entity);
-        }
-    }
-};
+sf::Sprite background;
+extern float xAxis;
+extern float yAxis;
+bool space = false;
 
 //ParticlePool particlePool;
 Player player;
-sf::Sprite background;
-float xAxis;
-float yAxis;
 
-bool space = false;
-
-/*float vector_magnitude(sf::Vector2f vector)
-{
-    float magnitude = sqrt(pow(vector.x, 2) + pow(vector.y, 2));
-    return (magnitude);
-}*/
-
-void CameraFollow(Entity entity)
+void CameraFollow(Entity entity, sf::RenderWindow &window)
     {
         sf::View view = sf::View();
-        view.setSize({(float)gWindow->getSize().x, (float)gWindow->getSize().y});
+        view.setSize({(float)window.getSize().x, (float)window.getSize().y});
         sf::Vector2f playerPos = entity.GetPos();
         if (playerPos.x >= 3200)
             playerPos.x = 3200;
@@ -71,7 +27,7 @@ void CameraFollow(Entity entity)
         if (playerPos.y <= 360)
             playerPos.y = 360;
         view.setCenter(playerPos);
-        gWindow->setView(view);
+        window.setView(view);
     }
 
 void gameInput(sf::Event e)
@@ -141,36 +97,34 @@ void gameInit()
 }
 */
 
-void gameUpdate()
+void gameUpdate(float dt)
 {
     player.Update();
-    player.Move(xAxis, yAxis);
-    player.Shoot(space);
     //PushEngineParticules();
-    CameraFollow(player.entity);
 
 }
 
-void posDebug(sf::Vector2f pos)
+void gameRender(sf::RenderWindow &window)
+{
+    //renderEngineParticules();
+    // RenderShoot();
+    CameraFollow(player.entity, window);
+    player.Render(window);
+    RenderEnnemies(window);
+    // window.draw(*player.entity.sprite);
+    //ImGui::Text("Particle count: %d", particlePool.CountParticleAlive());
+    /*posDebug(playerClass.facing);
+    posDebug(playerClass.position);
+    posDebug(playerClass.behind);*/
+}
+
+void posDebug(sf::Vector2f pos, sf::RenderWindow &window)
 {
     sf::CircleShape dot = sf::CircleShape();
     dot.setPosition({pos.x - 2, pos.y - 2});
     dot.setFillColor(sf::Color::White);
     dot.setRadius(4.0f);
-    gWindow->draw(dot);
-}
-
-void gameRender()
-{
-    //renderEngineParticules();
-    // RenderShoot();
-    player.Render();
-    RenderEnnemies();
-    gWindow->draw(*player.entity.sprite);
-    //ImGui::Text("Particle count: %d", particlePool.CountParticleAlive());
-    /*posDebug(playerClass.facing);
-    posDebug(playerClass.position);
-    posDebug(playerClass.behind);*/
+    window.draw(dot);
 }
 
 Entity *getPlayer()

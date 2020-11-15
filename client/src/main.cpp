@@ -7,6 +7,8 @@ float deltaTime;
 float fps;
 float speed = 0.1f;
 bool up = false, down = false, left = false, right = false, shift = false;
+float xAxis;
+float yAxis;
 
 void onKeyHeld(sf::Keyboard::Key key)
 {
@@ -82,7 +84,7 @@ void onKeyCallback(sf::Event e)
     }
 }
 
-void update()
+void update(float dt)
 {
     if (up)
         yAxis -= deltaTime * speed;
@@ -93,7 +95,7 @@ void update()
     if (right)
         xAxis += deltaTime * speed;
 
-    gameUpdate();
+    gameUpdate(dt);
 }
 
 int main()
@@ -140,15 +142,13 @@ int main()
         ImGui::Begin("Info");
         ImGui::Text("fps: %.2f, %.2fms", fps, deltaTime);
 
-        update();
-        gameRender();
+        update(deltaTime);
+        gameRender(*gWindow);
 
         ImGui::End();
         ImGui::SFML::Render(*gWindow);
 
         gWindow->display();
-    
-        
 
         t_deltaTime = deltaClock.getElapsedTime();
 

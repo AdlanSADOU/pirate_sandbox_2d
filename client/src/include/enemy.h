@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game.h"
+#include "entity.h"
 
 typedef struct {
     Entity *entity;
@@ -19,5 +20,4 @@ typedef struct {
 
 std::vector<EnnemyType *> GetEnnemies(void);
 void CreateEnemy(void);
-void RenderEnnemies(void);
-sf::Vector2f GetRandomNormalizedVector();
+void RenderEnnemies(sf::RenderWindow &window);

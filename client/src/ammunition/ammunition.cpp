@@ -1,6 +1,9 @@
 #include "ammunition.h"
 #include "enemy.h"
 
+extern float xAxis, yAxis;
+extern bool up, down, left, right, shift;
+
 AmmunitionType *Projectiles::CreateAmmo(Entity *entity)
 {
     AmmunitionType *ammo = (AmmunitionType *)malloc(sizeof(AmmunitionType));
@@ -84,10 +87,10 @@ void Projectiles::UpdateShoot(AmmunitionType *ammo, int index)
     }
 }
 
-void Projectiles::RenderShoot() // must take window as parameter
+void Projectiles::RenderShoot(sf::RenderWindow &window) // must take window as parameter
 {
     for (int i = 0; i < Ammunitions.size(); i++) {
-        gWindow->draw(*Ammunitions[i]->entity->sprite);
+        window.draw(*Ammunitions[i]->entity->sprite);
         UpdateShoot(Ammunitions[i], i);
     }
 }

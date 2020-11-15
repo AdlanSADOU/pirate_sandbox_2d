@@ -27,3 +27,12 @@ sf::Vector2f utils::RotatePointAroundCenter(sf::Vector2f point, sf::Vector2f cen
 
     return (point);
 }
+
+
+sf::Vector2f utils::GetRandomNormalizedVector()
+{
+    float randX = (-1.0f + float(rand() % 200 / 100.0f));
+    float randY = (-1.0f + float(rand() % 200 / 100.0f));
+
+    return (sf::Vector2f(randX, randY));
+}
