@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
     sf::Socket::Status clientStatus;
 
     serverSocket.bind(8889, sf::IpAddress::getLocalAddress());
-    int IDs = 0;
+    sf::Int32 IDs = 0;
     sf::Int32 rate = 4;
     rateClock.restart();
 
@@ -89,34 +89,6 @@ int main(int argc, char const *argv[])
         else
         {
         }
-
-        // for (size_t i = 0; i < clients.size(); i++)
-        // {
-        //     sf::Packet packet;
-        //     RpcType type;
-
-        //     Client m_client;
-        //     m_client = (clients[i]);
-
-        //     if (serverSocket.receive(packet, m_client.ip, m_client.port))
-        //     {
-
-        //         sf::Int8 pType;
-        //         packet >> pType;
-
-        //         // printf("Client said: %s\n", str.toAnsiString().c_str());
-        //         // messageType = *str.toAnsiString().c_str();
-        //         //printf("packet type: %c from client n° %d ", messageType, m_client.id);
-
-        //         switch (pType)
-        //         {
-
-        //         default:
-        //             break;
-        //         }
-        //     }
-        // }
-        // client 0
     }
 
     system("PAUSE");

@@ -25,11 +25,11 @@ public:
     sf::IpAddress ip;
     unsigned short port;
 
-    int id = 0;
+    sf::Int32 id = 0;
 
     Client() {};
 
-    Client(sf::IpAddress m_ip, unsigned int m_port, sf::UdpSocket &m_serverSocket, int m_ID) {
+    Client(sf::IpAddress m_ip, unsigned int m_port, sf::UdpSocket &m_serverSocket, sf::Int32 m_ID) {
         // this->socket->bind(m_port, m_ip);
         this->ip = m_ip;
         this->port = m_port;
