@@ -42,8 +42,6 @@ void gameInput(sf::Event e)
 
 void gameInit()
 {
-    Client::Start();
-
     playerClass = Entity("assets/PlayerRed_Frame_01_png_processed.png");
     playerClass.SetPosition({3840 / 2, 2160 / 2});
     //particlePool = ParticlePool();
@@ -108,9 +106,7 @@ void cameraMove()
 */
 void gameUpdate()
 {
-    Client::Route();
     playerClass.Move(xAxis, yAxis);
-    Client::SendPlayerAxis(xAxis, yAxis);
 
     playerClass.RotateSprite(xAxis, yAxis, 90);
     if (space) {
@@ -137,7 +133,6 @@ void gameRender()
     RenderEnnemies();
     renderParticules();
     gWindow->draw(*playerClass.sprite);
-    Client::DrawRemotePlayers();
     //ImGui::Text("Particle count: %d", particlePool.CountParticleAlive());
     /*posDebug(playerClass.facing);
     posDebug(playerClass.position);
