@@ -1,18 +1,16 @@
 #include "ammunition.h"
 #include "enemy.h"
 
-std::vector<AmmunitionType *> Ammunitions;
-sf::Clock ROFClock;
+extern float xAxis, yAxis;
+extern bool up, down, left, right, shift;
 
-AmmunitionType *CreateAmmo()
+AmmunitionType *Projectiles::CreateAmmo(Entity *entity, const char *path)
 {
-    Entity *playerClass = getPlayer();
-
     AmmunitionType *ammo = (AmmunitionType *)malloc(sizeof(AmmunitionType));
     ammo->speed = 5.0f + sqrt((xAxis * xAxis) + (yAxis * yAxis));
-    ammo->direction = sf::Vector2f(cos(playerClass->angle * M_PI / 180), sin(playerClass->angle * M_PI / 180));
-    ammo->entity = new Entity("assets/256px/Laser_Large_png_processed.png");
-    ammo->entity->SetPosition(playerClass->GetPos());
+    ammo->direction = sf::Vector2f(cos(entity->angle * M_PI / 180), sin(entity->angle * M_PI / 180));
+    ammo->entity = new Entity(path);
+    ammo->entity->SetPosition(entity->GetPos());
     ammo->dmg = 50;
     ammo->destroyed = 0;
     ammo->clock.restart();
@@ -21,17 +19,17 @@ AmmunitionType *CreateAmmo()
     return (ammo);
 }
 
-void playerShoot()
+void Projectiles::PlayerShoot(Entity *entity, const char *ammoSpritePath)
 {
     sf::Time shootingTime = ROFClock.getElapsedTime();
 
     if (shootingTime.asSeconds() > ROF_GREEN_LASER) {
-        Ammunitions.push_back(CreateAmmo());
+        Ammunitions.push_back(CreateAmmo(entity, ammoSpritePath));
         ROFClock.restart();
     }
 }
 
-void UpdatePosition(AmmunitionType *ammo)
+void Projectiles::UpdatePosition(AmmunitionType *ammo)
 {
     sf::Time time = ammo->clock.getElapsedTime();
 
@@ -42,14 +40,14 @@ void UpdatePosition(AmmunitionType *ammo)
     }
 }
 
-void FreeShoot(AmmunitionType *ammo, int index)
+void Projectiles::FreeShoot(AmmunitionType *ammo, int index)
 {
     ammo->entity->FreeEntity();
     free(ammo);
     Ammunitions.erase(Ammunitions.begin() + index);
 }
 
-void CheckIfHit(AmmunitionType *ammo, int index)
+void Projectiles::CheckIfHit(AmmunitionType *ammo, int index)
 {
     std::vector<EnnemyType *> Ennemies = GetEnnemies();
 
@@ -62,7 +60,7 @@ void CheckIfHit(AmmunitionType *ammo, int index)
         sf::FloatRect ennemyRect = Ennemies[i]->entity->sprite->getGlobalBounds();
 
         //Check if intersects
-        if (ennemyRect.intersects(ammoRect)) {
+        if (ennemyRect.intersects(ammoRect) && Projectiles::ownedByPlayer) {
             ammo->destroyed = 1;
             Ennemies[i]->hp -= ammo->dmg;
             if (Ennemies[i]->hp <= 0) {
@@ -74,7 +72,7 @@ void CheckIfHit(AmmunitionType *ammo, int index)
     }
 }
 
-void UpdateShoot(AmmunitionType *ammo, int index)
+void Projectiles::UpdateShoot(AmmunitionType *ammo, int index)
 {
     UpdatePosition(ammo);
     CheckIfHit(ammo, index);
@@ -89,10 +87,10 @@ void UpdateShoot(AmmunitionType *ammo, int index)
     }
 }
 
-void RenderShoot()
+void Projectiles::RenderShoot(sf::RenderWindow &window) // must take window as parameter
 {
     for (int i = 0; i < Ammunitions.size(); i++) {
-        gWindow->draw(*Ammunitions[i]->entity->sprite);
+        window.draw(*Ammunitions[i]->entity->sprite);
         UpdateShoot(Ammunitions[i], i);
     }
 }

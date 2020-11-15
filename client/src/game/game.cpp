@@ -1,39 +1,44 @@
 //#include "game.h"
 
 #include "game.h"
-#include "particles.h"
 #include "client.h"
-
-// extern S2D_Window *gWindow;
-Entity playerClass;
-//ParticlePool particlePool;
+#include "player.h"
+#include "enemy.h"
 
 sf::Sprite background;
-float xAxis;
-float yAxis;
+extern float xAxis;
+extern float yAxis;
+extern bool space;
 
-bool space = false;
+Player player;
 
-/*float vector_magnitude(sf::Vector2f vector)
-{
-    float magnitude = sqrt(pow(vector.x, 2) + pow(vector.y, 2));
-    return (magnitude);
-}*/
+void CameraFollow(Entity entity, sf::RenderWindow &window)
+    {
+        sf::View view = sf::View();
+        view.setSize({(float)window.getSize().x, (float)window.getSize().y});
+        sf::Vector2f entityPos = entity.GetPos();
+        if (entityPos.x >= 3200)
+            entityPos.x = 3200;
+        if (entityPos.y >= 1800)
+            entityPos.y = 1800;
+        if (entityPos.x <= 640)
+            entityPos.x = 640;
+        if (entityPos.y <= 360)
+            entityPos.y = 360;
+        view.setCenter(entityPos);
+        window.setView(view);
+    }
 
 void gameInput(sf::Event e)
 {
     switch (e.type)
     {
     case sf::Event::EventType::KeyPressed:
-        if (e.key.code == sf::Keyboard::Space)
-            space = true;
+        
         if (e.key.code == sf::Keyboard::B)
             CreateEnemy();
         break;
-    case sf::Event::EventType::KeyReleased:
-        if (e.key.code == sf::Keyboard::Space)
-            space = false;
-        break;
+
 
     default:
         break;
@@ -42,26 +47,8 @@ void gameInput(sf::Event e)
 
 void gameInit()
 {
-    playerClass = Entity("assets/PlayerRed_Frame_01_png_processed.png");
-    playerClass.SetPosition({3840 / 2, 2160 / 2});
+    player = Player("assets/PlayerRed_Frame_01_png_processed.png");
     //particlePool = ParticlePool();
-}
-
-void cameraMove()
-{
-    sf::View view = sf::View();
-    view.setSize({(float)gWindow->getSize().x, (float)gWindow->getSize().y});
-    sf::Vector2f playerPos = playerClass.GetPos();
-    if (playerPos.x >= 3200)
-        playerPos.x = 3200;
-    if (playerPos.y >= 1800)
-        playerPos.y = 1800;
-    if (playerPos.x <= 640)
-        playerPos.x = 640;
-    if (playerPos.y <= 360)
-        playerPos.y = 360;
-    view.setCenter(playerPos);
-    gWindow->setView(view);
 }
 
 /*void PushEngineParticules()
@@ -75,10 +62,10 @@ void cameraMove()
         speed = 1;
     int life = 20;
 
-    sf::Vector2f playerBack = playerClass.behind;
+    sf::Vector2f playerBack = player.playerClass.behind;
 
-    sf::Vector2f direction = RotatePointAroundCenter(playerClass.behind_far, playerClass.position, (-0.6f + float(rand() % 120 / 100.0f)));
-    float angle_direction = atan2((direction.y - playerClass.position.y), (direction.x - playerClass.position.x));
+    sf::Vector2f direction = RotatePointAroundCenter(player.playerClass.behind_far, player.playerClass.position, (-0.6f + float(rand() % 120 / 100.0f)));
+    float angle_direction = atan2((direction.y - player.playerClass.position.y), (direction.x - player.playerClass.position.x));
     direction = sf::Vector2f(cos(angle_direction), sin(angle_direction));
     float magnitude = vector_magnitude(direction);
     direction = sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
@@ -104,65 +91,38 @@ void cameraMove()
     particlePool.Update(gWindow);
 }
 */
-void gameUpdate()
-{
-    clientRoute();
-    playerClass.Move(xAxis, yAxis);
-    clientSendPlayerAxis(xAxis, yAxis);
 
-    playerClass.RotateSprite(xAxis, yAxis, 90);
-    if (space) {
-        playerShoot();
-    }
+void gameUpdate(float dt)
+{
+    player.Update();
     //PushEngineParticules();
-    pushPart();
-    cameraMove();
+
 }
 
-void posDebug(sf::Vector2f pos)
-{
-    sf::CircleShape dot = sf::CircleShape();
-    dot.setPosition({pos.x - 2, pos.y - 2});
-    dot.setFillColor(sf::Color::White);
-    dot.setRadius(4.0f);
-    gWindow->draw(dot);
-}
-
-void gameRender()
+void gameRender(sf::RenderWindow &window)
 {
     //renderEngineParticules();
-    RenderShoot();
-    RenderEnnemies();
-    renderParticules();
-    gWindow->draw(*playerClass.sprite);
-
+    // RenderShoot();
+    CameraFollow(player.entity, window);
+    player.Render(window);
+    RenderEnnemies(window);
+    // window.draw(*player.entity.sprite);
     //ImGui::Text("Particle count: %d", particlePool.CountParticleAlive());
     /*posDebug(playerClass.facing);
     posDebug(playerClass.position);
     posDebug(playerClass.behind);*/
 }
 
-Entity *getPlayer()
+void posDebug(sf::Vector2f pos, sf::RenderWindow &window)
 {
-    return (&playerClass);
+    sf::CircleShape dot = sf::CircleShape();
+    dot.setPosition({pos.x - 2, pos.y - 2});
+    dot.setFillColor(sf::Color::White);
+    dot.setRadius(4.0f);
+    window.draw(dot);
 }
 
-sf::Vector2f RotatePointAroundCenter(sf::Vector2f point, sf::Vector2f center, float angle_rad)
+Entity *getPlayer()
 {
-    float sin_val = sin(angle_rad);
-    float cos_val = cos(angle_rad);
-
-    // translate point back to origin:
-    point.x -= center.x;
-    point.y -= center.y;
-
-    // rotate point
-    float xnew = point.x * cos_val - point.y * sin_val;
-    float ynew = point.x * sin_val + point.y * cos_val;
-
-    // translate point back:
-    point.x = xnew + center.x;
-    point.y = ynew + center.y;
-
-    return (point);
+    return (&player.entity);
 }

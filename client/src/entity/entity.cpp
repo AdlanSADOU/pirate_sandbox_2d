@@ -86,9 +86,9 @@ int facing_offset = 100;
         float save_angle = angle_direction * 180 / M_PI;
         
         angle_direction = angle_direction * 180 / M_PI - offset;
-        this->facing = RotatePointAroundCenter(this->facing, this->position, angle_direction * M_PI / 180);
-        this->behind = RotatePointAroundCenter(this->behind, this->position, angle_direction * M_PI / 180);
-        this->behind_far = RotatePointAroundCenter(this->behind_far, this->position, angle_direction * M_PI / 180);
+        this->facing = utils::RotatePointAroundCenter(this->facing, this->position, angle_direction * M_PI / 180);
+        this->behind = utils::RotatePointAroundCenter(this->behind, this->position, angle_direction * M_PI / 180);
+        this->behind_far = utils::RotatePointAroundCenter(this->behind_far, this->position, angle_direction * M_PI / 180);
         this->angle = save_angle + 180;
 
         if (this->shift == 1 && this->right == 0 && this->left == 0 && this->up == 0 && this->down == 0)

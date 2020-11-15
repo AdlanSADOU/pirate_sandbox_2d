@@ -9,9 +9,13 @@
 #include <vector>
 #include <list>
 
-#define AXIS "A"
-#define ID "I"
 
+typedef enum RemoteProcedureCallType {
+    PLAYER_AXIS,
+    PLAYER_ID,
+    REMOTE_ID,
+
+} RpcType;
 
 class Client
 {
@@ -30,8 +34,16 @@ public:
     void SendId() {
         sf::Packet packet;
 
-        packet << static_cast<sf::String>(ID);
+        packet << static_cast<sf::Uint8>(RpcType::REMOTE_ID);
         packet << this->id;
+        this->socket->send(packet);
+    }
+
+    void SendRemoteClientId(int m_id) {
+        sf::Packet packet;
+
+        packet << static_cast<sf::Uint8>(RpcType::PLAYER_ID);
+        packet << m_id;
         this->socket->send(packet);
     }
 };

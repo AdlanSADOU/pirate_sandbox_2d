@@ -1,8 +1,13 @@
 #pragma once
 
 #include "game.h"
+#include "entity.h"
+#include "particles.h"
+#include "ammunition.h"
 
 typedef struct {
+    ParticleSystem *particleSystem;
+    Projectiles *projectile;
     Entity *entity;
     Entity *explosion;
     sf::IntRect explosionRect;
@@ -19,5 +24,4 @@ typedef struct {
 
 std::vector<EnnemyType *> GetEnnemies(void);
 void CreateEnemy(void);
-void RenderEnnemies(void);
-sf::Vector2f GetRandomNormalizedVector();
+void RenderEnnemies(sf::RenderWindow &window);

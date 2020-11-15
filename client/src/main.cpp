@@ -6,24 +6,29 @@ sf::RenderWindow *gWindow = NULL;
 float deltaTime;
 float fps;
 float speed = 0.1f;
+bool up = false, down = false, left = false, right = false, shift= false, space = false;
+float xAxis = 0, yAxis = 0;
 
 void onKeyHeld(sf::Keyboard::Key key)
 {
     switch (key) {
+    case sf::Keyboard::Space:
+        space = true;
+        break;
     case sf::Keyboard::Z:
-        playerClass.up = true;
+        up = true;
         break;
     case sf::Keyboard::Q:
-        playerClass.left = true;
+        left = true;
         break;
     case sf::Keyboard::S :
-        playerClass.down = true;
+        down = true;
         break;
     case sf::Keyboard::D:
-        playerClass.right = true;
+        right = true;
         break;
     case sf::Keyboard::LShift:
-        playerClass.shift = true;
+        shift = true;
         if (yAxis > -0.16 && yAxis < 0.01)
             yAxis = 0;
         else
@@ -41,20 +46,23 @@ void onKeyHeld(sf::Keyboard::Key key)
 void onKeyUp(sf::Keyboard::Key key)
 {
     switch (key) {
+    case sf::Keyboard::Space:
+        space = false;
+        break;
     case sf::Keyboard::Z:
-        playerClass.up = false;
+        up = false;
         break;
     case sf::Keyboard::Q:
-        playerClass.left = false;
+        left = false;
         break;
     case sf::Keyboard::S :
-        playerClass.down = false;
+        down = false;
         break;
     case sf::Keyboard::D:
-        playerClass.right = false;
+        right = false;
         break;
     case sf::Keyboard::LShift:
-        playerClass.shift = false;
+        shift = false;
         break;
     default:
         break;
@@ -81,18 +89,18 @@ void onKeyCallback(sf::Event e)
     }
 }
 
-void update()
+void update(float dt)
 {
-    if (playerClass.up)
+    if (up)
         yAxis -= deltaTime * speed;
-    if (playerClass.left)
+    if (left)
         xAxis -= deltaTime * speed;
-    if (playerClass.down)
+    if (down)
         yAxis += deltaTime * speed;
-    if (playerClass.right)
+    if (right)
         xAxis += deltaTime * speed;
 
-    gameUpdate();
+    gameUpdate(dt);
 }
 
 int main()
@@ -109,7 +117,6 @@ int main()
     sf::ContextSettings settings = gWindow->getSettings();
     ImGui::SFML::Init(*gWindow, true);
     
-    clientStart();
     gameInit();
 
     glEnable(GL_POINT_SMOOTH);
@@ -140,15 +147,13 @@ int main()
         ImGui::Begin("Info");
         ImGui::Text("fps: %.2f, %.2fms", fps, deltaTime);
 
-        update();
-        gameRender();
+        update(deltaTime);
+        gameRender(*gWindow);
 
         ImGui::End();
         ImGui::SFML::Render(*gWindow);
 
         gWindow->display();
-    
-        
 
         t_deltaTime = deltaClock.getElapsedTime();
 
@@ -158,6 +163,6 @@ int main()
         deltaTime = 1.0f / fps * 100.0f;
     }
 
-    clientDisconnect();
+    Client::Disconnect();
     return 0;
 }

@@ -27,8 +27,8 @@
                 "${workspaceFolder}/client/src/particules/*.cpp",
                 "${workspaceFolder}/client/src/client/*.cpp",
 
-                "/I", "${workspaceFolder}/client/src/include/",
-                "/I", "${workspaceFolder}/client/src/include/imgui/",
+                "/I", "${workspaceFolder}/client/include/",
+                "/I", "${workspaceFolder}/client/include/imgui/",
                 "/I", "${workspaceFolder}/vendor/SFML_x64/SFML-2.5.1/include",
 
                 "/link", "/verbose:incr", "/time",
