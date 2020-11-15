@@ -17,12 +17,14 @@ public:
 
     Player(){};
     Player(const char *path) {
+        projectile.ownedByPlayer = true;
         entity = Entity(path);
         entity.SetPosition({3840 / 2, 2160 / 2});
+
     }
 
     void Update() {
-        particleSystem.Update(entity);
+        particleSystem.Update(entity, 0, 0);
         this->Move(xAxis, yAxis);
         this->Shoot(space);
     }
@@ -45,7 +47,7 @@ public:
 
     void Shoot(bool key) {
         if (key) {
-            projectile.PlayerShoot(&this->entity);
+            projectile.PlayerShoot(&this->entity, "assets/256px/Laser_Large_png_processed.png");
         }
     }
 };

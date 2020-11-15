@@ -27,7 +27,8 @@ class ParticleSystem
     std::vector<Particule *> Particules;
     Particule *createParticules(int offsetX, int offsetY, int size, sf::Vector2f randomDirection, Entity &entity);
 public:
+
     ParticleSystem(){};
-    void Update(Entity &entity);
+    void Update(Entity &entity, int offsetX, int offsetY);
     void Render(sf::RenderWindow &window);
 };

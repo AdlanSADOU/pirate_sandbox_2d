@@ -8,6 +8,9 @@ EnnemyType *PushEnnemy()
 {
     //Init
     EnnemyType *ennemy = (EnnemyType *)malloc(sizeof(EnnemyType));
+    ParticleSystem *tmpParticleSystem = new ParticleSystem();
+    Projectiles *tmpProjectiles = new Projectiles();
+
     ennemy->entity = new Entity("assets/256px/Enemy02_Teal_Frame_1_png_processed.png");
 
     //Explosion
@@ -26,6 +29,10 @@ EnnemyType *PushEnnemy()
     ennemy->lifeClock.restart();
     ennemy->explosionClock.restart();
 
+    // Particles & Projectiles
+    ennemy->particleSystem = tmpParticleSystem;
+    ennemy->projectile = tmpProjectiles;
+    
     return (ennemy);
 }
 
@@ -76,6 +83,10 @@ void UpdateEnnemy(EnnemyType *ennemy, int index)
     sf::Time ennemyLifeTime = ennemy->lifeClock.getElapsedTime();
     UpdatePosition(ennemy);
 
+    // Update particles & projectiles
+    ennemy->particleSystem->Update(*ennemy->entity, 0, 0);
+    ennemy->projectile->PlayerShoot(ennemy->entity, "assets/256px/Minigun_Medium_png_processed.png");
+
     if (Ennemies.size() > 0) {
         if (ennemyLifeTime.asSeconds() > 30.0f || ennemy->dead == 2) {
             FreeEnemy(ennemy, index);
@@ -96,6 +107,11 @@ void RenderEnnemies(sf::RenderWindow &window)
             window.draw(*Ennemies[i]->explosion->sprite);
         }
         else if (!Ennemies[i]->dead) {
+            
+            // Render particles & projectiles
+            Ennemies[i]->particleSystem->Render(window);
+            Ennemies[i]->projectile->RenderShoot(window);
+
             window.draw(*Ennemies[i]->entity->sprite);
         }
         UpdateEnnemy(Ennemies[i], i);

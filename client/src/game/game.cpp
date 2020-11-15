@@ -8,25 +8,24 @@
 sf::Sprite background;
 extern float xAxis;
 extern float yAxis;
-bool space = false;
+extern bool space;
 
-//ParticlePool particlePool;
 Player player;
 
 void CameraFollow(Entity entity, sf::RenderWindow &window)
     {
         sf::View view = sf::View();
         view.setSize({(float)window.getSize().x, (float)window.getSize().y});
-        sf::Vector2f playerPos = entity.GetPos();
-        if (playerPos.x >= 3200)
-            playerPos.x = 3200;
-        if (playerPos.y >= 1800)
-            playerPos.y = 1800;
-        if (playerPos.x <= 640)
-            playerPos.x = 640;
-        if (playerPos.y <= 360)
-            playerPos.y = 360;
-        view.setCenter(playerPos);
+        sf::Vector2f entityPos = entity.GetPos();
+        if (entityPos.x >= 3200)
+            entityPos.x = 3200;
+        if (entityPos.y >= 1800)
+            entityPos.y = 1800;
+        if (entityPos.x <= 640)
+            entityPos.x = 640;
+        if (entityPos.y <= 360)
+            entityPos.y = 360;
+        view.setCenter(entityPos);
         window.setView(view);
     }
 
@@ -35,15 +34,11 @@ void gameInput(sf::Event e)
     switch (e.type)
     {
     case sf::Event::EventType::KeyPressed:
-        if (e.key.code == sf::Keyboard::Space)
-            space = true;
+        
         if (e.key.code == sf::Keyboard::B)
             CreateEnemy();
         break;
-    case sf::Event::EventType::KeyReleased:
-        if (e.key.code == sf::Keyboard::Space)
-            space = false;
-        break;
+
 
     default:
         break;

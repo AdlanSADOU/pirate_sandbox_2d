@@ -29,9 +29,9 @@ Particule *ParticleSystem::createParticules(int offsetX, int offsetY, int size, 
     return (part);
 }
 
-void ParticleSystem::Update(Entity &entity)
+void ParticleSystem::Update(Entity &entity, int offsetX, int offsetY)
 {
-    int size = 5, number = utils::VectorMagnitude(sf::Vector2f(xAxis, yAxis));
+    int size = 20, number = utils::VectorMagnitude(sf::Vector2f(xAxis, yAxis));
     if (number == 0)
         number = 1;
     else if (number > 3)
@@ -46,13 +46,13 @@ void ParticleSystem::Update(Entity &entity)
 
     for (int i = 0, value = 10; i != number; i++)
     {
-        Particules.push_back(createParticules(rand() % (value - value / 3), rand() % (value - value / 3), size, randomDirection, entity));
+        Particules.push_back(createParticules(rand() % (value - value / 3) + offsetX, rand() % (value - value / 3) + offsetY, size, randomDirection, entity));
         randomDirection = utils::GetRandomNormalizedVector();
-        Particules.push_back(createParticules(-(rand() % (value - value / 3)), -(rand() % (value - value / 3)), size, randomDirection, entity));
+        Particules.push_back(createParticules(-(rand() % (value - value / 3) + offsetX), -(rand() % (value - value / 3) + offsetY), size, randomDirection, entity));
         randomDirection = utils::GetRandomNormalizedVector();
-        Particules.push_back(createParticules(rand() % (value - value / 3), -(rand() % (value - value / 3)), size, randomDirection, entity));
+        Particules.push_back(createParticules(rand() % (value - value / 3) + offsetX, -(rand() % (value - value / 3) + offsetY), size, randomDirection, entity));
         randomDirection = utils::GetRandomNormalizedVector();
-        Particules.push_back(createParticules(-(rand() % (value - value / 3)), rand() % (value - value / 3), size, randomDirection, entity));
+        Particules.push_back(createParticules(-(rand() % (value - value / 3) + offsetX), rand() % (value - value / 3) + offsetY, size, randomDirection, entity));
         randomDirection = utils::GetRandomNormalizedVector();
     }
 

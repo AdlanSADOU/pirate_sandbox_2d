@@ -4,12 +4,12 @@
 extern float xAxis, yAxis;
 extern bool up, down, left, right, shift;
 
-AmmunitionType *Projectiles::CreateAmmo(Entity *entity)
+AmmunitionType *Projectiles::CreateAmmo(Entity *entity, const char *path)
 {
     AmmunitionType *ammo = (AmmunitionType *)malloc(sizeof(AmmunitionType));
     ammo->speed = 5.0f + sqrt((xAxis * xAxis) + (yAxis * yAxis));
     ammo->direction = sf::Vector2f(cos(entity->angle * M_PI / 180), sin(entity->angle * M_PI / 180));
-    ammo->entity = new Entity("assets/256px/Laser_Large_png_processed.png");
+    ammo->entity = new Entity(path);
     ammo->entity->SetPosition(entity->GetPos());
     ammo->dmg = 50;
     ammo->destroyed = 0;
@@ -19,12 +19,12 @@ AmmunitionType *Projectiles::CreateAmmo(Entity *entity)
     return (ammo);
 }
 
-void Projectiles::PlayerShoot(Entity *entity)
+void Projectiles::PlayerShoot(Entity *entity, const char *ammoSpritePath)
 {
     sf::Time shootingTime = ROFClock.getElapsedTime();
 
     if (shootingTime.asSeconds() > ROF_GREEN_LASER) {
-        Ammunitions.push_back(CreateAmmo(entity));
+        Ammunitions.push_back(CreateAmmo(entity, ammoSpritePath));
         ROFClock.restart();
     }
 }
@@ -60,7 +60,7 @@ void Projectiles::CheckIfHit(AmmunitionType *ammo, int index)
         sf::FloatRect ennemyRect = Ennemies[i]->entity->sprite->getGlobalBounds();
 
         //Check if intersects
-        if (ennemyRect.intersects(ammoRect)) {
+        if (ennemyRect.intersects(ammoRect) && Projectiles::ownedByPlayer) {
             ammo->destroyed = 1;
             Ennemies[i]->hp -= ammo->dmg;
             if (Ennemies[i]->hp <= 0) {

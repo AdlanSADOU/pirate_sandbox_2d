@@ -2,8 +2,12 @@
 
 #include "game.h"
 #include "entity.h"
+#include "particles.h"
+#include "ammunition.h"
 
 typedef struct {
+    ParticleSystem *particleSystem;
+    Projectiles *projectile;
     Entity *entity;
     Entity *explosion;
     sf::IntRect explosionRect;

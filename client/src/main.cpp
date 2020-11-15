@@ -6,13 +6,15 @@ sf::RenderWindow *gWindow = NULL;
 float deltaTime;
 float fps;
 float speed = 0.1f;
-bool up = false, down = false, left = false, right = false, shift = false;
-float xAxis;
-float yAxis;
+bool up = false, down = false, left = false, right = false, shift= false, space = false;
+float xAxis = 0, yAxis = 0;
 
 void onKeyHeld(sf::Keyboard::Key key)
 {
     switch (key) {
+    case sf::Keyboard::Space:
+        space = true;
+        break;
     case sf::Keyboard::Z:
         up = true;
         break;
@@ -44,6 +46,9 @@ void onKeyHeld(sf::Keyboard::Key key)
 void onKeyUp(sf::Keyboard::Key key)
 {
     switch (key) {
+    case sf::Keyboard::Space:
+        space = false;
+        break;
     case sf::Keyboard::Z:
         up = false;
         break;

@@ -26,16 +26,21 @@ class Projectiles
 {
     sf::Clock ROFClock;
 
-    AmmunitionType *CreateAmmo(Entity *entity);
+    AmmunitionType *CreateAmmo(Entity *entity, const char *path);
     void UpdatePosition(AmmunitionType *ammo);
     void FreeShoot(AmmunitionType *ammo, int index);
     void CheckIfHit(AmmunitionType *ammo, int index);
     void UpdateShoot(AmmunitionType *ammo, int index);
+    std::vector<AmmunitionType *> Ammunitions;
 
 public:
-    std::vector<AmmunitionType *> Ammunitions;
+    bool ownedByPlayer;
+
+    Projectiles() {
+        this->ownedByPlayer = false;
+    }
     
-    void PlayerShoot(Entity *entity);
+    void PlayerShoot(Entity *entity, const char *ammoSpritePath);
     void RenderShoot(sf::RenderWindow &window);
 
 };
