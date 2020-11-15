@@ -3,6 +3,7 @@
 // #include "simple2d.h"
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
+#include "utils.h"
 
 #ifndef M_PI
 #define M_PI    3.14159265358979323846264338327950288   /**< pi */
@@ -48,5 +49,3 @@ public:
     sf::Vector2f GetDirection(void);
     sf::FloatRect GetRect();
 };
-
-sf::Vector2f RotatePointAroundCenter(sf::Vector2f point, sf::Vector2f center, float angle_rad);

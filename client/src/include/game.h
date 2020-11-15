@@ -9,6 +9,7 @@
 #include <gl/GLU.h>
 
 // #include "simple2d.h"
+#include "utils.h"
 #include "entity.h"
 #include "enemy.h"
 #include "ammunition.h"
