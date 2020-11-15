@@ -25,11 +25,11 @@ public:
     sf::IpAddress ip;
     unsigned short port;
 
-    int id = 0;
+    sf::Int32 id = 0;
 
     Client() {};
 
-    Client(sf::IpAddress m_ip, unsigned int m_port, sf::UdpSocket &m_serverSocket, int m_ID) {
+    Client(sf::IpAddress m_ip, unsigned int m_port, sf::UdpSocket &m_serverSocket, sf::Int32 m_ID) {
         // this->socket->bind(m_port, m_ip);
         this->ip = m_ip;
         this->port = m_port;
@@ -46,7 +46,7 @@ public:
         this->serverSocket->send(packet, this->ip, this->port);
     }
 
-    void SendRemoteClientId(int m_id) {
+    void SendRemoteClientId(sf::Int32 m_id) {
         sf::Packet packet;
 
         packet << static_cast<sf::Uint8>(RpcType::REMOTE_ID);

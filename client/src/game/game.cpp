@@ -110,7 +110,7 @@ void gameUpdate()
 {
     Client::Route();
     playerClass.Move(xAxis, yAxis);
-    Client::SendPlayerAxis(xAxis, yAxis);
+    Client::SendPlayerAxis(xAxis, yAxis, playerClass.position.x, playerClass.position.y);
 
     playerClass.RotateSprite(xAxis, yAxis, 90);
     if (space) {

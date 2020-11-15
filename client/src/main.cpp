@@ -36,6 +36,8 @@ void onKeyHeld(sf::Keyboard::Key key)
     default:
         break;
     }
+
+
 }
 
 void onKeyUp(sf::Keyboard::Key key)

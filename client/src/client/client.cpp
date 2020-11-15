@@ -10,29 +10,26 @@ void Client::DrawRemotePlayers()
 
 void Client::ReceiveRemotePlayerAxis(sf::Packet &packet)
 {
-    float x;
-    float y;
     sf::Int32 remoteClientId;
+    float posX;
+    float posY;
+    float axeX;
+    float axeY;
 
-    packet >> x >> y >> remoteClientId;
-    remotePlayers[0]->Move(x, y);
-    printf("player (%f, %f)", x, y);
+    packet >> remoteClientId >> axeX >> axeY >> posX >> posY;
+    remotePlayers[0]->SetPosition({posX, posY});
+    remotePlayers[0]->Move(axeX, axeY);
+    printf("Axis (%f, %f)", axeX, axeY);
     printf("from player %d\n", remoteClientId);
 }
 
-void Client::SendPlayerAxis(float x, float y)
+void Client::SendPlayerAxis(float axeX, float axeY, float posX, float posY)
 {
     sf::Packet packet;
     sf::Int8 rpc = RpcType::PLAYER_AXIS;
-    packet << rpc << x << y;
 
-    sf::Int8 trpc;
-    float tx;
-    float ty;
-
-    packet >> trpc >> tx >> ty;
-
-    SendPacket(packet);    
+    packet << rpc << Client::myId << axeX << axeY << posX << posY;
+    SendPacket(packet);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -60,7 +57,6 @@ void Client::Start()
     }
 
     client.setBlocking(false);
-    
 }
 
 void Client::Route()
@@ -70,7 +66,7 @@ void Client::Route()
     unsigned short serverPort;
 
     if (client.receive(packet, serverIP, serverPort) == sf::Socket::Done)
-    {   
+    {
         sf::Int8 type;
         packet >> type;
 
@@ -86,6 +82,13 @@ void Client::Route()
             gServerIP = serverIP;
             gServerPort = serverPort;
             printf("received myId %d\n", myId);
+            break;
+        case RpcType::REMOTE_ID:
+            sf::Int32 remoteClientId;
+            packet >> remoteClientId;
+            printf("player %d is near\n", remoteClientId);
+            break;
+
         default:
             break;
         }
@@ -97,11 +100,16 @@ void Client::SendPacket(sf::Packet &packet)
 
     sf::Socket::Status sendStatus = client.send(packet, gServerIP, gServerPort);
 
-    if (sendStatus == sf::Socket::Done) {
+    if (sendStatus == sf::Socket::Done)
+    {
         //printf("packet send %zd bytes, is data left ?: %d \n", packet.getDataSize(), packet.endOfPacket());
-    } else if (sendStatus == sf::Socket::Partial) {
+    }
+    else if (sendStatus == sf::Socket::Partial)
+    {
         printf("partially send, is data left ? : %d\n", packet.endOfPacket());
-    } else if (sendStatus == sf::Socket::Error) {
+    }
+    else if (sendStatus == sf::Socket::Error)
+    {
         printf("an error occured during send\n");
         printf("server IP: %s\nPort: %d\n", gServerIP.toString().c_str(), gServerPort);
     }
@@ -110,5 +118,3 @@ void Client::SendPacket(sf::Packet &packet)
 void Client::Disconnect()
 {
 }
-
-

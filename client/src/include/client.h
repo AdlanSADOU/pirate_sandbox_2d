@@ -23,6 +23,6 @@ namespace Client
     void Route();
     void SendPacket(sf::Packet &packet);
     void DrawRemotePlayers();
-    void SendPlayerAxis(float x, float y);
+    void SendPlayerAxis(float xAxis, float yAxis, float x, float y);
     void ReceiveRemotePlayerAxis(sf::Packet &packet);
 }; // namespace Client
