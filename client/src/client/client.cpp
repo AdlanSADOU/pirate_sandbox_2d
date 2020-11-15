@@ -1,6 +1,5 @@
 #include "client.h"
 
-
 void Client::DrawRemotePlayers()
 {
     gWindow->draw(*remotePlayers[0]->sprite);

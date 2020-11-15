@@ -4,10 +4,36 @@
 #include "particles.h"
 #include "client.h"
 
-Entity playerClass;
+class Player
+{
+public:
+    Entity entity;
+
+    Player(){};
+    Player(const char *path) {
+        entity = Entity(path);
+        entity.SetPosition({3840 / 2, 2160 / 2});
+    }
+
+    void Move(float xAxis, float yAxis) {
+        entity.up = up;
+        entity.down = down;
+        entity.right = right;
+        entity.left = left;
+
+        entity.Move(xAxis, yAxis);
+        entity.RotateSprite(xAxis, yAxis, 90);
+    }
+
+    void Shoot(bool key) {
+        if (key) {
+            playerShoot();
+        }
+    }
+};
 
 //ParticlePool particlePool;
-
+Player player;
 sf::Sprite background;
 float xAxis;
 float yAxis;
@@ -19,6 +45,23 @@ bool space = false;
     float magnitude = sqrt(pow(vector.x, 2) + pow(vector.y, 2));
     return (magnitude);
 }*/
+
+void CameraFollow(Entity entity)
+    {
+        sf::View view = sf::View();
+        view.setSize({(float)gWindow->getSize().x, (float)gWindow->getSize().y});
+        sf::Vector2f playerPos = entity.GetPos();
+        if (playerPos.x >= 3200)
+            playerPos.x = 3200;
+        if (playerPos.y >= 1800)
+            playerPos.y = 1800;
+        if (playerPos.x <= 640)
+            playerPos.x = 640;
+        if (playerPos.y <= 360)
+            playerPos.y = 360;
+        view.setCenter(playerPos);
+        gWindow->setView(view);
+    }
 
 void gameInput(sf::Event e)
 {
@@ -42,26 +85,8 @@ void gameInput(sf::Event e)
 
 void gameInit()
 {
-    playerClass = Entity("assets/PlayerRed_Frame_01_png_processed.png");
-    playerClass.SetPosition({3840 / 2, 2160 / 2});
+    player = Player("assets/PlayerRed_Frame_01_png_processed.png");
     //particlePool = ParticlePool();
-}
-
-void cameraMove()
-{
-    sf::View view = sf::View();
-    view.setSize({(float)gWindow->getSize().x, (float)gWindow->getSize().y});
-    sf::Vector2f playerPos = playerClass.GetPos();
-    if (playerPos.x >= 3200)
-        playerPos.x = 3200;
-    if (playerPos.y >= 1800)
-        playerPos.y = 1800;
-    if (playerPos.x <= 640)
-        playerPos.x = 640;
-    if (playerPos.y <= 360)
-        playerPos.y = 360;
-    view.setCenter(playerPos);
-    gWindow->setView(view);
 }
 
 /*void PushEngineParticules()
@@ -75,10 +100,10 @@ void cameraMove()
         speed = 1;
     int life = 20;
 
-    sf::Vector2f playerBack = playerClass.behind;
+    sf::Vector2f playerBack = player.playerClass.behind;
 
-    sf::Vector2f direction = RotatePointAroundCenter(playerClass.behind_far, playerClass.position, (-0.6f + float(rand() % 120 / 100.0f)));
-    float angle_direction = atan2((direction.y - playerClass.position.y), (direction.x - playerClass.position.x));
+    sf::Vector2f direction = RotatePointAroundCenter(player.playerClass.behind_far, player.playerClass.position, (-0.6f + float(rand() % 120 / 100.0f)));
+    float angle_direction = atan2((direction.y - player.playerClass.position.y), (direction.x - player.playerClass.position.x));
     direction = sf::Vector2f(cos(angle_direction), sin(angle_direction));
     float magnitude = vector_magnitude(direction);
     direction = sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
@@ -104,17 +129,14 @@ void cameraMove()
     particlePool.Update(gWindow);
 }
 */
+
 void gameUpdate()
 {
-    playerClass.Move(xAxis, yAxis);
-
-    playerClass.RotateSprite(xAxis, yAxis, 90);
-    if (space) {
-        playerShoot();
-    }
+    player.Move(xAxis, yAxis);
+    player.Shoot(space);
     //PushEngineParticules();
     pushPart();
-    cameraMove();
+    CameraFollow(player.entity);
 }
 
 void posDebug(sf::Vector2f pos)
@@ -132,7 +154,7 @@ void gameRender()
     RenderShoot();
     RenderEnnemies();
     renderParticules();
-    gWindow->draw(*playerClass.sprite);
+    gWindow->draw(*player.entity.sprite);
     //ImGui::Text("Particle count: %d", particlePool.CountParticleAlive());
     /*posDebug(playerClass.facing);
     posDebug(playerClass.position);
@@ -141,7 +163,7 @@ void gameRender()
 
 Entity *getPlayer()
 {
-    return (&playerClass);
+    return (&player.entity);
 }
 
 sf::Vector2f RotatePointAroundCenter(sf::Vector2f point, sf::Vector2f center, float angle_rad)

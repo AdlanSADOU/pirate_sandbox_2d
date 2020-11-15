@@ -6,24 +6,25 @@ sf::RenderWindow *gWindow = NULL;
 float deltaTime;
 float fps;
 float speed = 0.1f;
+bool up = false, down = false, left = false, right = false, shift = false;
 
 void onKeyHeld(sf::Keyboard::Key key)
 {
     switch (key) {
     case sf::Keyboard::Z:
-        playerClass.up = true;
+        up = true;
         break;
     case sf::Keyboard::Q:
-        playerClass.left = true;
+        left = true;
         break;
     case sf::Keyboard::S :
-        playerClass.down = true;
+        down = true;
         break;
     case sf::Keyboard::D:
-        playerClass.right = true;
+        right = true;
         break;
     case sf::Keyboard::LShift:
-        playerClass.shift = true;
+        shift = true;
         if (yAxis > -0.16 && yAxis < 0.01)
             yAxis = 0;
         else
@@ -42,19 +43,19 @@ void onKeyUp(sf::Keyboard::Key key)
 {
     switch (key) {
     case sf::Keyboard::Z:
-        playerClass.up = false;
+        up = false;
         break;
     case sf::Keyboard::Q:
-        playerClass.left = false;
+        left = false;
         break;
     case sf::Keyboard::S :
-        playerClass.down = false;
+        down = false;
         break;
     case sf::Keyboard::D:
-        playerClass.right = false;
+        right = false;
         break;
     case sf::Keyboard::LShift:
-        playerClass.shift = false;
+        shift = false;
         break;
     default:
         break;
@@ -83,13 +84,13 @@ void onKeyCallback(sf::Event e)
 
 void update()
 {
-    if (playerClass.up)
+    if (up)
         yAxis -= deltaTime * speed;
-    if (playerClass.left)
+    if (left)
         xAxis -= deltaTime * speed;
-    if (playerClass.down)
+    if (down)
         yAxis += deltaTime * speed;
-    if (playerClass.right)
+    if (right)
         xAxis += deltaTime * speed;
 
     gameUpdate();

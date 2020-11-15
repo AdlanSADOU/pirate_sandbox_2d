@@ -29,6 +29,7 @@ extern Entity playerClass;
 
 extern float xAxis;
 extern float yAxis;
+extern bool up, down, left, right, shift;
 
 typedef struct args
 {
