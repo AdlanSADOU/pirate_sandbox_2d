@@ -1,9 +1,10 @@
 #pragma once
 
-#include "game.h"
 #include "entity.h"
 #include "particles.h"
 #include "ammunition.h"
+
+#include "imgui-common.h"
 
 typedef struct {
     ParticleSystem *particleSystem;

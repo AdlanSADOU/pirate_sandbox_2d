@@ -25,9 +25,10 @@ EnnemyType *PushEnnemy()
     ennemy->hp = 100;
     ennemy->direction = utils::GetRandomNormalizedVector();
     ennemy->entity->SetPosition(sf::Vector2f{1500, 1000});
-    ennemy->entity->RotateSprite(ennemy->direction.x, ennemy->direction.y, 270);
+    ennemy->entity->RotateSprite(ennemy->direction.x, ennemy->direction.y, 90);
     ennemy->lifeClock.restart();
     ennemy->explosionClock.restart();
+    ennemy->entity->sprite->setScale(sf::Vector2f(-1, -1));
 
     // Particles & Projectiles
     ennemy->particleSystem = tmpParticleSystem;
@@ -61,6 +62,7 @@ void UpdatePosition(EnnemyType *ennemy)
 
     if (time.asSeconds() > 0.01f && ennemy->dead != 1) {
         ennemy->entity->Move(ennemy->direction.x * ennemy->speed, ennemy->direction.y * ennemy->speed);
+        ennemy->entity->RotateSprite(ennemy->direction.x, ennemy->direction.y, 90);
         ennemy->explosion->Move(ennemy->direction.x * ennemy->speed, ennemy->direction.y * ennemy->speed);
         ennemy->clock.restart();
     }
@@ -84,7 +86,7 @@ void UpdateEnnemy(EnnemyType *ennemy, int index)
     UpdatePosition(ennemy);
 
     // Update particles & projectiles
-    ennemy->particleSystem->Update(*ennemy->entity, 0, 0);
+    ennemy->particleSystem->Update(*ennemy->entity, 0, 0, 2, 2, sf::Color(0, 255, 255, 130), sf::Color(0, 0, 255, 0), 10);
     ennemy->projectile->PlayerShoot(ennemy->entity, "assets/256px/Minigun_Medium_png_processed.png");
 
     if (Ennemies.size() > 0) {
@@ -102,7 +104,6 @@ std::vector<EnnemyType *> GetEnnemies()
 void RenderEnnemies(sf::RenderWindow &window)
 {
     for (int i = 0; i < Ennemies.size(); i++) {
-
         if (Ennemies[i]->dead) {
             window.draw(*Ennemies[i]->explosion->sprite);
         }

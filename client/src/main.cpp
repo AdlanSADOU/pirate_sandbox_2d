@@ -122,7 +122,7 @@ int main()
     glEnable(GL_POINT_SMOOTH);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glPointSize(8);
+    glPointSize(7);
 
     const std::string str = "assets/background.jpg";
     sf::Texture texture;

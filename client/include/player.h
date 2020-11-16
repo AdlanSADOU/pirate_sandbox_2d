@@ -24,7 +24,7 @@ public:
     }
 
     void Update() {
-        particleSystem.Update(entity, 0, 0);
+        particleSystem.Update(entity, 0, 0, xAxis, yAxis, sf::Color(255, 240, 0, 130), sf::Color(255, 0, 0, 0), 10);
         this->Move(xAxis, yAxis);
         this->Shoot(space);
     }
