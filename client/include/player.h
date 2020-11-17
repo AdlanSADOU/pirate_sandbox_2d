@@ -7,6 +7,7 @@
 extern bool space;
 extern float xAxis, yAxis;
 extern bool up, down, left, right, shift;
+extern sf::RenderWindow *window;
 
 class Player
 {
@@ -14,7 +15,6 @@ public:
     Entity entity;
     Projectiles projectile;
     ParticleSystem particleSystem;
-
     Player(){};
     Player(const char *path) {
         projectile.ownedByPlayer = true;
@@ -24,8 +24,8 @@ public:
     }
 
     void Update() {
-        particleSystem.Update(entity, 0, 0, xAxis, yAxis, sf::Color(255, 240, 0, 130), sf::Color(255, 0, 0, 0), 10);
         this->Move(xAxis, yAxis);
+        particleSystem.Update(entity, 0, 0, xAxis, yAxis, sf::Color(255, 240, 0, 130), sf::Color(255, 0, 0, 0), 10);
         this->Shoot(space);
     }
 
@@ -42,7 +42,12 @@ public:
         entity.left = left;
 
         entity.Move(xAxis, yAxis);
-        entity.RotateSprite(xAxis, yAxis, 90);
+        float angle_direction = 0;
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            sf::Vector2f mouse_pos = (sf::Vector2f)sf::Mouse::getPosition(*window);
+            entity.RotateSprite(mouse_pos.x, mouse_pos.y, 90);
+        } else
+            entity.RotateSprite(xAxis, yAxis, 90);
     }
 
     void Shoot(bool key) {

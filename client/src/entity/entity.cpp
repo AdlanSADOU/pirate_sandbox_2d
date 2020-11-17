@@ -2,7 +2,7 @@
 
 int behind_offset = 25;
 int behind_far_offset = 200;
-int facing_offset = 100;
+int facing_offset = 35;
 
     Entity::Entity()
     {}

@@ -10,7 +10,8 @@ AmmunitionType *Projectiles::CreateAmmo(Entity *entity, const char *path)
     ammo->speed = 5.0f + sqrt((xAxis * xAxis) + (yAxis * yAxis));
     ammo->direction = sf::Vector2f(cos(entity->angle * M_PI / 180), sin(entity->angle * M_PI / 180));
     ammo->entity = new Entity(path);
-    ammo->entity->SetPosition(entity->GetPos());
+    ammo->entity->SetPosition(entity->facing);
+    ammo->entity->sprite->setRotation(entity->angle + 90);
     ammo->dmg = 50;
     ammo->destroyed = 0;
     ammo->clock.restart();
