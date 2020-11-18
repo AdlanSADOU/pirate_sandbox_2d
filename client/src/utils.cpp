@@ -1,7 +1,9 @@
 #include "utils.h"
+#include <math.h>
 
 float utils::VectorMagnitude(sf::Vector2f vector)
 {
+
     float magnitude = sqrt(pow(vector.x, 2) + pow(vector.y, 2));
     return (magnitude);
 }

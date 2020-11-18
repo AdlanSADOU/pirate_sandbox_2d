@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "math.h"
 
 int behind_offset = 25;
 int behind_far_offset = 200;
@@ -84,7 +85,7 @@ int facing_offset = 100;
 
         float angle_direction = atan2((this->position.y - y) - (this->position.y), (this->position.x - x) - (this->position.x));
         float save_angle = angle_direction * 180 / M_PI;
-        
+
         angle_direction = angle_direction * 180 / M_PI - offset;
         this->facing = utils::RotatePointAroundCenter(this->facing, this->position, angle_direction * M_PI / 180);
         this->behind = utils::RotatePointAroundCenter(this->behind, this->position, angle_direction * M_PI / 180);
@@ -98,7 +99,7 @@ int facing_offset = 100;
 
     void Entity::Move(float x, float y)
     {
-        
+
         this->sprite->move(sf::Vector2f(x, y));
         this->position = this->GetPos();
 

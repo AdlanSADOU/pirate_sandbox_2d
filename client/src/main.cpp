@@ -70,9 +70,9 @@ void onKeyUp(sf::Keyboard::Key key)
 }
 
 void onKeyCallback(sf::Event e)
-{   
+{
     gameInput(e);
- 
+
     switch (e.type)
     {
     case sf::Event::EventType::KeyPressed:
@@ -116,7 +116,7 @@ int main()
 
     sf::ContextSettings settings = gWindow->getSettings();
     ImGui::SFML::Init(*gWindow, true);
-    
+
     gameInit();
 
     glEnable(GL_POINT_SMOOTH);

@@ -1,5 +1,5 @@
 #include "particles.h"
-
+#include "math.h"
 #include "utils.h"
 #include "imgui-common.h"
 

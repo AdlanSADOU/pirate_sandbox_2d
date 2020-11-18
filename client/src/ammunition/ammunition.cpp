@@ -1,5 +1,6 @@
 #include "ammunition.h"
 #include "enemy.h"
+#include "math.h"
 
 extern float xAxis, yAxis;
 extern bool up, down, left, right, shift;

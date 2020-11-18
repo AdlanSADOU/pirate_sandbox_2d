@@ -16,7 +16,7 @@
                 "/Zi",
                 "/MP",
 
-                "/Fe:", "${workspaceFolder}/client/build/x64_Debug/client.exe",
+                "/Fe:", "${workspaceFolder}/client/build/win_debug_x64/client.exe",
 
                 "${workspaceFolder}/client/src/*.cpp",
                 "${workspaceFolder}/client/src/imgui/*.cpp",
@@ -74,7 +74,7 @@
                 "/GL",
                 "/MP",
 
-                "/Fe:", "${workspaceFolder}/client/build/x64_Release/client.exe",
+                "/Fe:", "${workspaceFolder}/client/build/win_release_x64/client.exe",
 
                 "${workspaceFolder}/client/src/*.cpp",
                 "${workspaceFolder}/client/src/imgui/*.cpp",
@@ -133,7 +133,7 @@
                 "/Zi",
                 "/MP",
 
-                "/Fe:", "${workspaceFolder}/client/build/x64_Debug_old/client.exe",
+                "/Fe:", "${workspaceFolder}/client/build/win_debug_old_x64/client.exe",
 
                 "${workspaceFolder}/client/src/*.cpp",
                 "${workspaceFolder}/client/src/imgui/*.cpp",
@@ -207,6 +207,110 @@
             ],
             "options": {
                 "cwd": "${workspaceFolder}/server"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+
+        { // Linux gcc build
+            "type": "shell",
+            "label": "gcc: [x64_Debug] Client build",
+            "command": "g++",
+            "args": [
+                "-fpermissive",
+                "-o", "${workspaceFolder}/client/build/linux_debug_x64/client",
+
+                "${workspaceFolder}/client/src/*.cpp",
+                "${workspaceFolder}/client/src/imgui/*.cpp",
+                "${workspaceFolder}/client/src/game/*.cpp",
+                "${workspaceFolder}/client/src/entity/*.cpp",
+                "${workspaceFolder}/client/src/ammunition/*.cpp",
+                "${workspaceFolder}/client/src/enemy/*.cpp",
+                "${workspaceFolder}/client/src/particules/*.cpp",
+                "${workspaceFolder}/client/src/client/*.cpp",
+
+                "-I", "${workspaceFolder}/client/include/",
+                "-I", "${workspaceFolder}/client/include/imgui/",
+                "-I", "${workspaceFolder}/vendor/SFML_x64/SFML/include",
+
+                "-L", "${workspaceFolder}/vendor/SFML_x64/SFML/x64_Linux_gcc/debug/",
+                //"flac.lib","freetype.lib", "ogg.lib", "openal32.lib",
+                // "opengl.so",
+                //  "-lopengl32",
+                "-lGL", "-lGLU", "-lglut",
+                "-lsfml-window-d",
+                "-lsfml-system-d",
+                "-lsfml-graphics-d",
+                "-lsfml-audio-d",
+                "-lsfml-network-d",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/client"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+
+        { // Linux gcc build
+            "type": "shell",
+            "label": "gcc: [x64 Release] Client build",
+            "command": "g++",
+            "args": [
+                "-fpermissive",
+                "-o", "${workspaceFolder}/client/build/linux_release_x64/client",
+
+                "${workspaceFolder}/client/src/*.cpp",
+                "${workspaceFolder}/client/src/imgui/*.cpp",
+                "${workspaceFolder}/client/src/game/*.cpp",
+                "${workspaceFolder}/client/src/entity/*.cpp",
+                "${workspaceFolder}/client/src/ammunition/*.cpp",
+                "${workspaceFolder}/client/src/enemy/*.cpp",
+                "${workspaceFolder}/client/src/particules/*.cpp",
+                "${workspaceFolder}/client/src/client/*.cpp",
+
+                "-I", "${workspaceFolder}/client/include/",
+                "-I", "${workspaceFolder}/client/include/imgui/",
+                "-I", "${workspaceFolder}/vendor/SFML_x64/SFML/include",
+
+                "-L", "${workspaceFolder}/vendor/SFML_x64/SFML/x64_Linux_gcc/release/",
+                //"flac.lib","freetype.lib", "ogg.lib", "openal32.lib",
+                // "opengl.so",
+                //  "-lopengl32",
+                "-lGL", "-lGLU", "-lglut",
+                "-lsfml-window-d",
+                "-lsfml-system-d",
+                "-lsfml-graphics-d",
+                "-lsfml-audio-d",
+                "-lsfml-network-d",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/client"
             },
             "problemMatcher": [
                 "$msCompile"
