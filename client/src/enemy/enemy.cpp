@@ -33,6 +33,13 @@ EnnemyType *PushEnnemy()
     // Particles & Projectiles
     ennemy->particleSystem = tmpParticleSystem;
     ennemy->projectile = tmpProjectiles;
+
+    //Life and shield bars
+    // ennemy->shieldRect = sf::RectangleShape();
+    // ennemy->shieldRect.setSize(sf::Vector2f(50, 10));
+    // ennemy->shieldRect.setOutlineColor(sf::Color::Red);
+    // ennemy->shieldRect.setOutlineThickness(5);
+    // ennemy->shieldRect.setPosition(1500, 1000);
     
     return (ennemy);
 }
@@ -114,6 +121,7 @@ void RenderEnnemies(sf::RenderWindow &window)
             Ennemies[i]->projectile->RenderShoot(window);
 
             window.draw(*Ennemies[i]->entity->sprite);
+            // window.draw(Ennemies[i]->blackRect);
         }
         UpdateEnnemy(Ennemies[i], i);
     }

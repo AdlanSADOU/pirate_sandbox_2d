@@ -52,7 +52,7 @@ float utils::DotProduct(sf::Vector2f vector_a, sf::Vector2f vector_b)
 
 void utils::posDebug(sf::Vector2f pos, sf::RenderWindow &window)
 {
-    sf::CircleShape dot = sf::CircleShape();
+    sf::CircleShape dot;
     dot.setPosition({pos.x - 2, pos.y - 2});
     dot.setFillColor(sf::Color::White);
     dot.setRadius(4.0f);

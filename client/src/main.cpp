@@ -1,7 +1,7 @@
 #include "game.h"
 #include "client.h"
 
-sf::RenderWindow *gWindow = NULL;
+sf::RenderWindow *window = NULL;
 
 float deltaTime;
 float fps;
@@ -77,7 +77,7 @@ void onKeyCallback(sf::Event e)
     {
     case sf::Event::EventType::KeyPressed:
         if (e.key.code == sf::Keyboard::Escape)
-            gWindow->close();
+            window->close();
         onKeyHeld(e.key.code);
         break;
 
@@ -106,16 +106,16 @@ void update(float dt)
 int main()
 {
     sf::Clock deltaClock;
-    sf::Clock clock = sf::Clock::Clock();
+    sf::Clock clock;
     sf::Time previousTime = clock.getElapsedTime();
     sf::Time currentTime;
     sf::Time t_deltaTime;
 
-    gWindow = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
-    gWindow->setFramerateLimit(60);
+    window = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML window");
+    window->setFramerateLimit(60);
 
-    sf::ContextSettings settings = gWindow->getSettings();
-    ImGui::SFML::Init(*gWindow, true);
+    sf::ContextSettings settings = window->getSettings();
+    ImGui::SFML::Init(*window, true);
 
     gameInit();
 
@@ -130,30 +130,30 @@ int main()
         return EXIT_FAILURE;
     sf::Sprite sprite(texture);
 
-    while (gWindow->isOpen()) {
+    while (window->isOpen()) {
         sf::Event event;
-        while (gWindow->pollEvent(event)) {
+        while (window->pollEvent(event)) {
             ImGui::SFML::ProcessEvent(event);
 
             onKeyCallback(event);
 
             if (event.type == sf::Event::Closed)
-                gWindow->close();
+                window->close();
         }
-        gWindow->clear();
-        gWindow->draw(sprite);
+        window->clear();
+        window->draw(sprite);
 
-        ImGui::SFML::Update(*gWindow, deltaClock.restart());
+        ImGui::SFML::Update(*window, deltaClock.restart());
         ImGui::Begin("Info");
         ImGui::Text("fps: %.2f, %.2fms", fps, deltaTime);
 
         update(deltaTime);
-        gameRender(*gWindow);
+        gameRender(*window);
 
         ImGui::End();
-        ImGui::SFML::Render(*gWindow);
+        ImGui::SFML::Render(*window);
 
-        gWindow->display();
+        window->display();
 
         t_deltaTime = deltaClock.getElapsedTime();
 

@@ -57,7 +57,7 @@
         "xtree": "cpp",
         "atomic": "cpp",
         "list": "cpp",
-        "complex": "cpp"
+        "*.rh": "cpp"
     },
     "cmake.configureOnOpen": false
 }
