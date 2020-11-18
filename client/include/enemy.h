@@ -18,8 +18,11 @@ typedef struct {
     sf::Clock lifeClock;
     sf::Clock explosionClock;
     sf::Sound sound;
+    sf::RectangleShape shieldRect;
+    sf::RectangleShape hpRect;
     int hp;
     int dead;
+    int shield;
     float speed;
 } EnnemyType;
 
