@@ -43,11 +43,15 @@ public:
 
         entity.Move(xAxis, yAxis);
         float angle_direction = 0;
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            sf::Vector2f mouse_pos = (sf::Vector2f)sf::Mouse::getPosition(*window);
-            entity.RotateSprite(mouse_pos.x, mouse_pos.y, 90);
-        } else
-            entity.RotateSprite(xAxis, yAxis, 90);
+        //if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+        
+            sf::Vector2i pixelPosition = sf::Mouse::getPosition(*window);
+            sf::Vector2f worldPosition = window->mapPixelToCoords(pixelPosition);
+            entity.RotateSprite(worldPosition.x, worldPosition.y, -90);
+        } 
+        //else
+          //  entity.RotateSprite(xAxis, yAxis, 90);
     }
 
     void Shoot(bool key) {
