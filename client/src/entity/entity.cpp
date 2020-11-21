@@ -83,18 +83,19 @@ int facing_offset = 35;
         if (x == 0.0f && y == 0.0f)
             return;
 
-        float angleRadians = atan2((y) - (this->position.y), (x) - (this->position.x));
-        float angleDegrees = angleRadians * 180 / M_PI;
+        float angleRadians = atan2(y - this->position.y, x - this->position.x);
+        float saveAngle = angleRadians * 180 / M_PI;
 
-        angleRadians = (angleRadians * 180 / M_PI) - offset;
-        this->facing = utils::RotatePointAroundCenter(this->facing, this->position, angleRadians * M_PI / 180);
-        this->behind = utils::RotatePointAroundCenter(this->behind, this->position, angleRadians * M_PI / 180);
-        this->behind_far = utils::RotatePointAroundCenter(this->behind_far, this->position, angleRadians * M_PI / 180);
-        this->angle = angleDegrees;
+        float offsetedAngleDegrees = (angleRadians * 180 / M_PI) - offset;
+
+        this->facing = utils::RotatePointAroundCenter(this->facing, this->position, offsetedAngleDegrees * M_PI / 180);
+        this->behind = utils::RotatePointAroundCenter(this->behind, this->position, offsetedAngleDegrees * M_PI / 180);
+        this->behind_far = utils::RotatePointAroundCenter(this->behind_far, this->position, offsetedAngleDegrees * M_PI / 180);
+        this->angle = saveAngle;
 
         if (this->shift == 1 && this->right == 0 && this->left == 0 && this->up == 0 && this->down == 0)
             return;
-        this->sprite->setRotation(angleDegrees - offset);
+        this->sprite->setRotation(offsetedAngleDegrees);
     }
 
     void Entity::Move(float x, float y)
