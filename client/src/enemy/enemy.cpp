@@ -25,7 +25,7 @@ EnnemyType *PushEnnemy()
     ennemy->hp = 100;
     ennemy->direction = utils::GetRandomNormalizedVector();
     ennemy->entity->SetPosition(sf::Vector2f{1500, 1000});
-    ennemy->entity->RotateSprite(ennemy->direction.x, ennemy->direction.y, 90);
+    ennemy->entity->RotateSpriteDirection(ennemy->direction.x, ennemy->direction.y, 90);
     ennemy->lifeClock.restart();
     ennemy->explosionClock.restart();
     ennemy->entity->sprite->setScale(sf::Vector2f(-1, -1));
@@ -69,7 +69,7 @@ void UpdatePosition(EnnemyType *ennemy)
 
     if (time.asSeconds() > 0.01f && ennemy->dead != 1) {
         ennemy->entity->Move(ennemy->direction.x * ennemy->speed, ennemy->direction.y * ennemy->speed);
-        ennemy->entity->RotateSprite(ennemy->direction.x, ennemy->direction.y, 90);
+        ennemy->entity->RotateSpriteDirection(ennemy->direction.x, ennemy->direction.y, 90);
         ennemy->explosion->Move(ennemy->direction.x * ennemy->speed, ennemy->direction.y * ennemy->speed);
         ennemy->clock.restart();
     }

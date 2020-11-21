@@ -27,7 +27,6 @@ void gameInput(sf::Event e)
             CreateEnemy();
         break;
 
-
     default:
         break;
     }
