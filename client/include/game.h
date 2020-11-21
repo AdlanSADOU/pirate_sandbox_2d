@@ -7,7 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/OpenGL.hpp>
-#include <gl/GLU.h>
+// #include <gl/GLU.h>
 
 #include <vector>
 #include <cstdlib>
@@ -15,7 +15,7 @@
 #include "imgui-common.h"
 
 /*
- * These will no longer be globally included 
+ * These will no longer be globally included
  * they'll be explicitly included in those files that directly need them.
  * rest in peace, compiler.
  */

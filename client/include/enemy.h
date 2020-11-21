@@ -1,9 +1,10 @@
 #pragma once
 
-#include "game.h"
 #include "entity.h"
 #include "particles.h"
 #include "ammunition.h"
+
+#include "imgui-common.h"
 
 typedef struct {
     ParticleSystem *particleSystem;
@@ -17,8 +18,11 @@ typedef struct {
     sf::Clock lifeClock;
     sf::Clock explosionClock;
     sf::Sound sound;
+    sf::RectangleShape shieldRect;
+    sf::RectangleShape hpRect;
     int hp;
     int dead;
+    int shield;
     float speed;
 } EnnemyType;
 

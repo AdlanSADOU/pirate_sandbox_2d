@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.asm": "asm-collection",
         "vector": "cpp",
         "compare": "cpp",
         "concepts": "cpp",
@@ -55,7 +56,8 @@
         "xstring": "cpp",
         "xtree": "cpp",
         "atomic": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "*.rh": "cpp"
     },
     "cmake.configureOnOpen": false
 }
