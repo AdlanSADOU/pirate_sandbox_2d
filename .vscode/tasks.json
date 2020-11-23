@@ -19,6 +19,8 @@
                 "/Fe:", "${workspaceFolder}/client/build/win_debug_x64/client.exe",
 
                 "${workspaceFolder}/client/src/*.cpp",
+                "${workspaceFolder}/client/src/ui/*.cpp",
+                "${workspaceFolder}/client/src/inventory/*.cpp",
                 "${workspaceFolder}/client/src/imgui/*.cpp",
                 "${workspaceFolder}/client/src/game/*.cpp",
                 "${workspaceFolder}/client/src/entity/*.cpp",
@@ -77,6 +79,8 @@
                 "/Fe:", "${workspaceFolder}/client/build/win_release_x64/client.exe",
 
                 "${workspaceFolder}/client/src/*.cpp",
+                "${workspaceFolder}/client/src/ui/*.cpp",
+                "${workspaceFolder}/client/src/inventory/*.cpp",
                 "${workspaceFolder}/client/src/imgui/*.cpp",
                 "${workspaceFolder}/client/src/game/*.cpp",
                 "${workspaceFolder}/client/src/entity/*.cpp",
@@ -136,6 +140,8 @@
                 "/Fe:", "${workspaceFolder}/client/build/win_debug_old_x64/client.exe",
 
                 "${workspaceFolder}/client/src/*.cpp",
+                "${workspaceFolder}/client/src/ui/*.cpp",
+                "${workspaceFolder}/client/src/inventory/*.cpp",
                 "${workspaceFolder}/client/src/imgui/*.cpp",
                 "${workspaceFolder}/client/src/game/*.cpp",
                 "${workspaceFolder}/client/src/entity/*.cpp",
@@ -234,6 +240,8 @@
                 "-o", "${workspaceFolder}/client/build/linux_debug_x64/client",
 
                 "${workspaceFolder}/client/src/*.cpp",
+                "${workspaceFolder}/client/src/ui/*.cpp",
+                "${workspaceFolder}/client/src/inventory/*.cpp",
                 "${workspaceFolder}/client/src/imgui/*.cpp",
                 "${workspaceFolder}/client/src/game/*.cpp",
                 "${workspaceFolder}/client/src/entity/*.cpp",
@@ -286,6 +294,8 @@
                 "-o", "${workspaceFolder}/client/build/linux_release_x64/client",
 
                 "${workspaceFolder}/client/src/*.cpp",
+                "${workspaceFolder}/client/src/ui/*.cpp",
+                "${workspaceFolder}/client/src/inventory/*.cpp",
                 "${workspaceFolder}/client/src/imgui/*.cpp",
                 "${workspaceFolder}/client/src/game/*.cpp",
                 "${workspaceFolder}/client/src/entity/*.cpp",

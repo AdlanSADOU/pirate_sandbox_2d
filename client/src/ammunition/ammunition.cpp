@@ -9,7 +9,7 @@ AmmunitionType *Projectiles::CreateAmmo(Entity *entity, const char *path)
 {
     AmmunitionType *ammo = (AmmunitionType *)malloc(sizeof(AmmunitionType));
     float directionOffset = 0, spriteOffset = 90;
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && Projectiles::ownedByPlayer) {
         directionOffset = -90;
         spriteOffset = 0;
     }
