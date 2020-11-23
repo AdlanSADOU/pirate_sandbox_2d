@@ -8,11 +8,21 @@ extern bool up, down, left, right, shift;
 AmmunitionType *Projectiles::CreateAmmo(Entity *entity, const char *path)
 {
     AmmunitionType *ammo = (AmmunitionType *)malloc(sizeof(AmmunitionType));
+    float directionOffset = 0, spriteOffset = 90;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        directionOffset = -90;
+        spriteOffset = 0;
+    }
+
     ammo->speed = 5.0f + sqrt((xAxis * xAxis) + (yAxis * yAxis));
-    ammo->direction = sf::Vector2f(cos(entity->angle * M_PI / 180), sin(entity->angle * M_PI / 180));
+
+    ammo->direction = sf::Vector2f(
+        cos((entity->angle + directionOffset) * M_PI / 180),
+        sin((entity->angle + directionOffset) * M_PI / 180));
+
     ammo->entity = new Entity(path);
     ammo->entity->SetPosition(entity->facing);
-    ammo->entity->sprite->setRotation(entity->angle + 90);
+    ammo->entity->sprite->setRotation(entity->angle + spriteOffset);
     ammo->dmg = 50;
     ammo->destroyed = 0;
     ammo->clock.restart();
